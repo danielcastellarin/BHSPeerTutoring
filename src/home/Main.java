@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.effect.Shadow;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.*;
 import javafx.stage.Stage;
@@ -23,13 +24,13 @@ public class Main extends Application {
     private Scene scene2;
     private BorderPane startPagePane;
     private BorderPane tutorSelectionPagePane;
+    private BorderPane studentInquiryPane;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
         createHomeScreen(primaryStage);
-        scene2 = createTutorPage();
+        scene2 = createTutorPage(primaryStage);
         scene1 = new Scene(startPagePane, 600, 500);
-
         primaryStage.setTitle("Peer Tutoring Home Page");
         primaryStage.setScene(scene1);
         primaryStage.show();
@@ -43,17 +44,24 @@ public class Main extends Application {
         startPagePane.setCenter(middleButtonBox);
     }
 
-    public Scene createTutorPage(){
+    public Scene createTutorPage(Stage stage){
         tutorSelectionPagePane = new BorderPane();
         ComboBox tutorSelectComboBox = new ComboBox();
         tutorSelectComboBox.getItems().addAll("Kristina Wolinski", "Gati Aher", "Mike Winters");
         tutorSelectionPagePane.setCenter(tutorSelectComboBox);
         HBox headerBox = createTutorSelectionHeader();
-        HBox buttonBox = createTutorSelectionButtons(tutorSelectComboBox);
+        HBox buttonBox = createTutorSelectionButtons(stage, tutorSelectComboBox);
         tutorSelectionPagePane.setTop(headerBox);
         tutorSelectionPagePane.setBottom(buttonBox);
         Scene tutorPage = new Scene(tutorSelectionPagePane, 600, 500);
         return tutorPage;
+    }
+
+    public void createStudentPage(Stage stage){
+        studentInquiryPane = new BorderPane();
+        GridPane gridPane = createStudentGrid();
+        studentInquiryPane.setCenter(gridPane);
+
     }
 
     public VBox createStartPageButtons(Stage stage){
@@ -113,7 +121,7 @@ public class Main extends Application {
         return hBox;
     }
 
-    public HBox createTutorSelectionButtons(ComboBox comboBox){
+    public HBox createTutorSelectionButtons(Stage stage, ComboBox comboBox){
         HBox hBox = new HBox();
         hBox.setPadding(new Insets(30));
         hBox.setSpacing(240);
@@ -125,6 +133,7 @@ public class Main extends Application {
         backBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
+                switchPages(stage, scene1);
                 System.out.println("Send to Start Page");
             }
         });
@@ -137,12 +146,23 @@ public class Main extends Application {
             @Override
             public void handle(ActionEvent actionEvent) {
                 String tutorName = (String) comboBox.getValue();
-                System.out.println(("Send to Tutor Scheduling Page. Name: " + tutorName));
+                if (tutorName != null)
+                    System.out.println("Send to Tutor Scheduling Page. Name: " + tutorName);
+                else
+                    System.out.println("Please select a name before proceeding.");
             }
         });
         hBox.getChildren().addAll(backBtn, continueBtn);
         hBox.setAlignment(Pos.CENTER);
         return hBox;
+    }
+
+    public GridPane createStudentGrid(){
+        GridPane grid = new GridPane();
+        grid.setVgap(20);
+        grid.setHgap(20);
+
+        return grid;
     }
 
     public void switchPages(Stage stage, Scene scene){
