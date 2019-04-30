@@ -32,7 +32,7 @@ public class TutorLogin {
         createTutorLoginHeader();
         createTutorSelectionButtons(stage);
         scene = new Scene(pane, 600, 500);
-
+//        Main.tutorLogin = scene;
     }
 
     private void createTutorLoginHeader(){

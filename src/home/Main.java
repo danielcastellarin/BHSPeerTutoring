@@ -21,7 +21,7 @@ import javafx.scene.layout.HBox;
 public class Main extends Application {
 
     public static Scene homePage;
-    private Scene tutorLogin;
+    public static TutorLogin tutorLogin;
     private BorderPane startPagePane;
     private BorderPane tutorSelectionPagePane;
     private BorderPane studentInquiryPane;
@@ -29,7 +29,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         createHomeScreen(primaryStage);
-        tutorLogin = TutorLogin.getScene();
+        tutorLogin = new TutorLogin(primaryStage);
         homePage = new Scene(startPagePane, 600, 500);
         primaryStage.setTitle("Peer Tutoring Home Page");
         primaryStage.setScene(homePage);
@@ -77,7 +77,7 @@ public class Main extends Application {
             @Override
             public void handle(ActionEvent actionEvent) {
                 System.out.println("Send to Tutor Picker Page");
-                switchPages(stage, tutorLogin);
+                switchPages(stage, tutorLogin.getScene());
             }
         });
         vBox.getChildren().addAll(studentBtn, tutorBtn);
