@@ -16,16 +16,15 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class TutorLogin extends Scene {
+public class TutorLogin {
 
     BorderPane pane;
-    Scene scene;
+    private Scene scene;
     ComboBox tutorDropDown;
     HBox header;
     HBox buttons;
 
-    public TutorLogin(Parent parent, Stage stage) {
-        super(parent);
+    public TutorLogin(Stage stage) {
         pane = new BorderPane();
         tutorDropDown = new ComboBox();
         tutorDropDown.getItems().addAll("Kristina Wolinski", "Gati Aher", "Mike Winters");      //Will import data through database eventually
@@ -33,6 +32,7 @@ public class TutorLogin extends Scene {
         createTutorLoginHeader();
         createTutorSelectionButtons(stage);
         scene = new Scene(pane, 600, 500);
+
     }
 
     public void createTutorLoginHeader(){
@@ -82,6 +82,10 @@ public class TutorLogin extends Scene {
         button.setTextFill(Color.FLORALWHITE);
         button.setStyle(btnColor);
         return button;
+    }
+
+    public Scene getScene(){
+        return scene;
     }
 
 }
