@@ -18,8 +18,8 @@ import javafx.stage.Stage;
 
 public class TutorLogin {
 
-    BorderPane pane;
     private Scene scene;
+    BorderPane pane;
     ComboBox tutorDropDown;
     HBox header;
     HBox buttons;
@@ -35,7 +35,7 @@ public class TutorLogin {
 
     }
 
-    public void createTutorLoginHeader(){
+    private void createTutorLoginHeader(){
         header = new HBox();
         header.setPadding(new Insets(30));
         header.setStyle("-fx-background-color: deepskyblue;");
@@ -47,7 +47,7 @@ public class TutorLogin {
         pane.setTop(header);
     }
 
-    public void createTutorSelectionButtons(Stage stage){
+    private void createTutorSelectionButtons(Stage stage){
         buttons = new HBox();
         buttons.setPadding(new Insets(30));
         buttons.setSpacing(240);
@@ -75,7 +75,7 @@ public class TutorLogin {
         pane.setBottom(buttons);
     }
 
-    public Button createButton(String name, String btnColor){
+    private Button createButton(String name, String btnColor){
         Button button = new Button(name);
         button.setPrefSize(150, 50);
         button.setFont(Font.font("Constantia", FontWeight.NORMAL, 20));
