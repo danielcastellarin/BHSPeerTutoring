@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -20,19 +21,22 @@ import javafx.scene.layout.HBox;
 
 public class Main extends Application {
 
-    private Scene scene1;
-    private Scene scene2;
+    public static Scene homePage;
+    private Scene tutorLogin;
     private BorderPane startPagePane;
     private BorderPane tutorSelectionPagePane;
     private BorderPane studentInquiryPane;
+    private Parent parent;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
         createHomeScreen(primaryStage);
-        scene2 = createTutorPage(primaryStage);
-        scene1 = new Scene(startPagePane, 600, 500);
+//        scene2 = createTutorPage(primaryStage);
+//        Not sure how to initialize this with Parent. Not sure what Parent is anyway
+        tutorLogin = new TutorLogin(parent, primaryStage);
+        homePage = new Scene(startPagePane, 600, 500);
         primaryStage.setTitle("Peer Tutoring Home Page");
-        primaryStage.setScene(scene1);
+        primaryStage.setScene(homePage);
         primaryStage.show();
     }
 
@@ -44,18 +48,20 @@ public class Main extends Application {
         startPagePane.setCenter(middleButtonBox);
     }
 
-    public Scene createTutorPage(Stage stage){
-        tutorSelectionPagePane = new BorderPane();
-        ComboBox tutorSelectComboBox = new ComboBox();
-        tutorSelectComboBox.getItems().addAll("Kristina Wolinski", "Gati Aher", "Mike Winters");
-        tutorSelectionPagePane.setCenter(tutorSelectComboBox);
-        HBox headerBox = createTutorSelectionHeader();
-        HBox buttonBox = createTutorSelectionButtons(stage, tutorSelectComboBox);
-        tutorSelectionPagePane.setTop(headerBox);
-        tutorSelectionPagePane.setBottom(buttonBox);
-        Scene tutorPage = new Scene(tutorSelectionPagePane, 600, 500);
-        return tutorPage;
-    }
+//    Redundant code
+//
+//    public Scene createTutorPage(Stage stage){
+//        tutorSelectionPagePane = new BorderPane();
+//        ComboBox tutorSelectComboBox = new ComboBox();
+//        tutorSelectComboBox.getItems().addAll("Kristina Wolinski", "Gati Aher", "Mike Winters");
+//        tutorSelectionPagePane.setCenter(tutorSelectComboBox);
+//        HBox headerBox = createTutorSelectionHeader();
+//        HBox buttonBox = createTutorSelectionButtons(stage, tutorSelectComboBox);
+//        tutorSelectionPagePane.setTop(headerBox);
+//        tutorSelectionPagePane.setBottom(buttonBox);
+//        Scene tutorPage = new Scene(tutorSelectionPagePane, 600, 500);
+//        return tutorPage;
+//    }
 
     public void createStudentPage(Stage stage){
         studentInquiryPane = new BorderPane();
@@ -90,7 +96,7 @@ public class Main extends Application {
             @Override
             public void handle(ActionEvent actionEvent) {
                 System.out.println("Send to Tutor Picker Page");
-                switchPages(stage, scene2);
+                switchPages(stage, tutorLogin);
             }
         });
         vBox.getChildren().addAll(studentBtn, tutorBtn);
@@ -109,53 +115,55 @@ public class Main extends Application {
         return hBox;
     }
 
-    public HBox createTutorSelectionHeader(){
-        HBox hBox = new HBox();
-        hBox.setPadding(new Insets(30));
-        hBox.setStyle("-fx-background-color: deepskyblue;");
-        Text title = new Text("Tutors");
-        title.setFill(Color.FLORALWHITE);
-        title.setFont(Font.font("Constantia", FontWeight.SEMI_BOLD, 36.0));
-        hBox.getChildren().add(title);
-        hBox.setAlignment(Pos.CENTER);
-        return hBox;
-    }
+//    Redundant code
 
-    public HBox createTutorSelectionButtons(Stage stage, ComboBox comboBox){
-        HBox hBox = new HBox();
-        hBox.setPadding(new Insets(30));
-        hBox.setSpacing(240);
-        Button backBtn = new Button("Back");
-        backBtn.setPrefSize(150, 50);
-        backBtn.setFont(Font.font("Constantia", FontWeight.NORMAL, 20));
-        backBtn.setTextFill(Color.FLORALWHITE);
-        backBtn.setStyle("-fx-background-color: indianred");
-        backBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                switchPages(stage, scene1);
-                System.out.println("Send to Start Page");
-            }
-        });
-        Button continueBtn = new Button("Continue");
-        continueBtn.setPrefSize(150, 50);
-        continueBtn.setFont(Font.font("Constantia", FontWeight.NORMAL, 20));
-        continueBtn.setTextFill(Color.FLORALWHITE);
-        continueBtn.setStyle("-fx-background-color: deepskyblue");
-        continueBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                String tutorName = (String) comboBox.getValue();
-                if (tutorName != null)
-                    System.out.println("Send to Tutor Scheduling Page. Name: " + tutorName);
-                else
-                    System.out.println("Please select a name before proceeding.");
-            }
-        });
-        hBox.getChildren().addAll(backBtn, continueBtn);
-        hBox.setAlignment(Pos.CENTER);
-        return hBox;
-    }
+//    public HBox createTutorSelectionHeader(){
+//        HBox hBox = new HBox();
+//        hBox.setPadding(new Insets(30));
+//        hBox.setStyle("-fx-background-color: deepskyblue;");
+//        Text title = new Text("Tutors");
+//        title.setFill(Color.FLORALWHITE);
+//        title.setFont(Font.font("Constantia", FontWeight.SEMI_BOLD, 36.0));
+//        hBox.getChildren().add(title);
+//        hBox.setAlignment(Pos.CENTER);
+//        return hBox;
+//    }
+//
+//    public HBox createTutorSelectionButtons(Stage stage, ComboBox comboBox){
+//        HBox hBox = new HBox();
+//        hBox.setPadding(new Insets(30));
+//        hBox.setSpacing(240);
+//        Button backBtn = new Button("Back");
+//        backBtn.setPrefSize(150, 50);
+//        backBtn.setFont(Font.font("Constantia", FontWeight.NORMAL, 20));
+//        backBtn.setTextFill(Color.FLORALWHITE);
+//        backBtn.setStyle("-fx-background-color: indianred");
+//        backBtn.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent actionEvent) {
+//                switchPages(stage, homePage);
+//                System.out.println("Send to Start Page");
+//            }
+//        });
+//        Button continueBtn = new Button("Continue");
+//        continueBtn.setPrefSize(150, 50);
+//        continueBtn.setFont(Font.font("Constantia", FontWeight.NORMAL, 20));
+//        continueBtn.setTextFill(Color.FLORALWHITE);
+//        continueBtn.setStyle("-fx-background-color: deepskyblue");
+//        continueBtn.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent actionEvent) {
+//                String tutorName = (String) comboBox.getValue();
+//                if (tutorName != null)
+//                    System.out.println("Send to Tutor Scheduling Page. Name: " + tutorName);
+//                else
+//                    System.out.println("Please select a name before proceeding.");
+//            }
+//        });
+//        hBox.getChildren().addAll(backBtn, continueBtn);
+//        hBox.setAlignment(Pos.CENTER);
+//        return hBox;
+//    }
 
     public GridPane createStudentGrid(){
         GridPane grid = new GridPane();
@@ -165,9 +173,13 @@ public class Main extends Application {
         return grid;
     }
 
-    public void switchPages(Stage stage, Scene scene){
+    public static void switchPages(Stage stage, Scene scene){
         stage.setScene(scene);
         stage.show();
+    }
+
+    public static Scene getHomePage(){
+        return homePage;
     }
 
     public static void main(String[] args) {
