@@ -23,7 +23,6 @@ public class TutorLogin {
     ComboBox tutorDropDown;
     HBox header;
     HBox buttons;
-    Scene tutorLogin;
 
     public TutorLogin(Stage stage) {
         pane = new BorderPane();
@@ -32,8 +31,7 @@ public class TutorLogin {
         pane.setCenter(tutorDropDown);
         createTutorLoginHeader();
         createTutorSelectionButtons(stage);
-        tutorLogin = new Scene(pane, 600, 500);
-        scene = tutorLogin;
+        scene = new Scene(pane, 600, 500);
     }
 
     private void createTutorLoginHeader(){

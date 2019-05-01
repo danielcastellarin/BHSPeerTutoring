@@ -22,6 +22,7 @@ public class Main extends Application {
 
     public static Scene homePage;
     public static TutorLogin tutorLogin;
+    public static StudentPage studentPage;
     private BorderPane startPagePane;
     private BorderPane tutorSelectionPagePane;
     private BorderPane studentInquiryPane;
@@ -30,6 +31,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         createHomeScreen(primaryStage);
         tutorLogin = new TutorLogin(primaryStage);
+        studentPage = new StudentPage(primaryStage);
         homePage = new Scene(startPagePane, 600, 500);
         primaryStage.setTitle("Peer Tutoring Home Page");
         primaryStage.setScene(homePage);
@@ -66,6 +68,7 @@ public class Main extends Application {
             @Override
             public void handle(ActionEvent actionEvent) {
                 System.out.println("Send to Student Input Page");
+                switchPages(stage, studentPage.getScene());
             }
         });
         Button tutorBtn = new Button("Tutor");
@@ -94,14 +97,6 @@ public class Main extends Application {
         hBox.getChildren().add(title);
         hBox.setAlignment(Pos.CENTER);
         return hBox;
-    }
-
-    public GridPane createStudentGrid(){
-        GridPane grid = new GridPane();
-        grid.setVgap(20);
-        grid.setHgap(20);
-
-        return grid;
     }
 
     public static void switchPages(Stage stage, Scene scene){
