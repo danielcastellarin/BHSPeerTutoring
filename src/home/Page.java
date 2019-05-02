@@ -29,4 +29,8 @@ public class Page {
         pane.setTop(header);
     }
 
+    public Scene getScene(){
+        return scene;
+    }
+
 }
