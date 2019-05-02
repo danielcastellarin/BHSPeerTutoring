@@ -63,9 +63,10 @@ public class TutorLogin {
             @Override
             public void handle(ActionEvent actionEvent) {
                 String tutorName = (String) tutorDropDown.getValue();
-                if (tutorName != null)
+                if (tutorName != null) {
+//                    Main.switchPages(stage, TutorScheduling.getScene());
                     System.out.println("Send to Tutor Scheduling Page. Name: " + tutorName);
-                else
+                }else
                     System.out.println("Please select a name before proceeding.");
             }
         });

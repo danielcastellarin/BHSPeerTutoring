@@ -22,6 +22,7 @@ public class Main extends Application {
 
     public static Scene homePage;
     public static TutorLogin tutorLogin;
+    public static TutorScheduling tutorScheduling;
     public static StudentPage studentPage;
     private BorderPane startPagePane;
     private BorderPane tutorSelectionPagePane;
