@@ -17,7 +17,7 @@ import java.awt.*;
 public class Page {
 
     private Scene scene;
-    BorderPane pane;
+    BorderPane pane = new BorderPane();
     HBox header;
 
     public void createHeader(String headerColor, String headerText, Color textColor){

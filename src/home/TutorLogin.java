@@ -19,12 +19,10 @@ import javafx.stage.Stage;
 public class TutorLogin extends Page{
 
     private Scene scene;
-    BorderPane pane;
     ComboBox tutorDropDown;
     HBox buttons;
 
     public TutorLogin(Stage stage) {
-        pane = new BorderPane();
         tutorDropDown = new ComboBox();
         tutorDropDown.getItems().addAll("Kristina Wolinski", "Gati Aher", "Mike Winters");      //Will import data through database eventually
         pane.setCenter(tutorDropDown);
@@ -82,6 +80,13 @@ public class TutorLogin extends Page{
         button.setStyle(btnColor);
         return button;
     }
+
+//    @Override
+//    public void setButtonAction(new EventHandler<ActionEvent>(){
+//        public void handle(ActionEvent actionEvent){
+//
+//        }
+//    })
 
     public Scene getScene(){
         return scene;
