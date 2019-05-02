@@ -22,7 +22,7 @@ public class Page {
         header.setPadding(new Insets(30));
         header.setStyle(headerColor);
         Text title = new Text(headerText);
-        title.setFill(textColor;
+        title.setFill((javafx.scene.paint.Paint) textColor);
         title.setFont(Font.font("Constantia", FontWeight.SEMI_BOLD, 36.0));
         header.getChildren().add(title);
         header.setAlignment(Pos.CENTER);
