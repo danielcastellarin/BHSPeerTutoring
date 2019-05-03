@@ -32,7 +32,7 @@ public class Page {
         pane.setTop(header);
     }
 
-    public void setButtonAction(){
+    public void setOnAction(EventHandler<ActionEvent> var1){
         System.out.println("Error");
     }
 

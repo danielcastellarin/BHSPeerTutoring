@@ -81,12 +81,10 @@ public class TutorLogin extends Page{
         return button;
     }
 
-//    @Override
-//    public void setButtonAction(new EventHandler<ActionEvent>(){
-//        public void handle(ActionEvent actionEvent){
-//
-//        }
-//    })
+    @Override
+    public void setOnAction(EventHandler<ActionEvent> varl){
+
+    }
 
     public Scene getScene(){
         return scene;
