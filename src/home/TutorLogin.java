@@ -31,7 +31,7 @@ public class TutorLogin extends Page{
         createHeader("-fx-background-color: deepskyblue;", "Tutor", Color.FLORALWHITE);
         createTutorSelectionButtons(stage);
         scene = new Scene(pane, 600, 500);
-        backFunc = createSceneChangeEvent(stage, scene);
+        backFunc = createSceneChangeEvent(stage, Main.getHomePage());
 //        backFunc = new EventHandler<ActionEvent>() {
 //            @Override
 //            public void handle(ActionEvent actionEvent) {
@@ -56,7 +56,6 @@ public class TutorLogin extends Page{
         buttons.setPadding(new Insets(30));
         buttons.setSpacing(240);
         Button backBtn = createButton("Back", "-fx-background-color: indianred", backFunc);
-//        backBtn.setOnAction(backFunc);
 //        backBtn.setOnAction(new EventHandler<ActionEvent>() {
 //            @Override
 //            public void handle(ActionEvent actionEvent) {
