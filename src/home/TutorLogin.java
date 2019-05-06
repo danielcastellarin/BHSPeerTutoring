@@ -48,13 +48,14 @@ public class TutorLogin extends Page{
         buttons.setPadding(new Insets(30));
         buttons.setSpacing(240);
         Button backBtn = createButton("Back", "-fx-background-color: indianred");
-        backBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                Main.switchPages(stage, Main.getHomePage());
-                System.out.println("Send to Start Page");
-            }
-        });
+        backBtn.setBackAction(Main.backFunc);
+//        backBtn.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent actionEvent) {
+//                Main.switchPages(stage, Main.getHomePage());
+//                System.out.println("Send to Start Page");
+//            }
+//        });
         Button continueBtn = createButton("Continue", "-fx-background-color: deepskyblue");
         continueBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -82,8 +83,8 @@ public class TutorLogin extends Page{
     }
 
     @Override
-    public void setOnAction(EventHandler<ActionEvent> varl){
-
+    public void setBackAction(EventHandler<ActionEvent> var1){
+        Main.setButtonAction(var1);
     }
 
     public Scene getScene(){

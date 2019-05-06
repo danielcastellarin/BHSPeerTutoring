@@ -36,6 +36,10 @@ public class Page {
         System.out.println("Error");
     }
 
+    public void setBackAction(EventHandler<ActionEvent> var1){
+        System.out.println("Error");
+    }
+
     public Scene getScene(){
         return scene;
     }

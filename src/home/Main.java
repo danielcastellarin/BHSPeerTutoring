@@ -27,6 +27,7 @@ public class Main extends Application {
     private BorderPane startPagePane;
     private BorderPane tutorSelectionPagePane;
     private BorderPane studentInquiryPane;
+    public static EventHandler<ActionEvent> backFunc;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -37,6 +38,12 @@ public class Main extends Application {
         primaryStage.setTitle("Peer Tutoring Home Page");
         primaryStage.setScene(homePage);
         primaryStage.show();
+        backFunc = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                switchPages(primaryStage, homePage);
+            }
+        };
     }
 
     public void createHomeScreen(Stage stage){
@@ -105,8 +112,8 @@ public class Main extends Application {
         stage.show();
     }
 
-    public void setButtonAction(EventHandler<ActionEvent> passedEvent){
-        this.setOnAction(passedEvent);
+    public static void setButtonAction(EventHandler<ActionEvent> passedEvent){
+        setOnAction(passedEvent);
     }
 
     public static Scene getHomePage(){
