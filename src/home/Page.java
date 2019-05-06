@@ -11,6 +11,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 import java.awt.*;
 
@@ -32,8 +33,14 @@ public class Page {
         pane.setTop(header);
     }
 
-    public void setOnAction(EventHandler<ActionEvent> var1){
-        System.out.println("Error");
+    public EventHandler<ActionEvent> createSceneChangeEvent (Stage stage, Scene nextScene){
+        EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                Main.switchPages(stage, nextScene);
+            }
+        };
+        return event;
     }
 
     public Scene getScene(){

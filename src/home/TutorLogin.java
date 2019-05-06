@@ -31,12 +31,13 @@ public class TutorLogin extends Page{
         createHeader("-fx-background-color: deepskyblue;", "Tutor", Color.FLORALWHITE);
         createTutorSelectionButtons(stage);
         scene = new Scene(pane, 600, 500);
-        backFunc = new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                Main.switchPages(stage, Main.homePage);
-            }
-        };
+        backFunc = createSceneChangeEvent(stage, scene);
+//        backFunc = new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent actionEvent) {
+//                Main.switchPages(stage, Main.homePage);
+//            }
+//        };
         advFunc = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -50,23 +51,12 @@ public class TutorLogin extends Page{
         };
     }
 
-    private void createTutorLoginHeader(){
-        header = new HBox();
-        header.setPadding(new Insets(30));
-        header.setStyle("-fx-background-color: deepskyblue;");
-        Text title = new Text("Tutors");
-        title.setFill(Color.FLORALWHITE);
-        title.setFont(Font.font("Constantia", FontWeight.SEMI_BOLD, 36.0));
-        header.getChildren().add(title);
-        header.setAlignment(Pos.CENTER);
-        pane.setTop(header);
-    }
-
     private void createTutorSelectionButtons(Stage stage){
         buttons = new HBox();
         buttons.setPadding(new Insets(30));
         buttons.setSpacing(240);
         Button backBtn = createButton("Back", "-fx-background-color: indianred", backFunc);
+//        backBtn.setOnAction(backFunc);
 //        backBtn.setOnAction(new EventHandler<ActionEvent>() {
 //            @Override
 //            public void handle(ActionEvent actionEvent) {
