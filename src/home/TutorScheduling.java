@@ -13,6 +13,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 public class TutorScheduling {
 
@@ -24,9 +25,9 @@ public class TutorScheduling {
     VBox calendarBox;
     String tutorName;
 
-    public TutorScheduling(String name){
+    public TutorScheduling(Stage stage){
         pane = new BorderPane();
-        tutorName = name;
+//        tutorName = name;
         createHeader();
         createCalendarBox();
         createTutorSchedulingButtons();
