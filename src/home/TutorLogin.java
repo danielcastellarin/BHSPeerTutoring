@@ -29,8 +29,6 @@ public class TutorLogin extends Page{
         tutorDropDown.getItems().addAll("Kristina Wolinski", "Gati Aher", "Mike Winters");      //Will import data through database eventually
         pane.setCenter(tutorDropDown);
         createHeader("-fx-background-color: deepskyblue;", "Tutor", Color.FLORALWHITE);
-        createTutorSelectionButtons(stage);
-        scene = new Scene(pane, 600, 500);
         backFunc = createSceneChangeEvent(stage, Main.getHomePage());
 //        backFunc = new EventHandler<ActionEvent>() {
 //            @Override
@@ -49,6 +47,8 @@ public class TutorLogin extends Page{
                     System.out.println("Please select a name before proceeding.");
             }
         };
+        createTutorSelectionButtons(stage);
+        scene = new Scene(pane, 600, 500);
     }
 
     private void createTutorSelectionButtons(Stage stage){
@@ -78,16 +78,6 @@ public class TutorLogin extends Page{
         buttons.getChildren().addAll(backBtn, continueBtn);
         buttons.setAlignment(Pos.CENTER);
         pane.setBottom(buttons);
-    }
-
-    private Button createButton(String name, String btnColor, EventHandler<ActionEvent> action){
-        Button button = new Button(name);
-        button.setPrefSize(150, 50);
-        button.setFont(Font.font("Constantia", FontWeight.NORMAL, 20));
-        button.setTextFill(Color.FLORALWHITE);
-        button.setStyle(btnColor);
-        button.setOnAction(action);
-        return button;
     }
 
     public Scene getScene(){

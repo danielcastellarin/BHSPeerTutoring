@@ -28,20 +28,21 @@ public class TutorScheduling {
     String tutorName;
     EventHandler<ActionEvent> schedulePopUp;
     EventHandler<ActionEvent> backFunc;
+    EventHandler<ActionEvent> advFunc;
 
     public TutorScheduling(Stage stage){
         pane = new BorderPane();
 //        tutorName = name;
         createHeader();
         createCalendarBox();
-        createTutorSchedulingButtons();
-        scene = new Scene(pane, 600, 500);
         schedulePopUp = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
 
             }
         };
+        createTutorSchedulingButtons();
+        scene = new Scene(pane, 600, 500);
     }
 
     private void createHeader(){
@@ -108,20 +109,20 @@ public class TutorScheduling {
         buttons = new HBox();
         buttons.setPadding(new Insets(30));
         buttons.setSpacing(240);
-        Button backBtn = createButton("Back", "-fx-background-color: indianred");
-        Button submitBtn = createButton("Submit", "-fx-background-color: deepbluesky");
+        Button backBtn = createButton("Back", "-fx-background-color: indianred", backFunc);
+        Button submitBtn = createButton("Submit", "-fx-background-color: deepbluesky", advFunc);
         buttons.getChildren().addAll(backBtn, submitBtn);
         buttons.setAlignment(Pos.CENTER);
         pane.setBottom(buttons);
     }
 
-    private Button createButton(String name, String btnColor/*, EventHandler<ActionEvent> action*/){
+    private Button createButton(String name, String btnColor, EventHandler<ActionEvent> action){
         Button button = new Button(name);
         button.setPrefSize(150, 50);
         button.setFont(Font.font("Constantia", FontWeight.NORMAL, 20));
         button.setTextFill(Color.FLORALWHITE);
         button.setStyle(btnColor);
-//        button.setOnAction(action);
+        button.setOnAction(action);
         return button;
     }
 

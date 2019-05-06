@@ -5,6 +5,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
@@ -12,8 +13,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
-import java.awt.*;
 
 public class Page {
 
@@ -41,6 +40,16 @@ public class Page {
             }
         };
         return event;
+    }
+
+    public Button createButton(String name, String btnColor, EventHandler<ActionEvent> action){
+        Button button = new javafx.scene.control.Button(name);
+        button.setPrefSize(150, 50);
+        button.setFont(Font.font("Constantia", FontWeight.NORMAL, 20));
+        button.setTextFill(Color.FLORALWHITE);
+        button.setStyle(btnColor);
+        button.setOnAction(action);
+        return button;
     }
 
     public Scene getScene(){

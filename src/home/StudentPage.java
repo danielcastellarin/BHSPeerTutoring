@@ -70,12 +70,13 @@ public class StudentPage {
         pane.setBottom(buttons);
     }
 
-    private Button createButton(String name, String btnColor){
+    private Button createButton(String name, String btnColor/*, EventHandler<ActionEvent> action*/){
         Button button = new Button(name);
         button.setPrefSize(150, 50);
         button.setFont(Font.font("Constantia", FontWeight.NORMAL, 20));
         button.setTextFill(Color.FLORALWHITE);
         button.setStyle(btnColor);
+//        button.setOnAction(action);
         return button;
     }
 
