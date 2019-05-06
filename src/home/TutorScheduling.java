@@ -1,5 +1,7 @@
 package home;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
@@ -24,6 +26,8 @@ public class TutorScheduling {
     HBox buttons;
     VBox calendarBox;
     String tutorName;
+    EventHandler<ActionEvent> schedulePopUp;
+    EventHandler<ActionEvent> backFunc;
 
     public TutorScheduling(Stage stage){
         pane = new BorderPane();
@@ -32,6 +36,12 @@ public class TutorScheduling {
         createCalendarBox();
         createTutorSchedulingButtons();
         scene = new Scene(pane, 600, 500);
+        schedulePopUp = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+
+            }
+        };
     }
 
     private void createHeader(){
@@ -105,12 +115,13 @@ public class TutorScheduling {
         pane.setBottom(buttons);
     }
 
-    private Button createButton(String name, String btnColor){
+    private Button createButton(String name, String btnColor/*, EventHandler<ActionEvent> action*/){
         Button button = new Button(name);
         button.setPrefSize(150, 50);
         button.setFont(Font.font("Constantia", FontWeight.NORMAL, 20));
         button.setTextFill(Color.FLORALWHITE);
         button.setStyle(btnColor);
+//        button.setOnAction(action);
         return button;
     }
 

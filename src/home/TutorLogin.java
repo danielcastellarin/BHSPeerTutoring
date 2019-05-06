@@ -75,17 +75,17 @@ public class TutorLogin extends Page{
 //            }
 //        });
         Button continueBtn = createButton("Continue", "-fx-background-color: deepskyblue", advFunc);
-        continueBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                String tutorName = (String) tutorDropDown.getValue();
-                if (tutorName != null) {
-                    Main.switchPages(stage, Main.tutorScheduling.getScene());
-                    System.out.println("Send to Tutor Scheduling Page. Name: " + tutorName);
-                }else
-                    System.out.println("Please select a name before proceeding.");
-            }
-        });
+//        continueBtn.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent actionEvent) {
+//                String tutorName = (String) tutorDropDown.getValue();
+//                if (tutorName != null) {
+//                    Main.switchPages(stage, Main.tutorScheduling.getScene());
+//                    System.out.println("Send to Tutor Scheduling Page. Name: " + tutorName);
+//                }else
+//                    System.out.println("Please select a name before proceeding.");
+//            }
+//        });
         buttons.getChildren().addAll(backBtn, continueBtn);
         buttons.setAlignment(Pos.CENTER);
         pane.setBottom(buttons);
