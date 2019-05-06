@@ -105,6 +105,10 @@ public class Main extends Application {
         stage.show();
     }
 
+    public void setButtonAction(EventHandler<ActionEvent> passedEvent){
+        this.setOnAction(passedEvent);
+    }
+
     public static Scene getHomePage(){
         return homePage;
     }
