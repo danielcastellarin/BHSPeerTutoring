@@ -14,12 +14,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 public class TutorDone extends Page {
 
     public EventHandler<ActionEvent> homeFunc;
-    StackPane buttonHolder;
+    HBox buttonHolder;
     String tutorName;
 
     public TutorDone(Stage stage){
@@ -33,16 +34,18 @@ public class TutorDone extends Page {
     private void createCenterText(){
         Text text = new Text("Thank you, " + tutorName + ", for updating your schedule!");
         text.setFont(Font.font("Constantia", FontWeight.SEMI_BOLD, 36.0));
+        text.setTextAlignment(TextAlignment.CENTER);
+        text.setWrappingWidth(300.0);
         text.setFill(Color.DARKGRAY);
         pane.setCenter(text);
     }
 
     private void createHomeButton(){
-        buttonHolder = new StackPane();
+        buttonHolder = new HBox();
         Button homeButton = createButton("Home", "-fx-background-color: indianred", homeFunc);
+        buttonHolder.setPadding(new Insets(30));
         buttonHolder.setAlignment(Pos.BOTTOM_RIGHT);
         buttonHolder.getChildren().add(homeButton);
-        buttonHolder.setMargin(buttonHolder, new Insets(200));
         pane.setBottom(buttonHolder);
     }
 
