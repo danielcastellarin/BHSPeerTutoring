@@ -21,6 +21,7 @@ public class Main extends Application {
     public static Scene homePage;
     public static TutorLogin tutorLogin;
     public static TutorScheduling tutorScheduling;
+    public static TutorDone tutorDone;
     public static StudentPage studentPage;
     private BorderPane startPagePane;
 
@@ -29,8 +30,9 @@ public class Main extends Application {
         createHomeScreen(primaryStage);
         homePage = new Scene(startPagePane, 600, 500);
         tutorLogin = new TutorLogin(primaryStage);
-        studentPage = new StudentPage(primaryStage);
         tutorScheduling = new TutorScheduling(primaryStage);
+        tutorDone = new TutorDone(primaryStage);
+        studentPage = new StudentPage(primaryStage);
         primaryStage.setTitle("Peer Tutoring Home Page");
         primaryStage.setScene(homePage);
         primaryStage.show();

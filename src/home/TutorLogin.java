@@ -18,11 +18,10 @@ import javafx.stage.Stage;
 
 public class TutorLogin extends Page{
 
-    private Scene scene;
+    private EventHandler<ActionEvent> advFunc;
+    private EventHandler<ActionEvent> backFunc;
     ComboBox tutorDropDown;
     HBox buttons;
-    public EventHandler<ActionEvent> backFunc;
-    public EventHandler<ActionEvent> advFunc;
 
     public TutorLogin(Stage stage) {
         tutorDropDown = new ComboBox();
@@ -35,6 +34,7 @@ public class TutorLogin extends Page{
             public void handle(ActionEvent actionEvent) {
                 String tutorName = (String) tutorDropDown.getValue();
                 if (tutorName != null) {
+                    Main.tutorScheduling.setHeaderText(tutorName);
                     Main.switchPages(stage, Main.tutorScheduling.getScene());
                     System.out.println("Send to Tutor Scheduling Page. Name: " + tutorName);
                 }else
@@ -56,8 +56,8 @@ public class TutorLogin extends Page{
         pane.setBottom(buttons);
     }
 
-    public Scene getScene(){
-        return scene;
+    public String getComboBoxString(){
+        return String.valueOf(tutorDropDown.getValue());
     }
 
 }

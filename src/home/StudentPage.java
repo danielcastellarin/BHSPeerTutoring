@@ -19,8 +19,6 @@ import javafx.stage.Stage;
 
 public class StudentPage extends Page{
 
-    private Scene scene;
-    BorderPane pane;
     ComboBox subjectDropDown;
     HBox header;
     HBox buttons;
@@ -90,9 +88,4 @@ public class StudentPage extends Page{
         grid.setAlignment(Pos.TOP_LEFT);
         pane.setCenter(grid);
     }
-
-    public Scene getScene(){
-        return scene;
-    }
-
 }

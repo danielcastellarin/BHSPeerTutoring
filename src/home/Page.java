@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 
 public class Page {
 
-    private Scene scene;
+    protected Scene scene;
     BorderPane pane = new BorderPane();
     HBox header;
 

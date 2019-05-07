@@ -7,10 +7,7 @@ import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -19,9 +16,7 @@ import javafx.stage.Stage;
 
 public class TutorScheduling extends Page{
 
-    private Scene scene;
-    BorderPane pane;
-    FlowPane calendar;
+    GridPane calendar;
     HBox header;
     HBox buttons;
     VBox calendarBox;
@@ -32,13 +27,21 @@ public class TutorScheduling extends Page{
 
     public TutorScheduling(Stage stage){
         pane = new BorderPane();
-//        tutorName = name;
+        tutorName = Main.tutorLogin.getComboBoxString();
         createHeader();
         createCalendarBox();
         schedulePopUp = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
 
+            }
+        };
+        advFunc = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                Main.switchPages(stage, Main.tutorDone.getScene());
+                System.out.println("Send to Tutor Done Page.");
+                System.out.println("Update " + tutorName + "'s info in database" + tutorName);
             }
         };
         backFunc = createSceneChangeEvent(stage, Main.tutorLogin.getScene());
@@ -58,17 +61,21 @@ public class TutorScheduling extends Page{
         pane.setTop(header);
     }
 
+    public void setHeaderText(String name){
+//        Title title = new Text
+    }
+
     private void createCalendarBox(){
         calendarBox = new VBox();
         calendarBox.setSpacing(10);
+        calendarBox.setPadding(new Insets(50));
+        calendarBox.setAlignment(Pos.CENTER);
         Text calendarLabel = new Text("Edit Availability:");
         calendarLabel.setFont(Font.font("Constantia", FontWeight.NORMAL, 20));
         calendarLabel.setFill(Color.DEEPSKYBLUE);
-        calendar = new FlowPane();
+        calendar = new GridPane();
         calendar.setHgap(5);
         calendar.setVgap(5);
-        calendar.setPrefWrapLength(200);
-        calendar.setRowValignment(VPos.TOP);
         calendar.setStyle("-fx-background-color: deepbluesky");
         Button days[][] = new Button[2][7];
         for(int i = 0; i<2; i++){
@@ -98,8 +105,8 @@ public class TutorScheduling extends Page{
                     default:
                             break;
                 }
-                days[i][j].setPrefSize(100, 100);
-                calendar.getChildren().add(days[i][j]);
+                days[i][j].setPrefSize(80, 80);
+                calendar.add(days[i][j], j+1, i+1);
             }
         }
         calendarBox.getChildren().addAll(calendarLabel, calendar);
@@ -115,9 +122,5 @@ public class TutorScheduling extends Page{
         buttons.getChildren().addAll(backBtn, submitBtn);
         buttons.setAlignment(Pos.CENTER);
         pane.setBottom(buttons);
-    }
-
-    public Scene getScene(){
-        return scene;
     }
 }
