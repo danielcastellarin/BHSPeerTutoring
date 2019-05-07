@@ -5,12 +5,10 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.effect.Shadow;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.*;
 import javafx.stage.Stage;
@@ -25,16 +23,14 @@ public class Main extends Application {
     public static TutorScheduling tutorScheduling;
     public static StudentPage studentPage;
     private BorderPane startPagePane;
-    private BorderPane tutorSelectionPagePane;
-    private BorderPane studentInquiryPane;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
         createHomeScreen(primaryStage);
+        homePage = new Scene(startPagePane, 600, 500);
         tutorLogin = new TutorLogin(primaryStage);
         studentPage = new StudentPage(primaryStage);
         tutorScheduling = new TutorScheduling(primaryStage);
-        homePage = new Scene(startPagePane, 600, 500);
         primaryStage.setTitle("Peer Tutoring Home Page");
         primaryStage.setScene(homePage);
         primaryStage.show();
