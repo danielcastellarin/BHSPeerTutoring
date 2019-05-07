@@ -30,12 +30,6 @@ public class TutorLogin extends Page{
         pane.setCenter(tutorDropDown);
         createHeader("-fx-background-color: deepskyblue;", "Tutor", Color.FLORALWHITE);
         backFunc = createSceneChangeEvent(stage, Main.getHomePage());
-//        backFunc = new EventHandler<ActionEvent>() {
-//            @Override
-//            public void handle(ActionEvent actionEvent) {
-//                Main.switchPages(stage, Main.homePage);
-//            }
-//        };
         advFunc = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -56,25 +50,7 @@ public class TutorLogin extends Page{
         buttons.setPadding(new Insets(30));
         buttons.setSpacing(240);
         Button backBtn = createButton("Back", "-fx-background-color: indianred", backFunc);
-//        backBtn.setOnAction(new EventHandler<ActionEvent>() {
-//            @Override
-//            public void handle(ActionEvent actionEvent) {
-//                Main.switchPages(stage, Main.getHomePage());
-//                System.out.println("Send to Start Page");
-//            }
-//        });
         Button continueBtn = createButton("Continue", "-fx-background-color: deepskyblue", advFunc);
-//        continueBtn.setOnAction(new EventHandler<ActionEvent>() {
-//            @Override
-//            public void handle(ActionEvent actionEvent) {
-//                String tutorName = (String) tutorDropDown.getValue();
-//                if (tutorName != null) {
-//                    Main.switchPages(stage, Main.tutorScheduling.getScene());
-//                    System.out.println("Send to Tutor Scheduling Page. Name: " + tutorName);
-//                }else
-//                    System.out.println("Please select a name before proceeding.");
-//            }
-//        });
         buttons.getChildren().addAll(backBtn, continueBtn);
         buttons.setAlignment(Pos.CENTER);
         pane.setBottom(buttons);

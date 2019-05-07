@@ -17,19 +17,28 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class StudentPage {
+public class StudentPage extends Page{
 
     private Scene scene;
     BorderPane pane;
     ComboBox subjectDropDown;
     HBox header;
     HBox buttons;
+    EventHandler<ActionEvent> backFunc;
+    EventHandler<ActionEvent> advFunc;
 
     public StudentPage(Stage stage){
         pane = new BorderPane();
         createStudentPageHeader();
         createInputGrid();                // Name, Subject, Time
-        createStudentPageButtons(stage);
+        backFunc = createSceneChangeEvent(stage, Main.getHomePage());
+        advFunc = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                System.out.println("Send to Student Result Page");
+            }
+        };
+        createStudentPageButtons();
         scene = new Scene(pane, 600, 500);
     }
 
@@ -45,39 +54,15 @@ public class StudentPage {
         pane.setTop(header);
     }
 
-    private void createStudentPageButtons(Stage stage){
+    private void createStudentPageButtons(){
         buttons = new HBox();
         buttons.setPadding(new Insets(30));
         buttons.setSpacing(240);
-        Button backBtn = createButton("Back", "-fx-background-color: indianred");
-        backBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                Main.switchPages(stage, Main.getHomePage());
-                System.out.println("Send to Start Page");
-            }
-        });
-        Button submitBtn = createButton("Submit", "-fx-background-color: darkolivegreen");
-        submitBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-
-                System.out.println("Send to Student Result Page");
-            }
-        });
+        Button backBtn = createButton("Back", "-fx-background-color: indianred", backFunc);
+        Button submitBtn = createButton("Submit", "-fx-background-color: darkolivegreen", advFunc);
         buttons.getChildren().addAll(backBtn, submitBtn);
         buttons.setAlignment(Pos.CENTER);
         pane.setBottom(buttons);
-    }
-
-    private Button createButton(String name, String btnColor/*, EventHandler<ActionEvent> action*/){
-        Button button = new Button(name);
-        button.setPrefSize(150, 50);
-        button.setFont(Font.font("Constantia", FontWeight.NORMAL, 20));
-        button.setTextFill(Color.FLORALWHITE);
-        button.setStyle(btnColor);
-//        button.setOnAction(action);
-        return button;
     }
 
     private void createInputGrid(){

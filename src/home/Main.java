@@ -48,13 +48,6 @@ public class Main extends Application {
         startPagePane.setCenter(middleButtonBox);
     }
 
-//    public void createStudentPage(Stage stage){
-//        studentInquiryPane = new BorderPane();
-//        GridPane gridPane = createStudentGrid();
-//        studentInquiryPane.setCenter(gridPane);
-//
-//    }
-
     public VBox createStartPageButtons(Stage stage){
         VBox vBox = new VBox();
         vBox.setStyle("-fx-background-color: silver");

@@ -17,7 +17,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class TutorScheduling {
+public class TutorScheduling extends Page{
 
     private Scene scene;
     BorderPane pane;
@@ -41,6 +41,7 @@ public class TutorScheduling {
 
             }
         };
+        backFunc = createSceneChangeEvent(stage, Main.tutorLogin.getScene());
         createTutorSchedulingButtons();
         scene = new Scene(pane, 600, 500);
     }
@@ -110,20 +111,10 @@ public class TutorScheduling {
         buttons.setPadding(new Insets(30));
         buttons.setSpacing(240);
         Button backBtn = createButton("Back", "-fx-background-color: indianred", backFunc);
-        Button submitBtn = createButton("Submit", "-fx-background-color: deepbluesky", advFunc);
+        Button submitBtn = createButton("Submit", "-fx-background-color: deepskyblue", advFunc);
         buttons.getChildren().addAll(backBtn, submitBtn);
         buttons.setAlignment(Pos.CENTER);
         pane.setBottom(buttons);
-    }
-
-    private Button createButton(String name, String btnColor, EventHandler<ActionEvent> action){
-        Button button = new Button(name);
-        button.setPrefSize(150, 50);
-        button.setFont(Font.font("Constantia", FontWeight.NORMAL, 20));
-        button.setTextFill(Color.FLORALWHITE);
-        button.setStyle(btnColor);
-        button.setOnAction(action);
-        return button;
     }
 
     public Scene getScene(){
