@@ -18,6 +18,7 @@ public class TutorScheduling extends Page{
 
     GridPane calendar;
     HBox header;
+    Text title;
     HBox buttons;
     VBox calendarBox;
     String tutorName;
@@ -52,17 +53,19 @@ public class TutorScheduling extends Page{
     private void createHeader(){
         header = new HBox();
         header.setPadding(new Insets(30));
-        header.setStyle("-fx-background-color: deepbluesky");
-        Text title = new Text(tutorName);
+        title = new Text(tutorName);
         title.setFill(Color.FLORALWHITE);
         title.setFont(Font.font("Constantia", FontWeight.SEMI_BOLD, 36.0));
+        header.setStyle("-fx-background-color: deepskyblue");
         header.getChildren().add(title);
         header.setAlignment(Pos.CENTER);
         pane.setTop(header);
     }
 
     public void setHeaderText(String name){
-//        Title title = new Text
+        tutorName = name;
+        title.setText(name);
+        System.out.println(title.toString());
     }
 
     private void createCalendarBox(){
@@ -76,7 +79,7 @@ public class TutorScheduling extends Page{
         calendar = new GridPane();
         calendar.setHgap(5);
         calendar.setVgap(5);
-        calendar.setStyle("-fx-background-color: deepbluesky");
+//        calendar.setStyle("-fx-background-color: deepskyblue");
         Button days[][] = new Button[2][7];
         for(int i = 0; i<2; i++){
             for(int j = 0; j<7; j++){
