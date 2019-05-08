@@ -41,11 +41,11 @@ public class TutorLogin extends Page{
                     System.out.println("Please select a name before proceeding.");
             }
         };
-        createTutorSelectionButtons(stage);
+        createTutorSelectionButtons();
         scene = new Scene(pane, 600, 500);
     }
 
-    private void createTutorSelectionButtons(Stage stage){
+    private void createTutorSelectionButtons(){
         buttons = new HBox();
         buttons.setPadding(new Insets(30));
         buttons.setSpacing(240);

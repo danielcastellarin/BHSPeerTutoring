@@ -31,6 +31,11 @@ public class TutorDone extends Page {
         scene = new Scene(pane, 600, 500);
     }
 
+    public void setHeaderText(String name){
+        tutorName = name;
+        title.setText(name);
+    }
+
     private void createCenterText(){
         Text text = new Text("Thank you, " + tutorName + ", for updating your schedule!");
         text.setFont(Font.font("Constantia", FontWeight.SEMI_BOLD, 36.0));

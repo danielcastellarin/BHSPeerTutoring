@@ -19,12 +19,13 @@ public class Page {
     protected Scene scene;
     BorderPane pane = new BorderPane();
     HBox header;
+    Text title;
 
     public void createHeader(String headerColor, String headerText, Color textColor){
         header = new HBox();
         header.setPadding(new Insets(30));
         header.setStyle(headerColor);
-        Text title = new Text(headerText);
+        title = new Text(headerText);
         title.setFill(textColor);
         title.setFont(Font.font("Constantia", FontWeight.SEMI_BOLD, 36.0));
         header.getChildren().add(title);

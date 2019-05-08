@@ -33,7 +33,7 @@ public class Main extends Application {
         tutorScheduling = new TutorScheduling(primaryStage);
         tutorDone = new TutorDone(primaryStage);
         studentPage = new StudentPage(primaryStage);
-        primaryStage.setTitle("Peer Tutoring Home Page");
+        primaryStage.setTitle("Peer Tutoring Portal");
         primaryStage.setScene(homePage);
         primaryStage.show();
     }

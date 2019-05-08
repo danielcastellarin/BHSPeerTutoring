@@ -18,7 +18,6 @@ public class TutorScheduling extends Page{
 
     GridPane calendar;
     HBox header;
-    Text title;
     HBox buttons;
     VBox calendarBox;
     String tutorName;
@@ -31,21 +30,7 @@ public class TutorScheduling extends Page{
         tutorName = Main.tutorLogin.getComboBoxString();
         createHeader();
         createCalendarBox();
-        schedulePopUp = new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-
-            }
-        };
-        advFunc = new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                Main.switchPages(stage, Main.tutorDone.getScene());
-                System.out.println("Send to Tutor Done Page.");
-                System.out.println("Update " + tutorName + "'s info in database" + tutorName);
-            }
-        };
-        backFunc = createSceneChangeEvent(stage, Main.tutorLogin.getScene());
+        createButtonEvents(stage);
         createTutorSchedulingButtons();
         scene = new Scene(pane, 600, 500);
     }
@@ -113,6 +98,25 @@ public class TutorScheduling extends Page{
         }
         calendarBox.getChildren().addAll(calendarLabel, calendar);
         pane.setCenter(calendarBox);
+    }
+
+    private void createButtonEvents(Stage stage){
+        schedulePopUp = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+
+            }
+        };
+        advFunc = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                Main.tutorDone.setHeaderText(tutorName);
+                Main.switchPages(stage, Main.tutorDone.getScene());
+                System.out.println("Send to Tutor Done Page.");
+                System.out.println("Update " + tutorName + "'s info in database" + tutorName);
+            }
+        };
+        backFunc = createSceneChangeEvent(stage, Main.tutorLogin.getScene());
     }
 
     private void createTutorSchedulingButtons(){
