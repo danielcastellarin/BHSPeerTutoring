@@ -65,7 +65,6 @@ public class TutorScheduling extends Page{
     public void setHeaderText(String name){
         tutorName = name;
         title.setText(name);
-        System.out.println(title.toString());
     }
 
     private void createCalendarBox(){
