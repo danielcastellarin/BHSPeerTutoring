@@ -34,7 +34,7 @@ public class TutorScheduling extends Page{
         createButtonEvents(stage);
         createCalendarBox();
         createTutorSchedulingButtons();
-        scene = new Scene(pane, 600, 500);
+        createScene();
     }
 
     private void createHeader(){

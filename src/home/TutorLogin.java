@@ -42,7 +42,7 @@ public class TutorLogin extends Page{
             }
         };
         createTutorSelectionButtons();
-        scene = new Scene(pane, 600, 500);
+        createScene();
     }
 
     private void createTutorSelectionButtons(){

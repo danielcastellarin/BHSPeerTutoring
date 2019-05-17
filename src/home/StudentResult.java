@@ -28,7 +28,7 @@ public class StudentResult extends Page {
         createCenter();
         homeFunc = createSceneChangeEvent(stage, Main.getHomePage());
         createHomeButton();
-        scene = new Scene(pane, 600, 500);
+        createScene();
     }
     private void createCenter(){
         centerBoxes = new VBox();
