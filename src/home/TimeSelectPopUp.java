@@ -69,4 +69,12 @@ public class TimeSelectPopUp extends Page{
         navButtons.setAlignment(Pos.CENTER);
         pane.setBottom(navButtons);
     }
+
+    public void showPopUp(){
+        popUpWindow.show();
+    }
+
+    public void closePopUp(){
+        popUpWindow.close();
+    }
 }

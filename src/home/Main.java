@@ -28,7 +28,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         createHomeScreen(primaryStage);
-        homePage = new Scene(startPagePane, 600, 500);
+        homePage = new Scene(startPagePane, 800, 650);
         tutorLogin = new TutorLogin(primaryStage);
         tutorScheduling = new TutorScheduling(primaryStage);
         tutorDone = new TutorDone(primaryStage);

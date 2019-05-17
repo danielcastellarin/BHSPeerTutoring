@@ -25,12 +25,14 @@ public class TutorScheduling extends Page{
     EventHandler<ActionEvent> backFunc;
     EventHandler<ActionEvent> advFunc;
 
+    public static TimeSelectPopUp timeSelectPopUp;
+
     public TutorScheduling(Stage stage){
         pane = new BorderPane();
         tutorName = Main.tutorLogin.getComboBoxString();
         createHeader();
-        createCalendarBox();
         createButtonEvents(stage);
+        createCalendarBox();
         createTutorSchedulingButtons();
         scene = new Scene(pane, 600, 500);
     }
@@ -55,7 +57,7 @@ public class TutorScheduling extends Page{
     private void createCalendarBox(){
         calendarBox = new VBox();
         calendarBox.setSpacing(10);
-        calendarBox.setPadding(new Insets(50));
+        calendarBox.setPadding(new Insets(20));
         calendarBox.setAlignment(Pos.CENTER);
         Text calendarLabel = new Text("Edit Availability:");
         calendarLabel.setFont(Font.font("Constantia", FontWeight.NORMAL, 20));
@@ -64,37 +66,37 @@ public class TutorScheduling extends Page{
         calendar.setHgap(5);
         calendar.setVgap(5);
 //        calendar.setStyle("-fx-background-color: deepskyblue");
-        Button days[][] = new Button[2][7];
-        for(int i = 0; i<2; i++){
-            for(int j = 0; j<7; j++){
-                switch (j){
-                    case 0:
-                        days[i][j] = new Button("Sunday");
-                        break;
-                    case 1:
-                        days[i][j] = new Button("Monday");
-                        break;
-                    case 2:
-                        days[i][j] = new Button("Tuesday");
-                        break;
-                    case 3:
-                        days[i][j] = new Button("Wednesday");
-                        break;
-                    case 4:
-                        days[i][j] = new Button("Thursday");
-                        break;
-                    case 5:
-                        days[i][j] = new Button("Friday");
-                        break;
-                    case 6:
-                        days[i][j] = new Button("Saturday");
-                        break;
-                    default:
-                            break;
-                }
-                days[i][j].setPrefSize(80, 80);
-                calendar.add(days[i][j], j+1, i+1);
+
+        Button days[] = new Button[7];
+        for(int i = 0; i < 7; i++){
+            switch (i){
+                case 0:
+                    days[i] = new Button("Sunday");
+                    break;
+                case 1:
+                    days[i] = new Button("Monday");
+                    break;
+                case 2:
+                    days[i] = new Button("Tuesday");
+                    break;
+                case 3:
+                    days[i]= new Button("Wednesday");
+                    break;
+                case 4:
+                    days[i] = new Button("Thursday");
+                    break;
+                case 5:
+                    days[i] = new Button("Friday");
+                    break;
+                case 6:
+                    days[i] = new Button("Saturday");
+                    break;
+                default:
+                    break;
             }
+            days[i].setPrefSize(100, 100); //width, height
+            days[i].setOnAction(schedulePopUp);
+            calendar.add(days[i], i, 1);
         }
         calendarBox.getChildren().addAll(calendarLabel, calendar);
         pane.setCenter(calendarBox);
@@ -104,7 +106,8 @@ public class TutorScheduling extends Page{
         schedulePopUp = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-
+                System.out.print("Pop up");
+                timeSelectPopUp = new TimeSelectPopUp();
             }
         };
         advFunc = new EventHandler<ActionEvent>() {

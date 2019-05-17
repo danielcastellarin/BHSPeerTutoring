@@ -37,7 +37,7 @@ public class StudentPage extends Page{
             }
         };
         createStudentPageButtons();
-        scene = new Scene(pane, 600, 500);
+        createScene();
     }
 
     private void createStudentPageHeader(){

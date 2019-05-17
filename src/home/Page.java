@@ -53,6 +53,10 @@ public class Page {
         return button;
     }
 
+    public void createScene(){
+        scene = new Scene(pane, 800, 650);
+    }
+
     public Scene getScene(){
         return scene;
     }
