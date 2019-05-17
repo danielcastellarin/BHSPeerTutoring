@@ -33,6 +33,18 @@ public class Page {
         pane.setTop(header);
     }
 
+    public void createPopUpHeader(String headerColor, String headerText, Color textColor){
+        header = new HBox();
+        header.setPadding(new Insets(15));
+        header.setStyle(headerColor);
+        title = new Text(headerText);
+        title.setFill(textColor);
+        title.setFont(Font.font("Constantia", FontWeight.SEMI_BOLD, 36.0));
+        header.getChildren().add(title);
+        header.setAlignment(Pos.CENTER);
+        pane.setTop(header);
+    }
+
     public EventHandler<ActionEvent> createSceneChangeEvent (Stage stage, Scene nextScene){
         EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
             @Override
@@ -54,7 +66,7 @@ public class Page {
     }
 
     public void createScene(){
-        scene = new Scene(pane, 800, 650);
+        scene = new Scene(pane, 600, 500);
     }
 
     public Scene getScene(){

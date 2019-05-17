@@ -24,6 +24,7 @@ public class StudentPage extends Page{
     HBox buttons;
     EventHandler<ActionEvent> backFunc;
     EventHandler<ActionEvent> advFunc;
+    EventHandler<ActionEvent> addTimeFunc;
 
     public StudentPage(Stage stage){
         pane = new BorderPane();
@@ -34,6 +35,12 @@ public class StudentPage extends Page{
             @Override
             public void handle(ActionEvent actionEvent) {
                 System.out.println("Send to Student Result Page");
+            }
+        };
+        addTimeFunc = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                System.out.println("Student Time Chooser");
             }
         };
         createStudentPageButtons();

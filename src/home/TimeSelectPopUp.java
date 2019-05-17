@@ -23,7 +23,7 @@ public class TimeSelectPopUp extends Page{
         createTimeSelector();
         createButtonEvents();
         createPopUpNavigationButtons();
-        scene = new Scene(pane, 300, 300);
+        scene = new Scene(pane, 400, 400);
         popUpWindow.setScene(scene);
         popUpWindow.show();
     }
