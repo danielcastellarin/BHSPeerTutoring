@@ -19,7 +19,7 @@ public class TimeSelectPopUp extends Page{
 
     public TimeSelectPopUp(){
         popUpWindow = createStage();
-        createHeader("-fx-background-color: deepskyblue;", "Time Select", Color.FLORALWHITE);
+        createPopUpHeader("-fx-background-color: deepskyblue", "Time Select", Color.FLORALWHITE);
         createTimeSelector();
         createButtonEvents();
         createPopUpNavigationButtons();
@@ -70,11 +70,4 @@ public class TimeSelectPopUp extends Page{
         pane.setBottom(navButtons);
     }
 
-    public void showPopUp(){
-        popUpWindow.show();
-    }
-
-    public void closePopUp(){
-        popUpWindow.close();
-    }
 }
