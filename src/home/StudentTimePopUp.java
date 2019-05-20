@@ -61,8 +61,11 @@ public class StudentTimePopUp extends Page{
         startTime.setMin(0);
         startTime.setMax(2400);
         startTime.setValue(1200);
-        startTime.setShowTickMarks(true);
         startTime.setBlockIncrement(25);
+        startTime.setShowTickMarks(true);
+        startTime.setMajorTickUnit(100);
+        startTime.setMinorTickCount(0);
+        startTime.setSnapToTicks(true);
         startTime.valueProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
