@@ -22,7 +22,7 @@ public class TimeSelectPopUp extends Page{
         createPopUpHeader("-fx-background-color: deepskyblue", "Time Select", Color.FLORALWHITE);
         createTimeSelector();
         createButtonEvents();
-        createPopUpNavigationButtons();
+        createNavButtons();
         scene = new Scene(pane, 400, 400);
         popUpWindow.setScene(scene);
         popUpWindow.show();
@@ -59,7 +59,7 @@ public class TimeSelectPopUp extends Page{
         };
     }
 
-    private void createPopUpNavigationButtons(){
+    private void createNavButtons(){
         navButtons = new HBox();
         navButtons.setPadding(new Insets(20));
         navButtons.setSpacing(140);
