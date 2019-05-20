@@ -64,7 +64,6 @@ public class StudentTimePopUp extends Page{
         startTime.setBlockIncrement(25);
         startTime.setShowTickMarks(true);
         startTime.setMajorTickUnit(100);
-        startTime.setMinorTickCount(0);
         startTime.setSnapToTicks(true);
         startTime.valueProperty().addListener(new ChangeListener<Number>() {
             @Override
@@ -98,13 +97,14 @@ public class StudentTimePopUp extends Page{
         String time;
         boolean isEvening = false;
 
+        if (num >= 1200 && num != 2400)
+            isEvening = true;
 
         int hours = num / 100;
         int minutes = (num - (hours * 100)) * 3/5;
 
         if(hours > 12){
             hours -= 12;
-            isEvening = true;
         }else if (hours == 0){
             hours = 12;
         }
