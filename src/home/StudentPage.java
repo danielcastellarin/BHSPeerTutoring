@@ -19,6 +19,8 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+
 public class StudentPage extends Page{
 
     ComboBox subjectDropDown;
@@ -27,6 +29,8 @@ public class StudentPage extends Page{
     EventHandler<ActionEvent> backFunc;
     EventHandler<ActionEvent> advFunc;
     EventHandler<ActionEvent> addTimeFunc;
+
+    ArrayList<TimeSlot> timeslots = new ArrayList<TimeSlot>();
 
     public static StudentTimePopUp addTimePopUp;
 
@@ -38,6 +42,7 @@ public class StudentPage extends Page{
             @Override
             public void handle(ActionEvent actionEvent) {
                 System.out.println("Send to Student Result Page");
+                timeslots.get(0).printTimeSlot();
             }
         };
         addTimeFunc = new EventHandler<ActionEvent>() {
@@ -105,8 +110,6 @@ public class StudentPage extends Page{
         grid.setAlignment(Pos.TOP_LEFT);
         pane.setCenter(grid);
     }
-
-
 
     private HBox addTimeInput(int index, String startTime, String endTime){
         HBox hbox = new HBox();

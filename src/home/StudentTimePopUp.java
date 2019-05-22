@@ -24,11 +24,10 @@ public class StudentTimePopUp extends Page{
     ComboBox dayChooser;
     EventHandler<ActionEvent> cancelEvent;
     EventHandler<ActionEvent> doneEvent;
-    EventHandler<ActionEvent> addTimeEvent;
 
-    int startSliderVal;
-    int endSliderVal;
     String day;
+    String startTime;
+    String endTime;
 
     public StudentTimePopUp(){
         popUpWindow = createStage();
@@ -81,8 +80,10 @@ public class StudentTimePopUp extends Page{
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
                 time.setText(numToTimeConvert(t1.intValue()));
-                System.out.println("OG val: " + t1);
-                System.out.println("Time: " + time.getText());
+                if(str.equals("Start"))
+                    startTime = time.getText();
+                else
+                    endTime = time.getText();
             }
         });
         vbox.getChildren().addAll(label, slider, time);
@@ -158,14 +159,11 @@ public class StudentTimePopUp extends Page{
             public void handle(ActionEvent actionEvent) {
                 // Send Data back to Student Page
                 day = (String) dayChooser.getValue();
-                System.out.println("Change Applied");
+                System.out.println("Start time sent: " + startTime);
+                System.out.println("End time sent: " + endTime);
+                TimeSlot timeSlot = new TimeSlot(day, startTime, endTime);
+                Main.studentPage.timeslots.add(timeSlot);
                 popUpWindow.close();
-            }
-        };
-        addTimeEvent = new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-
             }
         };
     }
