@@ -33,6 +33,7 @@ public class StudentPage extends Page{
     ArrayList<TimeSlot> timeSlots = new ArrayList<TimeSlot>();
 
     public static StudentTimePopUp addTimePopUp;
+    public static StudentResult studentResult;
 
     public StudentPage(Stage stage){
         pane = new BorderPane();
@@ -43,6 +44,7 @@ public class StudentPage extends Page{
             public void handle(ActionEvent actionEvent) {
                 System.out.println("Send to Student Result Page");
                 timeSlots.get(0).printTimeSlot();
+                studentResult = new StudentResult(stage, (String) subjectChooser.getValue(), timeSlots);
             }
         };
         addTimeFunc = new EventHandler<ActionEvent>() {
