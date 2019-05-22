@@ -12,6 +12,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -20,11 +21,14 @@ public class StudentTimePopUp extends Page{
 
     Stage popUpWindow;
     HBox navButtons;
+    ComboBox dayChooser;
     EventHandler<ActionEvent> cancelEvent;
     EventHandler<ActionEvent> doneEvent;
     EventHandler<ActionEvent> addTimeEvent;
+
     int startSliderVal;
     int endSliderVal;
+    String day;
 
     public StudentTimePopUp(){
         popUpWindow = createStage();
@@ -46,42 +50,57 @@ public class StudentTimePopUp extends Page{
     }
 
     private void createTimeSelector(){
-        HBox hbox = new HBox();
+        VBox vbox = new VBox();
 
-        //create layout here
-
+        VBox dayBox = new VBox();
         Text dayLabel = new Text("Day of the Week:");
-
-        ComboBox dayChooser = new ComboBox();
+        dayChooser = new ComboBox();
         dayChooser.getItems().addAll("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
+        dayBox.getChildren().addAll(dayLabel, dayChooser);
+        dayBox.setAlignment(Pos.CENTER);
 
-        Text startValueLabel = new Text();
+        HBox timeBox = new HBox();
+        VBox startBox = createTimeBox("Start");
+        VBox endBox = createTimeBox("End");
+        timeBox.getChildren().addAll(startBox, endBox);
+        timeBox.setSpacing(10);
+        timeBox.setAlignment(Pos.CENTER);
 
-        Slider startTime = new Slider();
-        startTime.setMin(0);
-        startTime.setMax(2400);
-        startTime.setValue(1200);
-        startTime.setBlockIncrement(25);
-        startTime.setShowTickMarks(true);
-        startTime.setMajorTickUnit(100);
-        startTime.setSnapToTicks(true);
-        startTime.valueProperty().addListener(new ChangeListener<Number>() {
+        vbox.getChildren().addAll(dayBox, timeBox);
+        vbox.setSpacing(30);
+        vbox.setAlignment(Pos.CENTER);
+        pane.setCenter(vbox);
+    }
+
+    private VBox createTimeBox(String str){
+        VBox vbox = new VBox();
+        Text label = new Text(str + " Time:");
+        Text time = new Text();
+        Slider slider = createSlider();
+        slider.valueProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-                startValueLabel.setText(numToTimeConvert(t1.intValue()));
+                time.setText(numToTimeConvert(t1.intValue()));
                 System.out.println("OG val: " + t1);
-                System.out.println("Time: " + startValueLabel.getText());
+                System.out.println("Time: " + time.getText());
             }
         });
+        vbox.getChildren().addAll(label, slider, time);
+        vbox.setAlignment(Pos.CENTER);
+        return vbox;
+    }
 
-        Slider endTime = new Slider();
+    private Slider createSlider(){
+        Slider slider = new Slider();
+        slider.setMin(0);
+        slider.setMax(2400);
+        slider.setValue(1200);
+        slider.setBlockIncrement(25);
+        slider.setShowTickMarks(true);
+        slider.setMajorTickUnit(100);
+        slider.setSnapToTicks(true);
 
-
-        hbox.getChildren().add(dayChooser);
-        hbox.getChildren().add(startTime);
-        hbox.setAlignment(Pos.CENTER);
-        pane.setCenter(hbox);
-//        pane.setCenter();
+        return slider;
     }
 
     /*
@@ -138,6 +157,7 @@ public class StudentTimePopUp extends Page{
             @Override
             public void handle(ActionEvent actionEvent) {
                 // Send Data back to Student Page
+                day = (String) dayChooser.getValue();
                 System.out.println("Change Applied");
                 popUpWindow.close();
             }
