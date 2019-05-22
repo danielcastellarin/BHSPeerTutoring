@@ -3,14 +3,13 @@ package home;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
@@ -23,14 +22,15 @@ import java.util.ArrayList;
 
 public class StudentPage extends Page{
 
-    ComboBox subjectDropDown;
+    GridPane grid;
+    ComboBox subjectChooser;
     HBox header;
     HBox buttons;
     EventHandler<ActionEvent> backFunc;
     EventHandler<ActionEvent> advFunc;
     EventHandler<ActionEvent> addTimeFunc;
 
-    ArrayList<TimeSlot> timeslots = new ArrayList<TimeSlot>();
+    ArrayList<TimeSlot> timeSlots = new ArrayList<TimeSlot>();
 
     public static StudentTimePopUp addTimePopUp;
 
@@ -42,7 +42,7 @@ public class StudentPage extends Page{
             @Override
             public void handle(ActionEvent actionEvent) {
                 System.out.println("Send to Student Result Page");
-                timeslots.get(0).printTimeSlot();
+                timeSlots.get(0).printTimeSlot();
             }
         };
         addTimeFunc = new EventHandler<ActionEvent>() {
@@ -81,7 +81,7 @@ public class StudentPage extends Page{
     }
 
     private void createInputGrid(){
-        GridPane grid = new GridPane();
+        grid = new GridPane();
         grid.setVgap(15);
         grid.setHgap(100);
         Text studentNameLabel = new Text("Name:");
@@ -94,7 +94,7 @@ public class StudentPage extends Page{
         subjectChooserLabel.setFont(Font.font("Constantia", FontWeight.NORMAL, 20));
         subjectChooserLabel.setFill(Color.DARKOLIVEGREEN);
         grid.add(subjectChooserLabel, 2, 1);
-        ComboBox subjectChooser = new ComboBox();
+        subjectChooser = new ComboBox();
         subjectChooser.getItems().addAll("Math", "Science", "English", "Social Studies");
         grid.add(subjectChooser, 2, 2);
         Text timeLabel = new Text("Time:");
@@ -111,18 +111,25 @@ public class StudentPage extends Page{
         pane.setCenter(grid);
     }
 
-    private HBox addTimeInput(int index, String startTime, String endTime){
-        HBox hbox = new HBox();
-        Text timeLabel = new Text("Time Slot " + index);
-        timeLabel.setFont(Font.font("Constantia", FontWeight.NORMAL, 16));
-        timeLabel.setFill(Color.DARKOLIVEGREEN);
-        Text startTimeText = new Text("Start: " + startTime);
-        startTimeText.setFont(Font.font("Constantia", FontWeight.NORMAL, 16));
-        startTimeText.setFill(Color.DARKOLIVEGREEN);
-        Text endTimeText = new Text("Start: " + endTime);
-        endTimeText.setFont(Font.font("Constantia", FontWeight.NORMAL, 16));
-        endTimeText.setFill(Color.DARKOLIVEGREEN);
-        hbox.getChildren().addAll(timeLabel, startTimeText, endTimeText);
-        return hbox;
+
+
+    public void addTimeInput(int index){
+        FlowPane flow = new FlowPane();
+        flow.setOrientation(Orientation.VERTICAL);
+        Text indexLabel = new Text("Time Slot " + (index + 1));
+        Text dayLabel = new Text("Day: " + timeSlots.get(index).getDay());
+        Text startLabel = new Text("Start: " + timeSlots.get(index).getStartTIme());
+        Text endLabel = new Text("End: " + timeSlots.get(index).getEndTime());
+
+
+//        timeLabel.setFont(Font.font("Constantia", FontWeight.NORMAL, 16));
+//        timeLabel.setFill(Color.DARKOLIVEGREEN);
+//        startLabel.setFont(Font.font("Constantia", FontWeight.NORMAL, 16));
+//        startLabel.setFill(Color.DARKOLIVEGREEN);
+//        endLabel.setFont(Font.font("Constantia", FontWeight.NORMAL, 16));
+//        endLabel.setFill(Color.DARKOLIVEGREEN);
+
+        flow.getChildren().addAll(indexLabel, dayLabel, startLabel, endLabel);
+        grid.add(flow, 1 + index, 5);
     }
 }

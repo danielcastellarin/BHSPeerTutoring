@@ -9,7 +9,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -162,7 +161,8 @@ public class StudentTimePopUp extends Page{
                 System.out.println("Start time sent: " + startTime);
                 System.out.println("End time sent: " + endTime);
                 TimeSlot timeSlot = new TimeSlot(day, startTime, endTime);
-                Main.studentPage.timeslots.add(timeSlot);
+                Main.studentPage.timeSlots.add(timeSlot);
+                Main.studentPage.addTimeInput(Main.studentPage.timeSlots.size() - 1);
                 popUpWindow.close();
             }
         };
