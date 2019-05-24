@@ -16,7 +16,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
-import java.util.concurrent.Flow;
 
 public class StudentResult extends Page {
 
@@ -83,8 +82,69 @@ public class StudentResult extends Page {
 
     private void createMatchedTutorsGrid(){
         matchedTutors = new FlowPane();
+
         //Pass in tutors from database
+
+
+
         centerBoxes.getChildren().add(matchedTutors);
+    }
+
+
+    /* Option 1
+        Tutor Start                 Tutor End
+            |----------------------------|
+                        |---------------------------------|
+                    Student Start                    Student End
+
+            Overlap will occur when Tutor End is between Student Start and End
+     */
+
+    /* Option 2
+        Student Start              Student End
+            |----------------------------|
+                        |---------------------------------|
+                    Tutor Start                       Tutor End
+
+            Overlap will occur when Student End is between Tutor Start and End
+     */
+    private boolean isOverlap(String tutorStartStr, String tutorEndStr, String studentStartStr, String studentEndStr){
+        int tutorStart = convertTimeToNum(tutorStartStr);
+        int tutorEnd = convertTimeToNum(tutorEndStr);
+        int studentStart = convertTimeToNum(studentStartStr);
+        int studentEnd = convertTimeToNum(studentEndStr);
+
+        if(tutorEnd > studentStart && tutorEnd < studentEnd)
+            return true;
+        else if(studentEnd > tutorStart && studentEnd < tutorEnd)
+            return true;
+
+        return false;
+    }
+
+    // 12am = 0
+    // 3am = 3
+    // 12pm = 12
+    // 5pm = 17
+    // 11pm = 23
+    private int convertTimeToNum(String time){
+        int hour = 0;
+        int minute = 0;
+
+        minute = Integer.parseInt(time.substring(time.length() - 5, time.length() - 3));
+        minute *= 5/3;
+
+        hour = Integer.parseInt(time.substring(0, time.indexOf(":")));
+
+        if(time.endsWith("pm")){
+            hour += 12;
+        }else if(time.startsWith("12")) {
+            hour = 0;
+        }
+
+        hour *= 100;
+
+        return hour + minute;
     }
 
     private void createHomeButton(){
