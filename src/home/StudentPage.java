@@ -29,6 +29,8 @@ public class StudentPage extends Page{
     EventHandler<ActionEvent> backFunc;
     EventHandler<ActionEvent> advFunc;
     EventHandler<ActionEvent> addTimeFunc;
+    EventHandler<ActionEvent> editSlotFunc;
+    EventHandler<ActionEvent> delSlotFunc;
 
     ArrayList<TimeSlot> timeSlots = new ArrayList<TimeSlot>();
 
@@ -42,6 +44,7 @@ public class StudentPage extends Page{
         advFunc = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
+                // TODO: Fix error for when subject is left blank
                 System.out.println("Send to Student Result Page");
                 timeSlots.get(0).printTimeSlot();
                 studentResult = new StudentResult(stage, (String) subjectChooser.getValue(), timeSlots);
@@ -52,6 +55,18 @@ public class StudentPage extends Page{
             public void handle(ActionEvent actionEvent) {
                 System.out.println("Student Time Chooser");
                 addTimePopUp = new StudentTimePopUp();
+            }
+        };
+        editSlotFunc = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+
+            }
+        };
+        delSlotFunc = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+
             }
         };
         createInputGrid();                // Name, Subject, Time
@@ -122,7 +137,12 @@ public class StudentPage extends Page{
         Text dayLabel = new Text("Day: " + timeSlots.get(index).getDay());
         Text startLabel = new Text("Start: " + timeSlots.get(index).getStartTIme());
         Text endLabel = new Text("End: " + timeSlots.get(index).getEndTime());
-
+        HBox buttonHolder = new HBox();
+        Button editSlot = new Button("Edit");
+        Button deleteSlot = new Button("-");
+        buttonHolder.setAlignment(Pos.CENTER);
+        buttonHolder.setSpacing(20);
+        buttonHolder.getChildren().addAll(editSlot, deleteSlot);
 
 //        timeLabel.setFont(Font.font("Constantia", FontWeight.NORMAL, 16));
 //        timeLabel.setFill(Color.DARKOLIVEGREEN);
@@ -131,7 +151,7 @@ public class StudentPage extends Page{
 //        endLabel.setFont(Font.font("Constantia", FontWeight.NORMAL, 16));
 //        endLabel.setFill(Color.DARKOLIVEGREEN);
 
-        flow.getChildren().addAll(indexLabel, dayLabel, startLabel, endLabel);
+        flow.getChildren().addAll(indexLabel, dayLabel, startLabel, endLabel, buttonHolder);
         grid.add(flow, 1 + index, 5);
     }
 }
