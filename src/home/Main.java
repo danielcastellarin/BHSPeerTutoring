@@ -36,6 +36,8 @@ public class Main extends Application {
         primaryStage.setTitle("Peer Tutoring Portal");
         primaryStage.setScene(homePage);
         primaryStage.show();
+        JavaToMySQL testQuery = new JavaToMySQL("SELECT first_name FROM tutors");
+        testQuery.doQuery();
     }
 
     public void createHomeScreen(Stage stage){
