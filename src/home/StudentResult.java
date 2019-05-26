@@ -82,9 +82,26 @@ public class StudentResult extends Page {
 
     private void createMatchedTutorsGrid(){
         matchedTutors = new FlowPane();
+        /*
+        Subject Query:
+        "SELECT lasid FROM subjects WHERE subject = " + input + ";"
+         */
 
-        //Pass in tutors from database
-
+        /*
+        Timeslot Query:
+        "SELECT lasid FROM timeslots WHERE
+        ((end >= " + startInput + " AND end <= " + endInput + ")
+         OR (start <= " + endInput + " AND end >= " + endInput + "))
+        AND day = " + dayInput + ";"
+         */
+//
+//        if(timeSlots.isEmpty()){
+//            //SUBJECY QUERY ONLY
+//        }else if(subject == null){
+//            //TIMESLOT QUERY ONLY
+//        }else{
+//            //BOTH QUERIES
+//        }
 
 
         centerBoxes.getChildren().add(matchedTutors);
@@ -114,9 +131,9 @@ public class StudentResult extends Page {
         int studentStart = convertTimeToNum(studentStartStr);
         int studentEnd = convertTimeToNum(studentEndStr);
 
-        if(tutorEnd > studentStart && tutorEnd < studentEnd)
+        if(tutorEnd >= studentStart && tutorEnd <= studentEnd)
             return true;
-        else if(studentEnd > tutorStart && studentEnd < tutorEnd)
+        else if(studentEnd >= tutorStart && studentEnd <= tutorEnd)
             return true;
 
         return false;
