@@ -25,8 +25,8 @@ public class StudentTimePopUp extends Page{
     EventHandler<ActionEvent> doneEvent;
 
     String day;
-    String startTime;
-    String endTime;
+    int startTime;
+    int endTime;
 
     public StudentTimePopUp(){
         popUpWindow = createStage();
@@ -80,9 +80,9 @@ public class StudentTimePopUp extends Page{
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
                 time.setText(numToTimeConvert(t1.intValue()));
                 if(str.equals("Start"))
-                    startTime = time.getText();
+                    startTime = t1.intValue();
                 else
-                    endTime = time.getText();
+                    endTime = t1.intValue();
             }
         });
         vbox.getChildren().addAll(label, slider, time);
@@ -101,48 +101,6 @@ public class StudentTimePopUp extends Page{
         slider.setSnapToTicks(true);
 
         return slider;
-    }
-
-    /*
-    Each interval is 15 minutes
-    Slider increments by 25
-    minute conversion --> og * 3/5
-
-    divide by hundred to get rid of last 2 digits
-    analyze to determine morning/evening
-
-     */
-    private String numToTimeConvert(int num){
-        String time;
-        boolean isEvening = false;
-
-        if (num >= 1200 && num != 2400)
-            isEvening = true;
-
-        int hours = num / 100;
-        int minutes = (num - (hours * 100)) * 3/5;
-
-        if(hours > 12){
-            hours -= 12;
-        }else if (hours == 0){
-            hours = 12;
-        }
-
-        if(minutes == 0){
-            if (isEvening){
-                time = hours + ":" + minutes + "0pm";
-            }else{
-                time = hours + ":" + minutes + "0am";
-            }
-        }else{
-            if (isEvening){
-                time = hours + ":" + minutes + "pm";
-            }else{
-                time = hours + ":" + minutes + "am";
-            }
-        }
-
-        return time;
     }
 
     private void createButtonEvents(){

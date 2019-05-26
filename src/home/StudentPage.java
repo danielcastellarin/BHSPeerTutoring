@@ -135,8 +135,8 @@ public class StudentPage extends Page{
         flow.setOrientation(Orientation.VERTICAL);
         Text indexLabel = new Text("Time Slot " + (index + 1));
         Text dayLabel = new Text("Day: " + timeSlots.get(index).getDay());
-        Text startLabel = new Text("Start: " + timeSlots.get(index).getStartTIme());
-        Text endLabel = new Text("End: " + timeSlots.get(index).getEndTime());
+        Text startLabel = new Text("Start: " + numToTimeConvert(timeSlots.get(index).getStartTIme()));
+        Text endLabel = new Text("End: " + numToTimeConvert(timeSlots.get(index).getEndTime()));
         HBox buttonHolder = new HBox();
         Button editSlot = new Button("Edit");
         Button deleteSlot = new Button("-");

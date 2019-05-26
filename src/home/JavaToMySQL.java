@@ -34,15 +34,14 @@ public class JavaToMySQL {
 
     public ArrayList<ArrayList<String>> readTutorProfiles(){
         ArrayList<ArrayList<String>> list = new ArrayList<>();
-        ArrayList<String> item = new ArrayList<>();
         try {
             while(rs.next()){
+                ArrayList<String> item = new ArrayList<>();
                 item.add(rs.getInt(1) + "@bps121.org");
                 item.add(rs.getString(2));
                 item.add(rs.getString(3));
                 item.add(rs.getString(4));
                 list.add(item);
-                item = new ArrayList<>(item);
             }
         } catch (SQLException sqlEx) {
             sqlEx.printStackTrace();

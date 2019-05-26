@@ -3,10 +3,10 @@ package home;
 public class TimeSlot {
 
     private String day;
-    private String startTIme;
-    private String endTime;
+    private int startTIme;
+    private int endTime;
 
-    public TimeSlot(String day, String start, String end){
+    public TimeSlot(String day, int start, int end){
         this.day = day;
         startTIme = start;
         endTime = end;
@@ -16,15 +16,17 @@ public class TimeSlot {
         return day;
     }
 
-    public String getStartTIme(){
+    public int getStartTIme(){
         return startTIme;
     }
 
-    public String getEndTime(){
+    public int getEndTime(){
         return endTime;
     }
 
     public void printTimeSlot(){
         System.out.println("Day: " + day + ", Start: " + startTIme + ", End: " + endTime);
     }
+
+
 }

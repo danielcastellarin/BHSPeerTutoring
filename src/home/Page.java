@@ -73,4 +73,48 @@ public class Page {
         return scene;
     }
 
+
+
+    /*
+    Each interval is 15 minutes
+    Slider increments by 25
+    minute conversion --> og * 3/5
+
+    divide by hundred to get rid of last 2 digits
+    analyze to determine morning/evening
+
+     */
+    public String numToTimeConvert(int num){
+        String time;
+        boolean isEvening = false;
+
+        if (num >= 1200 && num != 2400)
+            isEvening = true;
+
+        int hours = num / 100;
+        int minutes = (num - (hours * 100)) * 3/5;
+
+        if(hours > 12){
+            hours -= 12;
+        }else if (hours == 0){
+            hours = 12;
+        }
+
+        if(minutes == 0){
+            if (isEvening){
+                time = hours + ":" + minutes + "0pm";
+            }else{
+                time = hours + ":" + minutes + "0am";
+            }
+        }else{
+            if (isEvening){
+                time = hours + ":" + minutes + "pm";
+            }else{
+                time = hours + ":" + minutes + "am";
+            }
+        }
+
+        return time;
+    }
+
 }

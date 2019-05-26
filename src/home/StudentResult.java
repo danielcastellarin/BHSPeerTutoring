@@ -30,6 +30,8 @@ public class StudentResult extends Page {
     private String subject;
     private ArrayList<TimeSlot> timeSlots;
 
+    private int startTime;
+    private int endTime;
 
     public StudentResult(Stage stage, String subj, ArrayList<TimeSlot> slots){
         subject = subj;
@@ -82,23 +84,38 @@ public class StudentResult extends Page {
 
     private void createMatchedTutorsGrid(){
         matchedTutors = new FlowPane();
+        timeSlots.get(0).printTimeSlot();
+
         /*
         Subject Query:
-        "SELECT * FROM tutors WHERE lasid IN (SELECT lasid FROM subjects WHERE subject = " + input + ");"
+        "SELECT * FROM tutors WHERE lasid IN ( SELECT lasid FROM subjects WHERE subject = " + input + ");"
          */
 
         /*
         Timeslot Query:
-        "SELECT lasid FROM timeslots WHERE
-        ((end >= " + startInput + " AND end <= " + endInput + ")
-         OR (start <= " + endInput + " AND end >= " + endInput + "))
-        AND day = " + dayInput + ";"
+        "SELECT * FROM tutors WHERE lasid IN ( SELECT lasid FROM timeslots WHERE
+        ((end >= "startInput" AND end <= "endInput")
+         OR (start <= "endInput" AND end >= "endInput"))
+        AND day = "dayInput";"
          */
 
-        JavaToMySQL testQuery = new JavaToMySQL("SELECT * FROM tutors WHERE lasid IN( " +
+        JavaToMySQL subjectOnlyQuery = new JavaToMySQL("SELECT * FROM tutors WHERE lasid IN( " +
                 "SELECT lasid FROM subjects WHERE subject = \"" + subject + "\");");
-        testQuery.doQuery();
-        ArrayList<ArrayList<String>> list = testQuery.readTutorProfiles();
+        subjectOnlyQuery.doQuery();
+        ArrayList<ArrayList<String>> list = subjectOnlyQuery.readTutorProfiles();
+
+
+//        JavaToMySQL timeSlotOnlyQuery = new JavaToMySQL(
+//                "SELECT * FROM tutors WHERE lasid IN ( SELECT lasid FROM timeslots WHERE (" +
+//                "(end >= " + timeSlots.get(0).getStartTIme() + " " +
+//                        "AND end <= " + timeSlots.get(0).getEndTime() + ")" +
+//                                " OR " +
+//                "(start <= " + timeSlots.get(0).getEndTime() + " " +
+//                        "AND end >= " + timeSlots.get(0).getEndTime() + ")" +
+//                    ") AND day = \"" + timeSlots.get(0).getDay() + "\");");
+//
+//        timeSlotOnlyQuery.doQuery();
+//        ArrayList<ArrayList<String>> list = timeSlotOnlyQuery.readTutorProfiles();
         System.out.println(list);
         if(timeSlots.isEmpty()){
             //SUBJECY QUERY ONLY
