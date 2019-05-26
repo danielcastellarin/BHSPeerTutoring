@@ -34,6 +34,8 @@ public class StudentResult extends Page {
     private int startTime;
     private int endTime;
 
+    public static TutorProfilePopUp tutorProfilePopUp;
+
     public StudentResult(Stage stage, String subj, ArrayList<TimeSlot> slots){
         subject = subj;
         timeSlots = slots;
@@ -130,12 +132,14 @@ public class StudentResult extends Page {
         }
 
         for(int i = 0; i < list.size(); i++){
-            Hyperlink accessTutorInfo = new Hyperlink(list.get(i).get(1) + list.get(i).get(2)/*, INSERT IMAGE*/);
+            int finalI = i;
+            Hyperlink accessTutorInfo = new Hyperlink(list.get(i).get(1)+ " " + list.get(i).get(2)/*, INSERT IMAGE*/);
             accessTutorInfo.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
                     // create new tutorProfile pop up window
                     // pass in list.get(i)
+                    tutorProfilePopUp = new TutorProfilePopUp(list.get(finalI));
                 }
             });
             matchedTutors.getChildren().add(accessTutorInfo);
