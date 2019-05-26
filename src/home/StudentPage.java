@@ -45,6 +45,7 @@ public class StudentPage extends Page{
             @Override
             public void handle(ActionEvent actionEvent) {
                 // TODO: Fix error for when subject is left blank
+                // TODO: Make multiple constructors for Student Result, one for each type of query
                 System.out.println("Send to Student Result Page");
                 timeSlots.get(0).printTimeSlot();
                 studentResult = new StudentResult(stage, (String) subjectChooser.getValue(), timeSlots);

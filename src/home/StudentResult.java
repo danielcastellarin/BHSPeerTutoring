@@ -7,6 +7,7 @@ import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -38,8 +39,8 @@ public class StudentResult extends Page {
         timeSlots = slots;
 
         createHeader("-fx-background-color: darkolivegreen", "Student Results", Color.FLORALWHITE);
-        createCenter();
         homeFunc = createSceneChangeEvent(stage, Main.getHomePage());
+        createCenter();
         createHomeButton();
         createScene();
         stage.setScene(scene);
@@ -84,7 +85,10 @@ public class StudentResult extends Page {
 
     private void createMatchedTutorsGrid(){
         matchedTutors = new FlowPane();
-        timeSlots.get(0).printTimeSlot();
+        matchedTutors.setOrientation(Orientation.VERTICAL);
+        matchedTutors.setVgap(5);
+        matchedTutors.setHgap(20);
+        matchedTutors.setAlignment(Pos.CENTER);
 
         /*
         Subject Query:
@@ -116,7 +120,7 @@ public class StudentResult extends Page {
 //
 //        timeSlotOnlyQuery.doQuery();
 //        ArrayList<ArrayList<String>> list = timeSlotOnlyQuery.readTutorProfiles();
-        System.out.println(list);
+        System.out.println(list);           //print returned profiles
         if(timeSlots.isEmpty()){
             //SUBJECY QUERY ONLY
         }else if(subject == null){
@@ -125,6 +129,17 @@ public class StudentResult extends Page {
             //BOTH QUERIES
         }
 
+        for(int i = 0; i < list.size(); i++){
+            Hyperlink accessTutorInfo = new Hyperlink(list.get(i).get(1) + list.get(i).get(2)/*, INSERT IMAGE*/);
+            accessTutorInfo.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    // create new tutorProfile pop up window
+                    // pass in list.get(i)
+                }
+            });
+            matchedTutors.getChildren().add(accessTutorInfo);
+        }
 
         centerBoxes.getChildren().add(matchedTutors);
     }
@@ -147,19 +162,19 @@ public class StudentResult extends Page {
 
             Overlap will occur when Student End is between Tutor Start and End
      */
-    private boolean isOverlap(String tutorStartStr, String tutorEndStr, String studentStartStr, String studentEndStr){
-        int tutorStart = convertTimeToNum(tutorStartStr);
-        int tutorEnd = convertTimeToNum(tutorEndStr);
-        int studentStart = convertTimeToNum(studentStartStr);
-        int studentEnd = convertTimeToNum(studentEndStr);
-
-        if(tutorEnd >= studentStart && tutorEnd <= studentEnd)
-            return true;
-        else if(studentEnd >= tutorStart && studentEnd <= tutorEnd)
-            return true;
-
-        return false;
-    }
+//    private boolean isOverlap(String tutorStartStr, String tutorEndStr, String studentStartStr, String studentEndStr){
+//        int tutorStart = convertTimeToNum(tutorStartStr);
+//        int tutorEnd = convertTimeToNum(tutorEndStr);
+//        int studentStart = convertTimeToNum(studentStartStr);
+//        int studentEnd = convertTimeToNum(studentEndStr);
+//
+//        if(tutorEnd >= studentStart && tutorEnd <= studentEnd)
+//            return true;
+//        else if(studentEnd >= tutorStart && studentEnd <= tutorEnd)
+//            return true;
+//
+//        return false;
+//    }
 
     // 12am = 0
     // 3am = 3
