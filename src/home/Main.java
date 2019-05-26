@@ -38,10 +38,10 @@ public class Main extends Application {
         primaryStage.setTitle("Peer Tutoring Portal");
         primaryStage.setScene(homePage);
         primaryStage.show();
-//        JavaToMySQL testQuery = new JavaToMySQL("SELECT first_name FROM tutors");
-        JavaToMySQL testQuery = new JavaToMySQL("SELECT * FROM tutors");
-        testQuery.doQuery();
-        ArrayList<ArrayList<String>> list = testQuery.readTutorProfiles();
+
+//        JavaToMySQL testQuery = new JavaToMySQL("SELECT * FROM tutors");
+//        testQuery.doQuery();
+//        ArrayList<ArrayList<String>> list = testQuery.readTutorProfiles();
     }
 
     public void createHomeScreen(Stage stage){

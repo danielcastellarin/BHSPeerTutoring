@@ -84,7 +84,7 @@ public class StudentResult extends Page {
         matchedTutors = new FlowPane();
         /*
         Subject Query:
-        "SELECT lasid FROM subjects WHERE subject = " + input + ";"
+        "SELECT * FROM tutors WHERE lasid IN (SELECT lasid FROM subjects WHERE subject = " + input + ");"
          */
 
         /*
@@ -94,14 +94,19 @@ public class StudentResult extends Page {
          OR (start <= " + endInput + " AND end >= " + endInput + "))
         AND day = " + dayInput + ";"
          */
-//
-//        if(timeSlots.isEmpty()){
-//            //SUBJECY QUERY ONLY
-//        }else if(subject == null){
-//            //TIMESLOT QUERY ONLY
-//        }else{
-//            //BOTH QUERIES
-//        }
+
+        JavaToMySQL testQuery = new JavaToMySQL("SELECT * FROM tutors WHERE lasid IN( " +
+                "SELECT lasid FROM subjects WHERE subject = \"" + subject + "\");");
+        testQuery.doQuery();
+        ArrayList<ArrayList<String>> list = testQuery.readTutorProfiles();
+        System.out.println(list);
+        if(timeSlots.isEmpty()){
+            //SUBJECY QUERY ONLY
+        }else if(subject == null){
+            //TIMESLOT QUERY ONLY
+        }else{
+            //BOTH QUERIES
+        }
 
 
         centerBoxes.getChildren().add(matchedTutors);

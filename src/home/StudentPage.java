@@ -112,7 +112,7 @@ public class StudentPage extends Page{
         subjectChooserLabel.setFill(Color.DARKOLIVEGREEN);
         grid.add(subjectChooserLabel, 2, 1);
         subjectChooser = new ComboBox();
-        subjectChooser.getItems().addAll("Math", "Science", "English", "Social Studies");
+        subjectChooser.getItems().addAll("Algebra II", "Science", "English", "Social Studies");
         grid.add(subjectChooser, 2, 2);
         Text timeLabel = new Text("Time:");
         timeLabel.setFont(Font.font("Constantia", FontWeight.NORMAL, 20));
