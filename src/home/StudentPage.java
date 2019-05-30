@@ -19,6 +19,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.concurrent.Flow;
 
 public class StudentPage extends Page{
 
@@ -26,6 +27,7 @@ public class StudentPage extends Page{
     ComboBox subjectChooser;
     HBox header;
     HBox buttons;
+    FlowPane timeInputs;
     EventHandler<ActionEvent> backFunc;
     EventHandler<ActionEvent> advFunc;
     EventHandler<ActionEvent> addTimeFunc;
@@ -44,17 +46,7 @@ public class StudentPage extends Page{
         advFunc = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                // TODO: Fix error for when subject is left blank
-                // TODO: Make multiple constructors for Student Result, one for each type of query
                 System.out.println("Send to Student Result Page");
-//                timeSlots.get(0).printTimeSlot();
-//                if(timeSlots.isEmpty()){
-//                    // SUBJECY QUERY ONLY
-//                }else if(subjectChooser.getValue() == null){
-//                    // TIMESLOT QUERY ONLY
-//                }else{
-//                    // BOTH QUERIES
-//                }
                 studentResult = new StudentResult(stage, (String) subjectChooser.getValue(), timeSlots);
             }
         };
@@ -131,23 +123,41 @@ public class StudentPage extends Page{
         Button addTimeBtn = new Button("Add");
         addTimeBtn.setOnAction(addTimeFunc);
         grid.add(addTimeBtn, 2, 4);
-
+        timeInputs = new FlowPane();
+        timeInputs.setHgap(10);
+        timeInputs.setVgap(10);
+        grid.add(timeInputs, 1, 5, 3, 1);
         grid.setAlignment(Pos.TOP_LEFT);
         pane.setCenter(grid);
     }
 
-
+    // Currently works for deleting timeslots
+    public void checkID(Button button){
+        for(int i = 0; i < timeSlots.size(); i++){
+            System.out.println("Timeslot checked");
+            if(button.getId().equals("id"+i)){
+                timeSlots.remove(i);
+                timeInputs.getChildren().remove(i);
+                break;
+            }
+        }
+    }
 
     public void addTimeInput(int index){
         FlowPane flow = new FlowPane();
         flow.setOrientation(Orientation.VERTICAL);
+        flow.setPrefWrapLength(100);
         Text indexLabel = new Text("Time Slot " + (index + 1));
         Text dayLabel = new Text("Day: " + timeSlots.get(index).getDay());
         Text startLabel = new Text("Start: " + numToTimeConvert(timeSlots.get(index).getStartTIme()));
         Text endLabel = new Text("End: " + numToTimeConvert(timeSlots.get(index).getEndTime()));
         HBox buttonHolder = new HBox();
         Button editSlot = new Button("Edit");
+        editSlot.setId("id" + index);
+        editSlot.setOnAction(editSlotFunc -> checkID(editSlot));
         Button deleteSlot = new Button("-");
+        deleteSlot.setId("id" + index);
+        deleteSlot.setOnAction(delSlotFunc -> checkID(deleteSlot));
         buttonHolder.setAlignment(Pos.CENTER);
         buttonHolder.setSpacing(20);
         buttonHolder.getChildren().addAll(editSlot, deleteSlot);
@@ -160,6 +170,6 @@ public class StudentPage extends Page{
 //        endLabel.setFill(Color.DARKOLIVEGREEN);
 
         flow.getChildren().addAll(indexLabel, dayLabel, startLabel, endLabel, buttonHolder);
-        grid.add(flow, 1 + index, 5);
+        timeInputs.getChildren().add(flow);
     }
 }

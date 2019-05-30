@@ -93,7 +93,7 @@ public class StudentResult extends Page {
         matchedTutors.setAlignment(Pos.CENTER);
 
         if(timeSlots.isEmpty()){
-            //SUBJECY QUERY ONLY
+            //SUBJECT QUERY ONLY
             JavaToMySQL subjectOnlyQuery = new JavaToMySQL("SELECT * FROM tutors WHERE lasid IN( " +
                     "SELECT lasid FROM subjects WHERE subject = \"" + subject + "\");");
             subjectOnlyQuery.doQuery();
