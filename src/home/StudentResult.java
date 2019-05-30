@@ -24,15 +24,12 @@ public class StudentResult extends Page {
     VBox centerBoxes;
     HBox studentInputBox;
     FlowPane timeInputs;
-    Button tutorProfile;
     FlowPane matchedTutors;
     HBox buttonHolder;
 
     private String subject;
     private ArrayList<TimeSlot> timeSlots;
-
-    private int startTime;
-    private int endTime;
+    private ArrayList<ArrayList<String>> matchedList;
 
     public static TutorProfilePopUp tutorProfilePopUp;
 
@@ -60,14 +57,17 @@ public class StudentResult extends Page {
         studentInputBox = new HBox();
         studentInputBox.setSpacing(20);
 
-        VBox subjectBox = new VBox();
-        Text subjectLabel = new Text("Subject:");
-        Text subjectInput = new Text(subject);
-        subjectBox.getChildren().addAll(subjectLabel, subjectInput);
-        studentInputBox.getChildren().add(subjectBox);
-
-        for(int i = 0; i < timeSlots.size(); i++){
-            studentInputBox.getChildren().add(createTimeInput(i));
+        if (subject != null){
+            VBox subjectBox = new VBox();
+            Text subjectLabel = new Text("Subject:");
+            Text subjectInput = new Text(subject);
+            subjectBox.getChildren().addAll(subjectLabel, subjectInput);
+            studentInputBox.getChildren().add(subjectBox);
+        }
+        if(!timeSlots.isEmpty()){
+            for(int i = 0; i < timeSlots.size(); i++){
+                studentInputBox.getChildren().add(createTimeInput(i));
+            }
         }
 
         studentInputBox.setAlignment(Pos.CENTER);
@@ -79,9 +79,9 @@ public class StudentResult extends Page {
         timePane.setOrientation(Orientation.VERTICAL);
         Text index = new Text("Time Slot " + (i + 1));
         Text day = new Text("Day: " + timeSlots.get(i).getDay());
-        Text start = new Text("Start: " + timeSlots.get(i).getStartTIme());
-        Text end = new Text("End: " + timeSlots.get(i).getEndTime());
-        timePane.getChildren().addAll(index, day, start, end);
+        Text range = new Text(numToTimeConvert(timeSlots.get(i).getStartTIme()) +
+                " - " + numToTimeConvert(timeSlots.get(i).getEndTime()));
+        timePane.getChildren().addAll(index, day, range);
         return timePane;
     }
 
@@ -92,54 +92,48 @@ public class StudentResult extends Page {
         matchedTutors.setHgap(20);
         matchedTutors.setAlignment(Pos.CENTER);
 
-        /*
-        Subject Query:
-        "SELECT * FROM tutors WHERE lasid IN ( SELECT lasid FROM subjects WHERE subject = " + input + ");"
-         */
-
-        /*
-        Timeslot Query:
-        "SELECT * FROM tutors WHERE lasid IN ( SELECT lasid FROM timeslots WHERE
-        ((end >= "startInput" AND end <= "endInput")
-         OR (start <= "endInput" AND end >= "endInput"))
-        AND day = "dayInput";"
-         */
-
-        JavaToMySQL subjectOnlyQuery = new JavaToMySQL("SELECT * FROM tutors WHERE lasid IN( " +
-                "SELECT lasid FROM subjects WHERE subject = \"" + subject + "\");");
-        subjectOnlyQuery.doQuery();
-        ArrayList<ArrayList<String>> list = subjectOnlyQuery.readTutorProfiles();
-
-
-//        JavaToMySQL timeSlotOnlyQuery = new JavaToMySQL(
-//                "SELECT * FROM tutors WHERE lasid IN ( SELECT lasid FROM timeslots WHERE (" +
-//                "(end >= " + timeSlots.get(0).getStartTIme() + " " +
-//                        "AND end <= " + timeSlots.get(0).getEndTime() + ")" +
-//                                " OR " +
-//                "(start <= " + timeSlots.get(0).getEndTime() + " " +
-//                        "AND end >= " + timeSlots.get(0).getEndTime() + ")" +
-//                    ") AND day = \"" + timeSlots.get(0).getDay() + "\");");
-//
-//        timeSlotOnlyQuery.doQuery();
-//        ArrayList<ArrayList<String>> list = timeSlotOnlyQuery.readTutorProfiles();
-        System.out.println(list);           //print returned profiles
         if(timeSlots.isEmpty()){
             //SUBJECY QUERY ONLY
+            JavaToMySQL subjectOnlyQuery = new JavaToMySQL("SELECT * FROM tutors WHERE lasid IN( " +
+                    "SELECT lasid FROM subjects WHERE subject = \"" + subject + "\");");
+            subjectOnlyQuery.doQuery();
+            matchedList = subjectOnlyQuery.readTutorProfiles();
         }else if(subject == null){
             //TIMESLOT QUERY ONLY
+            JavaToMySQL timeSlotOnlyQuery = new JavaToMySQL(
+                    "SELECT * FROM tutors WHERE lasid IN ( SELECT lasid FROM timeslots WHERE (" +
+                            "(end >= " + timeSlots.get(0).getStartTIme() + " " +
+                            "AND end <= " + timeSlots.get(0).getEndTime() + ")" +
+                            " OR " +
+                            "(start <= " + timeSlots.get(0).getEndTime() + " " +
+                            "AND end >= " + timeSlots.get(0).getEndTime() + ")" +
+                            ") AND day = \"" + timeSlots.get(0).getDay() + "\");");
+
+            timeSlotOnlyQuery.doQuery();
+            matchedList = timeSlotOnlyQuery.readTutorProfiles();
         }else{
             //BOTH QUERIES
+            String query = "SELECT tutors.* FROM tutors, subjects, timeslots " +
+                    "WHERE (tutors.lasid = subjects.lasid AND tutors.lasid = timeslots.lasid)" +
+                    "AND subjects.subject = \"" + subject + "\" AND (";
+            for (int i = 0; i < timeSlots.size(); i++){
+                query = appendTimeSlotToQuery(query, i);
+            }
+            JavaToMySQL bothQueries = new JavaToMySQL(query);
+            bothQueries.doQuery();
+            matchedList = bothQueries.readTutorProfiles();
         }
+        System.out.println(matchedList);           //print returned profiles
 
-        for(int i = 0; i < list.size(); i++){
+        for(int i = 0; i < matchedList.size(); i++){
             int finalI = i;
-            Hyperlink accessTutorInfo = new Hyperlink(list.get(i).get(1)+ " " + list.get(i).get(2)/*, INSERT IMAGE*/);
+            Hyperlink accessTutorInfo = new Hyperlink(matchedList.get(i).get(1)+ " " + matchedList.get(i).get(2)/*, INSERT IMAGE*/);
             accessTutorInfo.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
                     // create new tutorProfile pop up window
                     // pass in list.get(i)
-                    tutorProfilePopUp = new TutorProfilePopUp(list.get(finalI));
+                    tutorProfilePopUp = new TutorProfilePopUp(matchedList.get(finalI));
                 }
             });
             matchedTutors.getChildren().add(accessTutorInfo);
@@ -203,6 +197,23 @@ public class StudentResult extends Page {
         hour *= 100;
 
         return hour + minute;
+    }
+
+    private String appendTimeSlotToQuery(String query, int slotID){
+        String newQuery = query +
+                "(" +
+                "((timeslots.end >= " + timeSlots.get(0).getStartTIme() + " AND " +
+                "timeslots.end <= " + timeSlots.get(0).getEndTime() + ")" +
+                " OR " +
+                "(timeslots.start <= " + timeSlots.get(0).getEndTime() + " AND " +
+                "timeslots.end >= " + timeSlots.get(0).getEndTime() + ")" +
+                ") AND timeslots.day = \"" + timeSlots.get(0).getDay() + "\"" +
+                ")";
+        if (slotID < timeSlots.size() - 1)
+            newQuery = newQuery + " OR ";
+        else
+            newQuery = newQuery + ");";
+        return newQuery;
     }
 
     private void createHomeButton(){

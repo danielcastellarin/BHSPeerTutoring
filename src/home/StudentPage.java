@@ -47,7 +47,14 @@ public class StudentPage extends Page{
                 // TODO: Fix error for when subject is left blank
                 // TODO: Make multiple constructors for Student Result, one for each type of query
                 System.out.println("Send to Student Result Page");
-                timeSlots.get(0).printTimeSlot();
+//                timeSlots.get(0).printTimeSlot();
+//                if(timeSlots.isEmpty()){
+//                    // SUBJECY QUERY ONLY
+//                }else if(subjectChooser.getValue() == null){
+//                    // TIMESLOT QUERY ONLY
+//                }else{
+//                    // BOTH QUERIES
+//                }
                 studentResult = new StudentResult(stage, (String) subjectChooser.getValue(), timeSlots);
             }
         };
