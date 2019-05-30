@@ -116,12 +116,16 @@ public class StudentTimePopUp extends Page{
             public void handle(ActionEvent actionEvent) {
                 // Send Data back to Student Page
                 day = (String) dayChooser.getValue();
-                System.out.println("Start time sent: " + startTime);
-                System.out.println("End time sent: " + endTime);
-                TimeSlot timeSlot = new TimeSlot(day, startTime, endTime);
-                Main.studentPage.timeSlots.add(timeSlot);
-                Main.studentPage.addTimeInput(Main.studentPage.timeSlots.size() - 1);
-                popUpWindow.close();
+                if(endTime > startTime && day != null){
+                    System.out.println("Start time sent: " + startTime);
+                    System.out.println("End time sent: " + endTime);
+                    TimeSlot timeSlot = new TimeSlot(day, startTime, endTime);
+                    Main.studentPage.timeSlots.add(timeSlot);
+                    Main.studentPage.addTimeInput(Main.studentPage.timeSlots.size() - 1);
+                    popUpWindow.close();
+                }else{
+                    System.out.println("Please enter a valid time range and/or day.");
+                }
             }
         };
     }

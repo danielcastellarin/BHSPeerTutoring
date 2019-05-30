@@ -9,7 +9,6 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -22,6 +21,7 @@ public class TutorDone extends Page {
     public EventHandler<ActionEvent> homeFunc;
     HBox buttonHolder;
     String tutorName;
+    Text centerText;
 
     public TutorDone(Stage stage){
         createHeader("-fx-background-color: deepskyblue;", tutorName, Color.FLORALWHITE);
@@ -34,15 +34,16 @@ public class TutorDone extends Page {
     public void setHeaderText(String name){
         tutorName = name;
         title.setText(name);
+        centerText.setText("Thank you, " + name + ", for updating your schedule!");
     }
 
     private void createCenterText(){
-        Text text = new Text("Thank you, " + tutorName + ", for updating your schedule!");
-        text.setFont(Font.font("Constantia", FontWeight.SEMI_BOLD, 36.0));
-        text.setTextAlignment(TextAlignment.CENTER);
-        text.setWrappingWidth(300.0);
-        text.setFill(Color.DARKGRAY);
-        pane.setCenter(text);
+        centerText = new Text("Thank you, " + tutorName + ", for updating your schedule!");
+        centerText.setFont(Font.font("Constantia", FontWeight.SEMI_BOLD, 36.0));
+        centerText.setTextAlignment(TextAlignment.CENTER);
+        centerText.setWrappingWidth(300.0);
+        centerText.setFill(Color.DARKGRAY);
+        pane.setCenter(centerText);
     }
 
     private void createHomeButton(){

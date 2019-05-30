@@ -57,18 +57,6 @@ public class StudentPage extends Page{
                 addTimePopUp = new StudentTimePopUp();
             }
         };
-        editSlotFunc = new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-
-            }
-        };
-        delSlotFunc = new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-
-            }
-        };
         createInputGrid();                // Name, Subject, Time
         createStudentPageButtons();
         createScene();
@@ -135,10 +123,12 @@ public class StudentPage extends Page{
     public void checkID(Button button){
         for(int i = 0; i < timeSlots.size(); i++){
             System.out.println("Timeslot checked");
-            if(button.getId().equals("id"+i)){
+            if(button.getId().equals("del id" + i)){
                 timeSlots.remove(i);
                 timeInputs.getChildren().remove(i);
                 break;
+            }else if(button.getId().equals("edit id" + i)){
+
             }
         }
     }
@@ -153,11 +143,11 @@ public class StudentPage extends Page{
         Text endLabel = new Text("End: " + numToTimeConvert(timeSlots.get(index).getEndTime()));
         HBox buttonHolder = new HBox();
         Button editSlot = new Button("Edit");
-        editSlot.setId("id" + index);
-        editSlot.setOnAction(editSlotFunc -> checkID(editSlot));
+        editSlot.setId("edit id" + index);
+        editSlot.setOnAction(event -> checkID(editSlot));
         Button deleteSlot = new Button("-");
-        deleteSlot.setId("id" + index);
-        deleteSlot.setOnAction(delSlotFunc -> checkID(deleteSlot));
+        deleteSlot.setId("del id" + index);
+        deleteSlot.setOnAction(event -> checkID(deleteSlot));
         buttonHolder.setAlignment(Pos.CENTER);
         buttonHolder.setSpacing(20);
         buttonHolder.getChildren().addAll(editSlot, deleteSlot);
