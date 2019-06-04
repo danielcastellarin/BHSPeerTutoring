@@ -1,23 +1,38 @@
 package home;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Slider;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class TimeSelectPopUp extends Page{
 
     Stage popUpWindow;
     HBox navButtons;
+    ComboBox dayChooser;
     EventHandler<ActionEvent> cancelEvent;
     EventHandler<ActionEvent> submitEvent;
 
-    public TimeSelectPopUp(){
+    String day;
+    int startTime;
+    int endTime;
+
+    public TimeSelectPopUp(TimeSlot ts){
+        day = ts.getDay();
+        startTime = ts.getStartTIme();
+        endTime = ts.getEndTime();
+
         popUpWindow = createStage();
         createPopUpHeader("-fx-background-color: deepskyblue", "Time Select", Color.FLORALWHITE);
         createTimeSelector();
@@ -38,7 +53,61 @@ public class TimeSelectPopUp extends Page{
 
     //User selects time for specific day
     private void createTimeSelector(){
+        VBox vbox = new VBox();
 
+        VBox dayBox = new VBox();
+        Text dayLabel = new Text("Day of the Week:");
+        dayChooser = new ComboBox();
+        dayChooser.getItems().addAll("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
+        dayChooser.getSelectionModel().select(day);
+        dayBox.getChildren().addAll(dayLabel, dayChooser);
+        dayBox.setAlignment(Pos.CENTER);
+
+        HBox timeBox = new HBox();
+        VBox startBox = createTimeBox("Start", startTime);
+        VBox endBox = createTimeBox("End", endTime);
+        timeBox.getChildren().addAll(startBox, endBox);
+        timeBox.setSpacing(10);
+        timeBox.setAlignment(Pos.CENTER);
+
+        vbox.getChildren().addAll(dayBox, timeBox);
+        vbox.setSpacing(30);
+        vbox.setAlignment(Pos.CENTER);
+        pane.setCenter(vbox);
+    }
+
+    private VBox createTimeBox(String str, double startingVal){
+        VBox vbox = new VBox();
+        Text label = new Text(str + " Time:");
+        Text time = new Text();
+        Slider slider = createSlider(startingVal);
+        time.setText(numToTimeConvert((int) slider.getValue()));
+        slider.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+                time.setText(numToTimeConvert(t1.intValue()));
+                if(str.equals("Start"))
+                    startTime = t1.intValue();
+                else
+                    endTime = t1.intValue();
+            }
+        });
+        vbox.getChildren().addAll(label, slider, time);
+        vbox.setAlignment(Pos.CENTER);
+        return vbox;
+    }
+
+    private Slider createSlider(double startingVal){
+        Slider slider = new Slider();
+        slider.setMin(0);
+        slider.setMax(2400);
+        slider.setValue(startingVal);
+        slider.setBlockIncrement(25);
+        slider.setShowTickMarks(true);
+        slider.setMajorTickUnit(100);
+        slider.setSnapToTicks(true);
+
+        return slider;
     }
 
     private void createButtonEvents(){
@@ -53,8 +122,13 @@ public class TimeSelectPopUp extends Page{
             @Override
             public void handle(ActionEvent actionEvent) {
                 // Send Data back to Tutor Scheduling
-                System.out.println("Change Applied");
-                popUpWindow.close();
+                day = (String) dayChooser.getValue();
+                if(endTime > startTime && day != null){
+
+                    popUpWindow.close();
+                }else{
+                    System.out.println("Please enter a valid time range and/or day.");
+                }
             }
         };
     }

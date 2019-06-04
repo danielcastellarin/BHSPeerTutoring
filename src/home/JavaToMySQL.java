@@ -49,6 +49,20 @@ public class JavaToMySQL {
         return list;
     }
 
+    public ArrayList<TimeSlot> readTimeSlots(){
+        ArrayList<TimeSlot> list = new ArrayList<>();
+        try {
+            while(rs.next()){
+                TimeSlot timeSlot = new TimeSlot(
+                        rs.getString(1), rs.getInt(2), rs.getInt(3));
+                list.add(timeSlot);
+            }
+        } catch (SQLException sqlEx) {
+            sqlEx.printStackTrace();
+        }
+        return list;
+    }
+
     public ArrayList getMatches() throws SQLException{
         while(rs.next()){
             matches.add(rs.getString(1));

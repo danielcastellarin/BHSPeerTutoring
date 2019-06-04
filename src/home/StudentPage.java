@@ -25,7 +25,6 @@ public class StudentPage extends Page{
 
     GridPane grid;
     ComboBox subjectChooser;
-    HBox header;
     HBox buttons;
     FlowPane timeInputs;
     EventHandler<ActionEvent> backFunc;
@@ -37,11 +36,12 @@ public class StudentPage extends Page{
     ArrayList<TimeSlot> timeSlots = new ArrayList<TimeSlot>();
 
     public static StudentTimePopUp addTimePopUp;
+    public static TimeSelectPopUp timeSelectPopUp;
     public static StudentResult studentResult;
 
     public StudentPage(Stage stage){
         pane = new BorderPane();
-        createStudentPageHeader();
+        createHeader("-fx-background-color: darkolivegreen;", "Students", Color.FLORALWHITE);
         backFunc = createSceneChangeEvent(stage, Main.getHomePage());
         advFunc = new EventHandler<ActionEvent>() {
             @Override
@@ -57,21 +57,33 @@ public class StudentPage extends Page{
                 addTimePopUp = new StudentTimePopUp();
             }
         };
+        editSlotFunc = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                Button clickedBtn = (Button) actionEvent.getSource();
+                for(int i = 0; i < timeSlots.size(); i++){
+                    if(clickedBtn.getId().equals("edit id" + i)){
+                        timeSelectPopUp = new TimeSelectPopUp(timeSlots.get(i));
+                    }
+                }
+            }
+        };
+        delSlotFunc = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                Button clickedBtn = (Button) actionEvent.getSource();
+                for(int i = 0; i < timeSlots.size(); i++){
+                    if(clickedBtn.getId().equals("del id" + i)){
+                        timeSlots.remove(i);
+                        timeInputs.getChildren().remove(i);
+                        break;
+                    }
+                }
+            }
+        };
         createInputGrid();                // Name, Subject, Time
         createStudentPageButtons();
         createScene();
-    }
-
-    private void createStudentPageHeader(){
-        header = new HBox();
-        header.setPadding(new Insets(30));
-        header.setStyle("-fx-background-color: darkolivegreen;");
-        Text title = new Text("Students");
-        title.setFill(Color.FLORALWHITE);
-        title.setFont(Font.font("Constantia", FontWeight.SEMI_BOLD, 36.0));
-        header.getChildren().add(title);
-        header.setAlignment(Pos.CENTER);
-        pane.setTop(header);
     }
 
     private void createStudentPageButtons(){
@@ -119,20 +131,6 @@ public class StudentPage extends Page{
         pane.setCenter(grid);
     }
 
-    // Currently works for deleting timeslots
-    public void checkID(Button button){
-        for(int i = 0; i < timeSlots.size(); i++){
-            System.out.println("Timeslot checked");
-            if(button.getId().equals("del id" + i)){
-                timeSlots.remove(i);
-                timeInputs.getChildren().remove(i);
-                break;
-            }else if(button.getId().equals("edit id" + i)){
-
-            }
-        }
-    }
-
     public void addTimeInput(int index){
         FlowPane flow = new FlowPane();
         flow.setOrientation(Orientation.VERTICAL);
@@ -144,10 +142,10 @@ public class StudentPage extends Page{
         HBox buttonHolder = new HBox();
         Button editSlot = new Button("Edit");
         editSlot.setId("edit id" + index);
-        editSlot.setOnAction(event -> checkID(editSlot));
+        editSlot.setOnAction(editSlotFunc);
         Button deleteSlot = new Button("-");
         deleteSlot.setId("del id" + index);
-        deleteSlot.setOnAction(event -> checkID(deleteSlot));
+        deleteSlot.setOnAction(delSlotFunc);
         buttonHolder.setAlignment(Pos.CENTER);
         buttonHolder.setSpacing(20);
         buttonHolder.getChildren().addAll(editSlot, deleteSlot);

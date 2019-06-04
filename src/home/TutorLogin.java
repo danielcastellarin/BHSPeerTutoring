@@ -23,9 +23,11 @@ public class TutorLogin extends Page{
     ComboBox tutorDropDown;
     HBox buttons;
 
+    public static TutorScheduling tutorScheduling;
+
     public TutorLogin(Stage stage) {
         tutorDropDown = new ComboBox();
-        tutorDropDown.getItems().addAll("Kristina Wolinski", "Gati Aher", "Mike Winters");      //Will import data through database eventually
+        tutorDropDown.getItems().addAll("Kristina Wolinski", "Gati Aher", "Michael Winters");      //Will import data through database eventually
         pane.setCenter(tutorDropDown);
         createHeader("-fx-background-color: deepskyblue;", "Tutor", Color.FLORALWHITE);
         backFunc = createSceneChangeEvent(stage, Main.getHomePage());
@@ -34,9 +36,9 @@ public class TutorLogin extends Page{
             public void handle(ActionEvent actionEvent) {
                 String tutorName = (String) tutorDropDown.getValue();
                 if (tutorName != null) {
-                    Main.tutorScheduling.setHeaderText(tutorName);
-                    Main.switchPages(stage, Main.tutorScheduling.getScene());
                     System.out.println("Send to Tutor Scheduling Page. Name: " + tutorName);
+                    tutorScheduling = new TutorScheduling(stage, tutorName);
+
                 }else
                     System.out.println("Please select a name before proceeding.");
             }

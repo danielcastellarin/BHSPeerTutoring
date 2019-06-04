@@ -75,6 +75,7 @@ public class StudentTimePopUp extends Page{
         Text label = new Text(str + " Time:");
         Text time = new Text();
         Slider slider = createSlider();
+        time.setText(numToTimeConvert((int) slider.getValue()));
         slider.valueProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {

@@ -7,6 +7,7 @@ import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -14,10 +15,11 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+
 public class TutorScheduling extends Page{
 
-    GridPane calendar;
-    HBox header;
+    FlowPane calendar;
     HBox buttons;
     VBox calendarBox;
     String tutorName;
@@ -25,33 +27,20 @@ public class TutorScheduling extends Page{
     EventHandler<ActionEvent> backFunc;
     EventHandler<ActionEvent> advFunc;
 
+    ArrayList<TimeSlot> timeSlots = new ArrayList<>();
+
     public static TimeSelectPopUp timeSelectPopUp;
 
-    public TutorScheduling(Stage stage){
+    public TutorScheduling(Stage stage, String name){
         pane = new BorderPane();
-        tutorName = Main.tutorLogin.getComboBoxString();
-        createHeader();
+        tutorName = name;
+        createHeader("-fx-background-color: deepskyblue", tutorName, Color.FLORALWHITE);
         createButtonEvents(stage);
+        retrieveTutorInfo();
         createCalendarBox();
         createTutorSchedulingButtons();
         createScene();
-    }
-
-    private void createHeader(){
-        header = new HBox();
-        header.setPadding(new Insets(30));
-        title = new Text(tutorName);
-        title.setFill(Color.FLORALWHITE);
-        title.setFont(Font.font("Constantia", FontWeight.SEMI_BOLD, 36.0));
-        header.setStyle("-fx-background-color: deepskyblue");
-        header.getChildren().add(title);
-        header.setAlignment(Pos.CENTER);
-        pane.setTop(header);
-    }
-
-    public void setHeaderText(String name){
-        tutorName = name;
-        title.setText(name);
+        stage.setScene(scene);
     }
 
     private void createCalendarBox(){
@@ -62,52 +51,85 @@ public class TutorScheduling extends Page{
         Text calendarLabel = new Text("Edit Availability:");
         calendarLabel.setFont(Font.font("Constantia", FontWeight.NORMAL, 20));
         calendarLabel.setFill(Color.DEEPSKYBLUE);
-        calendar = new GridPane();
+        calendar = new FlowPane();
+        calendar.setAlignment(Pos.CENTER);
         calendar.setHgap(5);
         calendar.setVgap(5);
-//        calendar.setStyle("-fx-background-color: deepskyblue");
+//        calendarBox.setStyle("-fx-background-color: deepskyblue");
 
-        Button days[] = new Button[7];
+        ArrayList<Hyperlink> times = new ArrayList<>();
+        Text day;
         for(int i = 0; i < 7; i++){
+            VBox column = new VBox();
+            column.setSpacing(10);
+            column.setAlignment(Pos.TOP_CENTER);
+
             switch (i){
                 case 0:
-                    days[i] = new Button("Sunday");
+                    day = new Text("Sunday");
                     break;
                 case 1:
-                    days[i] = new Button("Monday");
+                    day = new Text("Monday");
                     break;
                 case 2:
-                    days[i] = new Button("Tuesday");
+                    day = new Text("Tuesday");
                     break;
                 case 3:
-                    days[i]= new Button("Wednesday");
+                    day = new Text("Wednesday");
                     break;
                 case 4:
-                    days[i] = new Button("Thursday");
+                    day = new Text("Thursday");
                     break;
                 case 5:
-                    days[i] = new Button("Friday");
-                    break;
-                case 6:
-                    days[i] = new Button("Saturday");
+                    day = new Text("Friday");
                     break;
                 default:
+                    day = new Text("Saturday");
                     break;
             }
-            days[i].setPrefSize(100, 100); //width, height
-            days[i].setOnAction(schedulePopUp);
-            calendar.add(days[i], i, 1);
+            column.getChildren().add(day);
+//            days[i].setPrefSize(100, 100); //width, height
+//            days[i].setOnAction(schedulePopUp);
+//            calendar.add(days[i], i, 1);
+
+            for(int j = 0; j < timeSlots.size(); j++){
+                if(timeSlots.get(j).getDay().equals(day.getText())){
+                    Hyperlink timeSlotLink = new Hyperlink(timeSlots.get(j).getStartTIme() + "-" + timeSlots.get(j).getEndTime());
+                    timeSlotLink.setId("day id" + i + ", slot id" + j);
+                    timeSlotLink.setOnAction(schedulePopUp);
+                    column.getChildren().add(timeSlotLink);
+                }
+            }
+
+            calendar.getChildren().add(column);
         }
         calendarBox.getChildren().addAll(calendarLabel, calendar);
         pane.setCenter(calendarBox);
+    }
+
+    private void retrieveTutorInfo(){
+        String firstName = tutorName.substring(0, tutorName.indexOf(" "));
+        String lastName = tutorName.substring(tutorName.indexOf(" ") + 1);
+        JavaToMySQL retrieveTimeSlotsQuery = new JavaToMySQL("SELECT day, start, end FROM timeslots " +
+                "WHERE lasid IN(SELECT lasid FROM tutors " +
+                "WHERE first_name = \"" + firstName + "\" AND last_name = \"" + lastName + "\");");
+        retrieveTimeSlotsQuery.doQuery();
+        timeSlots = retrieveTimeSlotsQuery.readTimeSlots();
+        System.out.println(timeSlots);
     }
 
     private void createButtonEvents(Stage stage){
         schedulePopUp = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                System.out.print("Pop up");
-                timeSelectPopUp = new TimeSelectPopUp();
+                Hyperlink clickedBtn = (Hyperlink) actionEvent.getSource();
+                for(int i = 0; i < 7; i++){
+                    for(int j = 0; j < timeSlots.size(); j++){
+                        if(clickedBtn.getId().equals("day id" + i + ", slot id" + j)){
+                            timeSelectPopUp = new TimeSelectPopUp(timeSlots.get(j));
+                        }
+                    }
+                }
             }
         };
         advFunc = new EventHandler<ActionEvent>() {
