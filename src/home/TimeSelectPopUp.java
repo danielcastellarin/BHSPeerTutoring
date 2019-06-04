@@ -27,11 +27,15 @@ public class TimeSelectPopUp extends Page{
     String day;
     int startTime;
     int endTime;
+    int slotIndex;
+    boolean isTutor;
 
-    public TimeSelectPopUp(TimeSlot ts){
+    public TimeSelectPopUp(TimeSlot ts, int i, boolean isTut){
         day = ts.getDay();
         startTime = ts.getStartTIme();
         endTime = ts.getEndTime();
+        slotIndex = i;
+        isTutor = isTut;
 
         popUpWindow = createStage();
         createPopUpHeader("-fx-background-color: deepskyblue", "Time Select", Color.FLORALWHITE);
@@ -124,7 +128,14 @@ public class TimeSelectPopUp extends Page{
                 // Send Data back to Tutor Scheduling
                 day = (String) dayChooser.getValue();
                 if(endTime > startTime && day != null){
-
+                    TimeSlot timeSlot = new TimeSlot(day, startTime, endTime);
+                    if(isTutor){
+                        TutorLogin.tutorScheduling.editTimeSlot(slotIndex, timeSlot);
+                        TutorLogin.tutorScheduling.updateCenter();
+                    }else{
+                        Main.studentPage.editTimeSlot(slotIndex, timeSlot);
+                        Main.studentPage.updateTimeInputs();
+                    }
                     popUpWindow.close();
                 }else{
                     System.out.println("Please enter a valid time range and/or day.");

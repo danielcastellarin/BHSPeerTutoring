@@ -32,7 +32,6 @@ public class TutorScheduling extends Page{
     public static TimeSelectPopUp timeSelectPopUp;
 
     public TutorScheduling(Stage stage, String name){
-        pane = new BorderPane();
         tutorName = name;
         createHeader("-fx-background-color: deepskyblue", tutorName, Color.FLORALWHITE);
         createButtonEvents(stage);
@@ -51,13 +50,68 @@ public class TutorScheduling extends Page{
         Text calendarLabel = new Text("Edit Availability:");
         calendarLabel.setFont(Font.font("Constantia", FontWeight.NORMAL, 20));
         calendarLabel.setFill(Color.DEEPSKYBLUE);
+        calendarBox.getChildren().add(calendarLabel);
+//        calendarBox.setStyle("-fx-background-color: deepskyblue");
+
+        updateCenter();
+
+        pane.setCenter(calendarBox);
+    }
+
+    private void retrieveTutorInfo(){
+        String firstName = tutorName.substring(0, tutorName.indexOf(" "));
+        String lastName = tutorName.substring(tutorName.indexOf(" ") + 1);
+        JavaToMySQL retrieveTimeSlotsQuery = new JavaToMySQL("SELECT day, start, end FROM timeslots " +
+                "WHERE lasid IN(SELECT lasid FROM tutors " +
+                "WHERE first_name = \"" + firstName + "\" AND last_name = \"" + lastName + "\");");
+        retrieveTimeSlotsQuery.doQuery();
+        timeSlots = retrieveTimeSlotsQuery.readTimeSlots();
+//        System.out.println(timeSlots);
+    }
+
+    private void createButtonEvents(Stage stage){
+        schedulePopUp = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                Hyperlink clickedBtn = (Hyperlink) actionEvent.getSource();
+                for(int i = 0; i < 7; i++){
+                    for(int j = 0; j < timeSlots.size(); j++){
+                        if(clickedBtn.getId().equals("day id" + i + ", slot id" + j)){
+                            timeSelectPopUp = new TimeSelectPopUp(timeSlots.get(j), j, true);
+                        }
+                    }
+                }
+            }
+        };
+        advFunc = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                Main.tutorDone.setHeaderText(tutorName);
+                Main.switchPages(stage, Main.tutorDone.getScene());
+                System.out.println("Send to Tutor Done Page.");
+                System.out.println("Update " + tutorName + "'s info in database" + tutorName);
+            }
+        };
+        backFunc = createSceneChangeEvent(stage, Main.tutorLogin.getScene());
+    }
+
+    public void editTimeSlot(int index, TimeSlot timeSlot){
+        for(int i = 0; i < timeSlots.size(); i++){
+            if(index == i){
+                TimeSlot newTime = new TimeSlot(timeSlot.getDay(), timeSlot.getStartTIme(), timeSlot.getEndTime());
+                timeSlots.set(i, newTime);
+            }
+        }
+    }
+    public void updateCenter(){
+        if(calendarBox.getChildren().size() > 1)
+            calendarBox.getChildren().remove(calendar);
+
         calendar = new FlowPane();
         calendar.setAlignment(Pos.CENTER);
         calendar.setHgap(5);
         calendar.setVgap(5);
-//        calendarBox.setStyle("-fx-background-color: deepskyblue");
 
-        ArrayList<Hyperlink> times = new ArrayList<>();
         Text day;
         for(int i = 0; i < 7; i++){
             VBox column = new VBox();
@@ -88,13 +142,11 @@ public class TutorScheduling extends Page{
                     break;
             }
             column.getChildren().add(day);
-//            days[i].setPrefSize(100, 100); //width, height
-//            days[i].setOnAction(schedulePopUp);
-//            calendar.add(days[i], i, 1);
 
             for(int j = 0; j < timeSlots.size(); j++){
                 if(timeSlots.get(j).getDay().equals(day.getText())){
-                    Hyperlink timeSlotLink = new Hyperlink(timeSlots.get(j).getStartTIme() + "-" + timeSlots.get(j).getEndTime());
+                    Hyperlink timeSlotLink = new Hyperlink(numToTimeConvert(timeSlots.get(j).getStartTIme()) + "-" +
+                            numToTimeConvert(timeSlots.get(j).getEndTime()));
                     timeSlotLink.setId("day id" + i + ", slot id" + j);
                     timeSlotLink.setOnAction(schedulePopUp);
                     column.getChildren().add(timeSlotLink);
@@ -103,45 +155,7 @@ public class TutorScheduling extends Page{
 
             calendar.getChildren().add(column);
         }
-        calendarBox.getChildren().addAll(calendarLabel, calendar);
-        pane.setCenter(calendarBox);
-    }
-
-    private void retrieveTutorInfo(){
-        String firstName = tutorName.substring(0, tutorName.indexOf(" "));
-        String lastName = tutorName.substring(tutorName.indexOf(" ") + 1);
-        JavaToMySQL retrieveTimeSlotsQuery = new JavaToMySQL("SELECT day, start, end FROM timeslots " +
-                "WHERE lasid IN(SELECT lasid FROM tutors " +
-                "WHERE first_name = \"" + firstName + "\" AND last_name = \"" + lastName + "\");");
-        retrieveTimeSlotsQuery.doQuery();
-        timeSlots = retrieveTimeSlotsQuery.readTimeSlots();
-        System.out.println(timeSlots);
-    }
-
-    private void createButtonEvents(Stage stage){
-        schedulePopUp = new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                Hyperlink clickedBtn = (Hyperlink) actionEvent.getSource();
-                for(int i = 0; i < 7; i++){
-                    for(int j = 0; j < timeSlots.size(); j++){
-                        if(clickedBtn.getId().equals("day id" + i + ", slot id" + j)){
-                            timeSelectPopUp = new TimeSelectPopUp(timeSlots.get(j));
-                        }
-                    }
-                }
-            }
-        };
-        advFunc = new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                Main.tutorDone.setHeaderText(tutorName);
-                Main.switchPages(stage, Main.tutorDone.getScene());
-                System.out.println("Send to Tutor Done Page.");
-                System.out.println("Update " + tutorName + "'s info in database" + tutorName);
-            }
-        };
-        backFunc = createSceneChangeEvent(stage, Main.tutorLogin.getScene());
+        calendarBox.getChildren().add(calendar);
     }
 
     private void createTutorSchedulingButtons(){

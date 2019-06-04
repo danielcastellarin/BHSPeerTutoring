@@ -63,7 +63,7 @@ public class StudentPage extends Page{
                 Button clickedBtn = (Button) actionEvent.getSource();
                 for(int i = 0; i < timeSlots.size(); i++){
                     if(clickedBtn.getId().equals("edit id" + i)){
-                        timeSelectPopUp = new TimeSelectPopUp(timeSlots.get(i));
+                        timeSelectPopUp = new TimeSelectPopUp(timeSlots.get(i), i, false);
                     }
                 }
             }
@@ -159,5 +159,25 @@ public class StudentPage extends Page{
 
         flow.getChildren().addAll(indexLabel, dayLabel, startLabel, endLabel, buttonHolder);
         timeInputs.getChildren().add(flow);
+    }
+
+    public void editTimeSlot(int index, TimeSlot timeSlot){
+        for(int i = 0; i < timeSlots.size(); i++){
+            if(index == i){
+                TimeSlot newTime = new TimeSlot(timeSlot.getDay(), timeSlot.getStartTIme(), timeSlot.getEndTime());
+                timeSlots.set(i, newTime);
+            }
+        }
+    }
+
+    public void updateTimeInputs(){
+        grid.getChildren().remove(timeInputs);
+        timeInputs = new FlowPane();
+        timeInputs.setHgap(10);
+        timeInputs.setVgap(10);
+        grid.add(timeInputs, 1, 5, 3, 1);
+        for(int i = 0; i < timeSlots.size(); i++){
+            addTimeInput(i);
+        }
     }
 }
