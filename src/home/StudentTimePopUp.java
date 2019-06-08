@@ -27,8 +27,10 @@ public class StudentTimePopUp extends Page{
     String day;
     int startTime;
     int endTime;
+    boolean isTutor;
 
-    public StudentTimePopUp(){
+    public StudentTimePopUp(boolean isTut){
+        isTutor = isTut;
         popUpWindow = createStage();
         createPopUpHeader("-fx-background-color: darkolivegreen", "Add Availability", Color.FLORALWHITE);
         createTimeSelector();
@@ -118,11 +120,13 @@ public class StudentTimePopUp extends Page{
                 // Send Data back to Student Page
                 day = (String) dayChooser.getValue();
                 if(endTime > startTime && day != null){
-                    System.out.println("Start time sent: " + startTime);
-                    System.out.println("End time sent: " + endTime);
                     TimeSlot timeSlot = new TimeSlot(day, startTime, endTime);
-                    Main.studentPage.timeSlots.add(timeSlot);
-                    Main.studentPage.addTimeInput(Main.studentPage.timeSlots.size() - 1);
+                    if(isTutor){
+                        TutorLogin.tutorScheduling.addTimeSlot(timeSlot);
+                    }else{
+                        Main.studentPage.timeSlots.add(timeSlot);
+                        Main.studentPage.addTimeInput(Main.studentPage.timeSlots.size() - 1);
+                    }
                     popUpWindow.close();
                 }else{
                     System.out.println("Please enter a valid time range and/or day.");

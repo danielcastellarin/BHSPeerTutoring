@@ -54,7 +54,7 @@ public class StudentPage extends Page{
             @Override
             public void handle(ActionEvent actionEvent) {
                 System.out.println("Student Time Chooser");
-                addTimePopUp = new StudentTimePopUp();
+                addTimePopUp = new StudentTimePopUp(false);
             }
         };
         editSlotFunc = new EventHandler<ActionEvent>() {

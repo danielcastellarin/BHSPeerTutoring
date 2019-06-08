@@ -23,6 +23,7 @@ public class TutorScheduling extends Page{
     EventHandler<ActionEvent> schedulePopUp;
     EventHandler<ActionEvent> backFunc;
     EventHandler<ActionEvent> advFunc;
+    EventHandler<ActionEvent> addTS;
 
     ArrayList<TimeSlot> timeSlots = new ArrayList<>();
 
@@ -31,6 +32,7 @@ public class TutorScheduling extends Page{
     String editTimeSlotsQuery = "";
 
     public static TimeSelectPopUp timeSelectPopUp;
+    public static StudentTimePopUp addTimePopUp;
 
     public TutorScheduling(Stage stage, String name){
         tutorName = name;
@@ -55,6 +57,11 @@ public class TutorScheduling extends Page{
 //        calendarBox.setStyle("-fx-background-color: deepskyblue");
 
         updateCenter();
+
+        Button addBtn = new Button("Add");
+        addBtn.setOnAction(addTS);
+        calendarBox.getChildren().add(addBtn);
+
 
         pane.setCenter(calendarBox);
     }
@@ -90,6 +97,12 @@ public class TutorScheduling extends Page{
                 }
             }
         };
+        addTS = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                addTimePopUp = new StudentTimePopUp(true);
+            }
+        };
         advFunc = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -110,9 +123,21 @@ public class TutorScheduling extends Page{
             if(index == i){
                 TimeSlot newTime = new TimeSlot(timeSlot.getDay(), timeSlot.getStartTIme(), timeSlot.getEndTime());
                 timeSlots.set(i, newTime);
+                break;
             }
         }
     }
+
+    public void addTimeSlot(TimeSlot ts){
+        timeSlots.add(ts);
+//        JavaToMySQL appendTimeSlot = new JavaToMySQL("INSERT INTO timeslots(lasid, day, start, end) " +
+//                "VALUES (" + lasid + ", \"" + ts.getDay() + "\", " + ts.getStartTIme() + ", " + ts.getEndTime() + ");");
+//        appendTimeSlot.doUpdate();
+        editTimeSlotsQuery += "INSERT INTO timeslots(lasid, day, start, end) VALUES " +
+                "(" + lasid + ", \"" + ts.getDay() + "\", " + ts.getStartTIme() + ", " + ts.getEndTime() + "); ";
+        updateCenter();
+    }
+
     public void updateCenter(){
         if(calendarBox.getChildren().size() > 1)
             calendarBox.getChildren().remove(calendar);
@@ -165,7 +190,7 @@ public class TutorScheduling extends Page{
 
             calendar.getChildren().add(column);
         }
-        calendarBox.getChildren().add(calendar);
+        calendarBox.getChildren().add(1, calendar);
     }
 
 
