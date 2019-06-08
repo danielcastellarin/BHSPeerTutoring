@@ -4,8 +4,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.layout.*;
@@ -22,12 +20,15 @@ public class TutorScheduling extends Page{
     FlowPane calendar;
     HBox buttons;
     VBox calendarBox;
-    String tutorName;
     EventHandler<ActionEvent> schedulePopUp;
     EventHandler<ActionEvent> backFunc;
     EventHandler<ActionEvent> advFunc;
 
     ArrayList<TimeSlot> timeSlots = new ArrayList<>();
+
+    String tutorName;
+    int lasid;
+    String editTimeSlotsQuery = "";
 
     public static TimeSelectPopUp timeSelectPopUp;
 
@@ -59,14 +60,20 @@ public class TutorScheduling extends Page{
     }
 
     private void retrieveTutorInfo(){
-        String firstName = tutorName.substring(0, tutorName.indexOf(" "));
-        String lastName = tutorName.substring(tutorName.indexOf(" ") + 1);
+        lasid = retrieveLasid();
         JavaToMySQL retrieveTimeSlotsQuery = new JavaToMySQL("SELECT day, start, end FROM timeslots " +
-                "WHERE lasid IN(SELECT lasid FROM tutors " +
-                "WHERE first_name = \"" + firstName + "\" AND last_name = \"" + lastName + "\");");
+                "WHERE lasid = " + lasid + ";");
         retrieveTimeSlotsQuery.doQuery();
         timeSlots = retrieveTimeSlotsQuery.readTimeSlots();
-//        System.out.println(timeSlots);
+    }
+
+    private int retrieveLasid(){
+        String firstName = tutorName.substring(0, tutorName.indexOf(" "));
+        String lastName = tutorName.substring(tutorName.indexOf(" ") + 1);
+        JavaToMySQL retrieveLasidQuery = new JavaToMySQL("SELECT lasid FROM tutors " +
+                "WHERE first_name = \"" + firstName + "\" AND last_name = \"" + lastName + "\";");
+        retrieveLasidQuery.doQuery();
+        return retrieveLasidQuery.readLasid();
     }
 
     private void createButtonEvents(Stage stage){
@@ -89,7 +96,10 @@ public class TutorScheduling extends Page{
                 Main.tutorDone.setHeaderText(tutorName);
                 Main.switchPages(stage, Main.tutorDone.getScene());
                 System.out.println("Send to Tutor Done Page.");
-                System.out.println("Update " + tutorName + "'s info in database" + tutorName);
+                if(!editTimeSlotsQuery.isEmpty()){
+                    JavaToMySQL updateTutorTimeSlots = new JavaToMySQL(editTimeSlotsQuery);
+                    updateTutorTimeSlots.doUpdate();
+                }
             }
         };
         backFunc = createSceneChangeEvent(stage, Main.tutorLogin.getScene());
@@ -156,6 +166,30 @@ public class TutorScheduling extends Page{
             calendar.getChildren().add(column);
         }
         calendarBox.getChildren().add(calendar);
+    }
+
+
+    public void addTimeSlotToQuery(TimeSlot ogTS, TimeSlot ts){
+        boolean isDayDifferent = !ogTS.getDay().equals(ts.getDay());
+        boolean isStartDifferent = ogTS.getStartTIme() != ts.getStartTIme();
+        boolean isEndDifferent = ogTS.getEndTime() != ts.getEndTime();
+
+        editTimeSlotsQuery += "UPDATE timeslots SET ";
+        if(isDayDifferent)
+            editTimeSlotsQuery += "day = \"" + ts.getDay() + "\"";
+        if(isStartDifferent) {
+            if (isDayDifferent)
+                editTimeSlotsQuery += ", ";
+            editTimeSlotsQuery += "start = " + ts.getStartTIme();
+        }if(isEndDifferent){
+            if(isDayDifferent || isStartDifferent)
+                editTimeSlotsQuery += ", ";
+            editTimeSlotsQuery += "end = " + ts.getEndTime();
+        }
+
+        editTimeSlotsQuery += " WHERE day = \"" + ogTS.getDay() + "\" AND start = " + ogTS.getStartTIme() +
+                " AND end = " + ogTS.getEndTime() + " AND lasid = " + lasid + "; ";
+        System.out.println(editTimeSlotsQuery);
     }
 
     private void createTutorSchedulingButtons(){

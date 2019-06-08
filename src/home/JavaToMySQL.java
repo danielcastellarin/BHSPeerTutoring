@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 public class JavaToMySQL {
 
-    private static final String url = "jdbc:mysql://localhost:3306/testdb";
+    private static final String url = "jdbc:mysql://localhost:3306/testdb?allowMultiQueries=true";
     private static final String user = "devman";
     private static final String pass = "PeerTutoringRocks45";
 
@@ -27,6 +27,16 @@ public class JavaToMySQL {
             con = DriverManager.getConnection(url, user, pass);
             stmt = con.createStatement();
             rs = stmt.executeQuery(query);
+        } catch (SQLException sqlEx) {
+            sqlEx.printStackTrace();
+        }
+    }
+
+    public void doUpdate(){
+        try {
+            con = DriverManager.getConnection(url, user, pass);
+            stmt = con.createStatement();
+            stmt.executeUpdate(query);
         } catch (SQLException sqlEx) {
             sqlEx.printStackTrace();
         }
@@ -61,6 +71,16 @@ public class JavaToMySQL {
             sqlEx.printStackTrace();
         }
         return list;
+    }
+
+    public int readLasid() {
+        try {
+            rs.next();
+            return rs.getInt(1);
+        } catch (SQLException sqlEx) {
+            sqlEx.printStackTrace();
+        }
+        return 0;
     }
 
     public ArrayList getMatches() throws SQLException{

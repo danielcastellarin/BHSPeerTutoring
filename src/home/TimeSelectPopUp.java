@@ -29,6 +29,7 @@ public class TimeSelectPopUp extends Page{
     int endTime;
     int slotIndex;
     boolean isTutor;
+    TimeSlot origTS;
 
     public TimeSelectPopUp(TimeSlot ts, int i, boolean isTut){
         day = ts.getDay();
@@ -36,6 +37,7 @@ public class TimeSelectPopUp extends Page{
         endTime = ts.getEndTime();
         slotIndex = i;
         isTutor = isTut;
+        origTS = ts;
 
         popUpWindow = createStage();
         createPopUpHeader("-fx-background-color: deepskyblue", "Time Select", Color.FLORALWHITE);
@@ -132,6 +134,7 @@ public class TimeSelectPopUp extends Page{
                     if(isTutor){
                         TutorLogin.tutorScheduling.editTimeSlot(slotIndex, timeSlot);
                         TutorLogin.tutorScheduling.updateCenter();
+                        TutorLogin.tutorScheduling.addTimeSlotToQuery(origTS, timeSlot);
                     }else{
                         Main.studentPage.editTimeSlot(slotIndex, timeSlot);
                         Main.studentPage.updateTimeInputs();
