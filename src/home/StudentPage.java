@@ -75,7 +75,7 @@ public class StudentPage extends Page{
                 for(int i = 0; i < timeSlots.size(); i++){
                     if(clickedBtn.getId().equals("del id" + i)){
                         timeSlots.remove(i);
-                        timeInputs.getChildren().remove(i);
+                        updateTimeInputs();
                         break;
                     }
                 }
