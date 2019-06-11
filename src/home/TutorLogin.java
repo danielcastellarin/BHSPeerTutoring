@@ -54,7 +54,6 @@ public class TutorLogin extends Page{
                 "FROM tutors ORDER BY last_name;");
         retrieveTutorNames.doQuery();
         tutorNames = retrieveTutorNames.readTutorNames();
-        System.out.println(tutorNames);
         tutorDropDown = new ComboBox();
         tutorDropDown.getItems().addAll(tutorNames);
         pane.setCenter(tutorDropDown);

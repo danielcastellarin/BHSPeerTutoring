@@ -97,6 +97,18 @@ public class JavaToMySQL {
         return 0;
     }
 
+    public ArrayList<String> readSubjects(){
+        ArrayList<String> list = new ArrayList<>();
+        try {
+            while(rs.next()){
+                list.add(rs.getString(1));
+            }
+        } catch (SQLException sqlEx) {
+            sqlEx.printStackTrace();
+        }
+        return list;
+    }
+
     public ArrayList getMatches() throws SQLException{
         while(rs.next()){
             matches.add(rs.getString(1));

@@ -34,6 +34,7 @@ public class StudentPage extends Page{
     EventHandler<ActionEvent> delSlotFunc;
 
     ArrayList<TimeSlot> timeSlots = new ArrayList<TimeSlot>();
+    ArrayList<String> subjectNames = new ArrayList<>();
 
     public static StudentTimePopUp addTimePopUp;
     public static TimeSelectPopUp timeSelectPopUp;
@@ -111,9 +112,14 @@ public class StudentPage extends Page{
         subjectChooserLabel.setFont(Font.font("Constantia", FontWeight.NORMAL, 20));
         subjectChooserLabel.setFill(Color.DARKOLIVEGREEN);
         grid.add(subjectChooserLabel, 2, 1);
+
+        JavaToMySQL retrieveSubjects = new JavaToMySQL("SELECT DISTINCT subject FROM subjects;");
+        retrieveSubjects.doQuery();
+        subjectNames = retrieveSubjects.readSubjects();
         subjectChooser = new ComboBox();
-        subjectChooser.getItems().addAll("Algebra II", "Science", "English", "Social Studies");
+        subjectChooser.getItems().addAll(subjectNames);
         grid.add(subjectChooser, 2, 2);
+
         Text timeLabel = new Text("Time:");
         timeLabel.setFont(Font.font("Constantia", FontWeight.NORMAL, 20));
         timeLabel.setFill(Color.DARKOLIVEGREEN);
