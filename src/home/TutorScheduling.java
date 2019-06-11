@@ -26,6 +26,7 @@ public class TutorScheduling extends Page{
     EventHandler<ActionEvent> addTS;
 
     ArrayList<TimeSlot> timeSlots = new ArrayList<>();
+    ArrayList<TimeSlot> changedTimeSlots = new ArrayList<>();
 
     String tutorName;
     int lasid;
@@ -33,6 +34,7 @@ public class TutorScheduling extends Page{
 
     public static TimeSelectPopUp timeSelectPopUp;
     public static StudentTimePopUp addTimePopUp;
+    public static TutorDone tutorDone;
 
     public TutorScheduling(Stage stage, String name){
         tutorName = name;
@@ -106,13 +108,12 @@ public class TutorScheduling extends Page{
         advFunc = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                Main.tutorDone.setHeaderText(tutorName);
-                Main.switchPages(stage, Main.tutorDone.getScene());
                 System.out.println("Send to Tutor Done Page.");
                 if(!editTimeSlotsQuery.isEmpty()){
                     JavaToMySQL updateTutorTimeSlots = new JavaToMySQL(editTimeSlotsQuery);
                     updateTutorTimeSlots.doUpdate();
                 }
+                tutorDone = new TutorDone(stage, tutorName, changedTimeSlots);
             }
         };
         backFunc = createSceneChangeEvent(stage, Main.tutorLogin.getScene());
@@ -123,6 +124,7 @@ public class TutorScheduling extends Page{
             if(index == i){
                 TimeSlot newTime = new TimeSlot(timeSlot.getDay(), timeSlot.getStartTIme(), timeSlot.getEndTime());
                 timeSlots.set(i, newTime);
+                changedTimeSlots.add(newTime);
                 break;
             }
         }
@@ -130,6 +132,7 @@ public class TutorScheduling extends Page{
 
     public void addTimeSlot(TimeSlot ts){
         timeSlots.add(ts);
+        changedTimeSlots.add(ts);
 //        JavaToMySQL appendTimeSlot = new JavaToMySQL("INSERT INTO timeslots(lasid, day, start, end) " +
 //                "VALUES (" + lasid + ", \"" + ts.getDay() + "\", " + ts.getStartTIme() + ", " + ts.getEndTime() + ");");
 //        appendTimeSlot.doUpdate();

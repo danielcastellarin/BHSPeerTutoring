@@ -3,18 +3,19 @@ package home;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+
+import java.util.ArrayList;
 
 public class TutorDone extends Page {
 
@@ -23,27 +24,50 @@ public class TutorDone extends Page {
     String tutorName;
     Text centerText;
 
-    public TutorDone(Stage stage){
+    private ArrayList<TimeSlot> timeSlots;
+
+    public TutorDone(Stage stage, String name, ArrayList<TimeSlot> slots){
+        tutorName = name;
+        timeSlots = slots;
+
         createHeader("-fx-background-color: deepskyblue;", tutorName, Color.FLORALWHITE);
         homeFunc = createSceneChangeEvent(stage, Main.getHomePage());
         createCenterText();
         createHomeButton();
-        scene = new Scene(pane, 600, 500);
-    }
-
-    public void setHeaderText(String name){
-        tutorName = name;
-        title.setText(name);
-        centerText.setText("Thank you, " + name + ", for updating your schedule!");
+        createScene();
+        stage.setScene(scene);
     }
 
     private void createCenterText(){
-        centerText = new Text("Thank you, " + tutorName + ", for updating your schedule!");
+        VBox center = new VBox();
+        center.setSpacing(30);
+        center.setAlignment(Pos.CENTER);
+
+        centerText = new Text("Thank you for updating your schedule!");
         centerText.setFont(Font.font("Constantia", FontWeight.SEMI_BOLD, 36.0));
         centerText.setTextAlignment(TextAlignment.CENTER);
         centerText.setWrappingWidth(300.0);
         centerText.setFill(Color.DARKGRAY);
-        pane.setCenter(centerText);
+
+        HBox changedTimes = new HBox();
+        changedTimes.setSpacing(20);
+        for(int i = 0; i < timeSlots.size(); i++){
+            changedTimes.getChildren().add(createTimeInput(i));
+        }
+
+        center.getChildren().addAll(centerText, changedTimes);
+        pane.setCenter(center);
+    }
+
+    private FlowPane createTimeInput(int i){
+        FlowPane timePane = new FlowPane();
+        timePane.setOrientation(Orientation.VERTICAL);
+        Text index = new Text("Time Slot " + (i + 1));
+        Text day = new Text("Day: " + timeSlots.get(i).getDay());
+        Text range = new Text(numToTimeConvert(timeSlots.get(i).getStartTIme()) +
+                " - " + numToTimeConvert(timeSlots.get(i).getEndTime()));
+        timePane.getChildren().addAll(index, day, range);
+        return timePane;
     }
 
     private void createHomeButton(){
