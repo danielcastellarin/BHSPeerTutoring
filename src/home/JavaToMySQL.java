@@ -59,6 +59,20 @@ public class JavaToMySQL {
         return list;
     }
 
+    public ArrayList<String> readTutorNames(){
+        ArrayList<String> list = new ArrayList<>();
+        String name;
+        try {
+            while(rs.next()){
+                name = rs.getString(1) + " " + rs.getString(2);
+                list.add(name);
+            }
+        } catch (SQLException sqlEx) {
+            sqlEx.printStackTrace();
+        }
+        return list;
+    }
+
     public ArrayList<TimeSlot> readTimeSlots(){
         ArrayList<TimeSlot> list = new ArrayList<>();
         try {

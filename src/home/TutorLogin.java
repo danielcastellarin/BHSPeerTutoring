@@ -16,6 +16,8 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+
 public class TutorLogin extends Page{
 
     private EventHandler<ActionEvent> advFunc;
@@ -23,13 +25,13 @@ public class TutorLogin extends Page{
     ComboBox tutorDropDown;
     HBox buttons;
 
+    ArrayList<String> tutorNames;
+
     public static TutorScheduling tutorScheduling;
 
     public TutorLogin(Stage stage) {
-        tutorDropDown = new ComboBox();
-        tutorDropDown.getItems().addAll("Kristina Wolinski", "Gati Aher", "Michael Winters");      //Will import data through database eventually
-        pane.setCenter(tutorDropDown);
         createHeader("-fx-background-color: deepskyblue;", "Tutor", Color.FLORALWHITE);
+        createCenter();
         backFunc = createSceneChangeEvent(stage, Main.getHomePage());
         advFunc = new EventHandler<ActionEvent>() {
             @Override
@@ -45,6 +47,17 @@ public class TutorLogin extends Page{
         };
         createTutorSelectionButtons();
         createScene();
+    }
+
+    private void createCenter(){
+        JavaToMySQL retrieveTutorNames = new JavaToMySQL("SELECT DISTINCT first_name, last_name " +
+                "FROM tutors ORDER BY last_name;");
+        retrieveTutorNames.doQuery();
+        tutorNames = retrieveTutorNames.readTutorNames();
+        System.out.println(tutorNames);
+        tutorDropDown = new ComboBox();
+        tutorDropDown.getItems().addAll(tutorNames);
+        pane.setCenter(tutorDropDown);
     }
 
     private void createTutorSelectionButtons(){
