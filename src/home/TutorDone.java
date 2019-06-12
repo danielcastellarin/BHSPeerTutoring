@@ -31,7 +31,7 @@ public class TutorDone extends Page {
         timeSlots = slots;
 
         createHeader("-fx-background-color: deepskyblue;", tutorName, Color.FLORALWHITE);
-        homeFunc = createSceneChangeEvent(stage, Main.getHomePage());
+        homeFunc = createSceneChangeEvent(stage, Main.homePage.getScene());
         createCenterText();
         createHomeButton();
         createScene();

@@ -19,7 +19,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
-import java.util.concurrent.Flow;
 
 public class StudentPage extends Page{
 
@@ -41,9 +40,8 @@ public class StudentPage extends Page{
     public static StudentResult studentResult;
 
     public StudentPage(Stage stage){
-        pane = new BorderPane();
         createHeader("-fx-background-color: darkolivegreen;", "Students", Color.FLORALWHITE);
-        backFunc = createSceneChangeEvent(stage, Main.getHomePage());
+        backFunc = createSceneChangeEvent(stage, Main.homePage.getScene());
         advFunc = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -85,6 +83,7 @@ public class StudentPage extends Page{
         createInputGrid();                // Name, Subject, Time
         createStudentPageButtons();
         createScene();
+        stage.setScene(scene);
     }
 
     private void createStudentPageButtons(){

@@ -38,7 +38,7 @@ public class StudentResult extends Page {
         timeSlots = slots;
 
         createHeader("-fx-background-color: darkolivegreen", "Student Results", Color.FLORALWHITE);
-        homeFunc = createSceneChangeEvent(stage, Main.getHomePage());
+        homeFunc = createSceneChangeEvent(stage, Main.homePage.getScene());
         createCenter();
         createHomeButton();
         createScene();

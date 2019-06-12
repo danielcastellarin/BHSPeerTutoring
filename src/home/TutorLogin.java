@@ -32,7 +32,7 @@ public class TutorLogin extends Page{
     public TutorLogin(Stage stage) {
         createHeader("-fx-background-color: deepskyblue;", "Tutor", Color.FLORALWHITE);
         createCenter();
-        backFunc = createSceneChangeEvent(stage, Main.getHomePage());
+        backFunc = createSceneChangeEvent(stage, Main.homePage.getScene());
         advFunc = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -47,6 +47,7 @@ public class TutorLogin extends Page{
         };
         createTutorSelectionButtons();
         createScene();
+        stage.setScene(scene);
     }
 
     private void createCenter(){
