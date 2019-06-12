@@ -6,6 +6,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -24,6 +25,7 @@ public class TutorScheduling extends Page{
     EventHandler<ActionEvent> backFunc;
     EventHandler<ActionEvent> advFunc;
     EventHandler<ActionEvent> addTS;
+    EventHandler<ActionEvent> delTS;
 
     ArrayList<TimeSlot> timeSlots = new ArrayList<>();
     ArrayList<TimeSlot> changedTimeSlots = new ArrayList<>();
@@ -31,6 +33,7 @@ public class TutorScheduling extends Page{
     String tutorName;
     int lasid;
     String editTimeSlotsQuery = "";
+    boolean isDeleteMode = false;
 
     public static TimeSelectPopUp timeSelectPopUp;
     public static StudentTimePopUp addTimePopUp;
@@ -64,6 +67,9 @@ public class TutorScheduling extends Page{
         addBtn.setOnAction(addTS);
         calendarBox.getChildren().add(addBtn);
 
+        Button delBtn = new Button("Delete");
+        delBtn.setOnAction(delTS);
+        calendarBox.getChildren().add(delBtn);
 
         pane.setCenter(calendarBox);
     }
@@ -90,10 +96,24 @@ public class TutorScheduling extends Page{
             @Override
             public void handle(ActionEvent actionEvent) {
                 Hyperlink clickedBtn = (Hyperlink) actionEvent.getSource();
+                System.out.println(isDeleteMode);
                 for(int i = 0; i < 7; i++){
                     for(int j = 0; j < timeSlots.size(); j++){
                         if(clickedBtn.getId().equals("day id" + i + ", slot id" + j)){
-                            timeSelectPopUp = new TimeSelectPopUp(timeSlots.get(j), j, true);
+                            if(isDeleteMode){
+                                VBox col = (VBox) clickedBtn.getParent();
+                                col.getChildren().remove(clickedBtn);
+                                TimeSlot ts = timeSlots.get(j);
+                                timeSlots.remove(ts);
+                                if(changedTimeSlots.contains(ts)){
+                                    changedTimeSlots.remove(ts);
+                                }
+                                editTimeSlotsQuery += "DELETE FROM timeslots WHERE lasid = " + lasid + " AND " +
+                                        "day = \"" + ts.getDay() + "\" AND start = " + ts.getStartTIme() + " AND " +
+                                        "end = " + ts.getEndTime() + "; ";
+                            }else{
+                                timeSelectPopUp = new TimeSelectPopUp(timeSlots.get(j), j, true);
+                            }
                         }
                     }
                 }
@@ -103,6 +123,18 @@ public class TutorScheduling extends Page{
             @Override
             public void handle(ActionEvent actionEvent) {
                 addTimePopUp = new StudentTimePopUp(true);
+            }
+        };
+        delTS = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                Button clickedBtn = (Button) actionEvent.getSource();
+                isDeleteMode = !isDeleteMode;
+                if(isDeleteMode){
+                    clickedBtn.setStyle("-fx-background-color: firebrick");
+                }else{
+                    clickedBtn.setStyle("-fx-background-color: ivory");
+                }
             }
         };
         advFunc = new EventHandler<ActionEvent>() {
@@ -187,6 +219,8 @@ public class TutorScheduling extends Page{
                             numToTimeConvert(timeSlots.get(j).getEndTime()));
                     timeSlotLink.setId("day id" + i + ", slot id" + j);
                     timeSlotLink.setOnAction(schedulePopUp);
+//                    timeSlotLink.addEventHandler(MouseEvent.MOUSE_PRESSED, schedulePopUp);
+
                     column.getChildren().add(timeSlotLink);
                 }
             }
