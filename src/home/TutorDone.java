@@ -72,7 +72,8 @@ public class TutorDone extends Page {
 
     private void createHomeButton(){
         buttonHolder = new HBox();
-        Button homeButton = createButton("Home", "-fx-background-color: indianred", homeFunc);
+        Button homeButton = createButton("Home", "-fx-background-color: indianred", homeFunc,
+                150, 50, 20);
         buttonHolder.setPadding(new Insets(30));
         buttonHolder.setAlignment(Pos.BOTTOM_RIGHT);
         buttonHolder.getChildren().add(homeButton);

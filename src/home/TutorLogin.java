@@ -23,14 +23,13 @@ public class TutorLogin extends Page{
     private EventHandler<ActionEvent> advFunc;
     private EventHandler<ActionEvent> backFunc;
     ComboBox tutorDropDown;
-    HBox buttons;
 
     ArrayList<String> tutorNames;
 
     public static TutorScheduling tutorScheduling;
 
     public TutorLogin(Stage stage) {
-        createHeader("-fx-background-color: deepskyblue;", "Tutor", Color.FLORALWHITE);
+        createHeader("-fx-background-color: deepskyblue", "Tutor", Color.FLORALWHITE);
         createCenter();
         backFunc = createSceneChangeEvent(stage, Main.homePage.getScene());
         advFunc = new EventHandler<ActionEvent>() {
@@ -45,7 +44,7 @@ public class TutorLogin extends Page{
                     System.out.println("Please select a name before proceeding.");
             }
         };
-        createTutorSelectionButtons();
+        createNavButtonBox("-fx-background-color: deepskyblue", backFunc, advFunc);
         createScene();
         stage.setScene(scene);
     }
@@ -59,20 +58,4 @@ public class TutorLogin extends Page{
         tutorDropDown.getItems().addAll(tutorNames);
         pane.setCenter(tutorDropDown);
     }
-
-    private void createTutorSelectionButtons(){
-        buttons = new HBox();
-        buttons.setPadding(new Insets(30));
-        buttons.setSpacing(240);
-        Button backBtn = createButton("Back", "-fx-background-color: indianred", backFunc);
-        Button continueBtn = createButton("Continue", "-fx-background-color: deepskyblue", advFunc);
-        buttons.getChildren().addAll(backBtn, continueBtn);
-        buttons.setAlignment(Pos.CENTER);
-        pane.setBottom(buttons);
-    }
-
-    public String getComboBoxString(){
-        return String.valueOf(tutorDropDown.getValue());
-    }
-
 }

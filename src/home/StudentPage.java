@@ -2,13 +2,11 @@ package home;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -24,7 +22,6 @@ public class StudentPage extends Page{
 
     GridPane grid;
     ComboBox subjectChooser;
-    HBox buttons;
     FlowPane timeInputs;
     EventHandler<ActionEvent> backFunc;
     EventHandler<ActionEvent> advFunc;
@@ -45,14 +42,12 @@ public class StudentPage extends Page{
         advFunc = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                System.out.println("Send to Student Result Page");
                 studentResult = new StudentResult(stage, (String) subjectChooser.getValue(), timeSlots);
             }
         };
         addTimeFunc = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                System.out.println("Student Time Chooser");
                 addTimePopUp = new StudentTimePopUp(false);
             }
         };
@@ -81,20 +76,9 @@ public class StudentPage extends Page{
             }
         };
         createInputGrid();                // Name, Subject, Time
-        createStudentPageButtons();
+        createNavButtonBox("-fx-background-color: darkolivegreen", backFunc, advFunc);
         createScene();
         stage.setScene(scene);
-    }
-
-    private void createStudentPageButtons(){
-        buttons = new HBox();
-        buttons.setPadding(new Insets(30));
-        buttons.setSpacing(240);
-        Button backBtn = createButton("Back", "-fx-background-color: indianred", backFunc);
-        Button submitBtn = createButton("Submit", "-fx-background-color: darkolivegreen", advFunc);
-        buttons.getChildren().addAll(backBtn, submitBtn);
-        buttons.setAlignment(Pos.CENTER);
-        pane.setBottom(buttons);
     }
 
     private void createInputGrid(){

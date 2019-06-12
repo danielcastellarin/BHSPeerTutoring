@@ -19,7 +19,6 @@ import java.util.ArrayList;
 public class TutorScheduling extends Page{
 
     FlowPane calendar;
-    HBox buttons;
     VBox calendarBox;
     EventHandler<ActionEvent> schedulePopUp;
     EventHandler<ActionEvent> backFunc;
@@ -45,7 +44,7 @@ public class TutorScheduling extends Page{
         createButtonEvents(stage);
         retrieveTutorInfo();
         createCalendarBox();
-        createTutorSchedulingButtons();
+        createNavButtonBox("-fx-background-color: deepskyblue", backFunc, advFunc);
         createScene();
         stage.setScene(scene);
     }
@@ -148,7 +147,7 @@ public class TutorScheduling extends Page{
                 tutorDone = new TutorDone(stage, tutorName, changedTimeSlots);
             }
         };
-        backFunc = createSceneChangeEvent(stage, Main.tutorLogin.getScene());
+        backFunc = createSceneChangeEvent(stage, HomePage.tutorLogin.getScene());
     }
 
     public void editTimeSlot(int index, TimeSlot timeSlot){
@@ -252,16 +251,5 @@ public class TutorScheduling extends Page{
         editTimeSlotsQuery += " WHERE day = \"" + ogTS.getDay() + "\" AND start = " + ogTS.getStartTIme() +
                 " AND end = " + ogTS.getEndTime() + " AND lasid = " + lasid + "; ";
         System.out.println(editTimeSlotsQuery);
-    }
-
-    private void createTutorSchedulingButtons(){
-        buttons = new HBox();
-        buttons.setPadding(new Insets(30));
-        buttons.setSpacing(240);
-        Button backBtn = createButton("Back", "-fx-background-color: indianred", backFunc);
-        Button submitBtn = createButton("Submit", "-fx-background-color: deepskyblue", advFunc);
-        buttons.getChildren().addAll(backBtn, submitBtn);
-        buttons.setAlignment(Pos.CENTER);
-        pane.setBottom(buttons);
     }
 }

@@ -19,6 +19,7 @@ public class Page {
     protected Scene scene;
     BorderPane pane = new BorderPane();
     HBox header;
+    HBox navBtns;
     Text title;
 
     public void createHeader(String headerColor, String headerText, Color textColor){
@@ -56,14 +57,29 @@ public class Page {
         return event;
     }
 
-    public Button createButton(String name, String btnColor, EventHandler<ActionEvent> action){
+    public Button createButton(String name, String btnColor, EventHandler<ActionEvent> action,
+                               double width, double length, double fontSize){
         Button button = new javafx.scene.control.Button(name);
-        button.setPrefSize(150, 50);
-        button.setFont(Font.font("Constantia", FontWeight.NORMAL, 20));
+        button.setPrefSize(width, length);
+        button.setFont(Font.font("Constantia", FontWeight.NORMAL, fontSize));
         button.setTextFill(Color.FLORALWHITE);
         button.setStyle(btnColor);
         button.setOnAction(action);
         return button;
+    }
+
+    public void createNavButtonBox(String advBtnColor, EventHandler<ActionEvent> backFunc,
+                                   EventHandler<ActionEvent> advFunc){
+        navBtns = new HBox();
+        navBtns.setPadding(new Insets(30));
+        navBtns.setSpacing(240);
+
+        Button backBtn = createButton("Back", "-fx-background-color: indianred", backFunc,
+                150, 50, 20);
+        Button advBtn = createButton("Submit", advBtnColor, advFunc, 150, 50, 20);
+        navBtns.getChildren().addAll(backBtn, advBtn);
+        navBtns.setAlignment(Pos.CENTER);
+        pane.setBottom(navBtns);
     }
 
     public void createScene(){

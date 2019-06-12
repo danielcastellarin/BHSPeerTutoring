@@ -73,7 +73,8 @@ public class TutorProfilePopUp extends Page{
         Text phoneNumber = new Text(profile.get(3));
         grid.add(phoneNumber, 2, 6);
 
-        grid.add(createButton("Back", "-fx-background-color: indianred", goBack), 1, 7);
+        grid.add(createButton("Back", "-fx-background-color: indianred",
+                goBack, 150, 50, 20), 1, 7);
 
         pane.setCenter(grid);
     }

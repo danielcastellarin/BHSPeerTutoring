@@ -136,8 +136,8 @@ public class TimeSelectPopUp extends Page{
                         TutorLogin.tutorScheduling.updateCenter();
                         TutorLogin.tutorScheduling.addTimeSlotToQuery(origTS, timeSlot);
                     }else{
-                        Main.studentPage.editTimeSlot(slotIndex, timeSlot);
-                        Main.studentPage.updateTimeInputs();
+                        HomePage.studentPage.editTimeSlot(slotIndex, timeSlot);
+                        HomePage.studentPage.updateTimeInputs();
                     }
                     popUpWindow.close();
                 }else{
@@ -151,8 +151,10 @@ public class TimeSelectPopUp extends Page{
         navButtons = new HBox();
         navButtons.setPadding(new Insets(20));
         navButtons.setSpacing(140);
-        Button cancelBtn = createButton("Cancel", "-fx-background-color: indianred", cancelEvent);
-        Button submitBtn = createButton("Submit", "-fx-background-color: deepskyblue", submitEvent);
+        Button cancelBtn = createButton("Cancel", "-fx-background-color: indianred", cancelEvent,
+                150, 50, 20);
+        Button submitBtn = createButton("Submit", "-fx-background-color: deepskyblue", submitEvent,
+                150, 50, 20);
         navButtons.getChildren().addAll(cancelBtn, submitBtn);
         navButtons.setAlignment(Pos.CENTER);
         pane.setBottom(navButtons);

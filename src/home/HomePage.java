@@ -49,12 +49,10 @@ public class HomePage extends Page {
         centerBox.setStyle("-fx-background-color: silver");
         centerBox.setAlignment(Pos.CENTER);
         centerBox.setSpacing(40);
-        Button studentBtn = createButton("Student", "-fx-background-color: darkolivegreen", goStudent);
-        studentBtn.setPrefSize(200, 75);
-        studentBtn.setFont(Font.font("Constantia", FontWeight.NORMAL, 24));
-        Button tutorBtn = createButton("Tutor", "-fx-background-color: deepskyblue", goTutor);
-        tutorBtn.setPrefSize(200, 75);
-        tutorBtn.setFont(Font.font("Constantia", FontWeight.NORMAL, 24));
+        Button studentBtn = createButton("Student", "-fx-background-color: darkolivegreen", goStudent,
+                200, 75, 24);
+        Button tutorBtn = createButton("Tutor", "-fx-background-color: deepskyblue", goTutor,
+                200, 75, 24);
         centerBox.getChildren().addAll(studentBtn, tutorBtn);
         pane.setCenter(centerBox);
     }
