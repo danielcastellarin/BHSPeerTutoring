@@ -16,36 +16,70 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class StudentTimePopUp extends Page{
+public class TimePopUp extends Page {
 
     Stage popUpWindow;
-    HBox navButtons;
     ComboBox dayChooser;
+    HBox navButtons;
     EventHandler<ActionEvent> cancelEvent;
     EventHandler<ActionEvent> doneEvent;
 
     String day;
     int startTime;
     int endTime;
-    boolean isTutor;
+    boolean isStudent;
+    int slotIndex;
+    TimeSlot origTS;
+    String color;
 
-    public StudentTimePopUp(boolean isTut){
-        isTutor = isTut;
-        popUpWindow = createStage();
-        createPopUpHeader("-fx-background-color: darkolivegreen", "Add Availability", Color.FLORALWHITE);
+    // When creating a timeslot, this constructor is used
+    public TimePopUp(boolean isStudent){
+        this.isStudent = isStudent;
+        startTime = 1200;
+        endTime = 1200;
+        if(isStudent)
+            color = "-fx-background-color: darkolivegreen";
+        else
+            color = "-fx-background-color: deepskyblue";
+        popUpWindow = createStage("Add Availability");
+        createPopUpHeader(color, "Add Availability", Color.FLORALWHITE);
         createTimeSelector();
-        createButtonEvents();
-        createNavButtons();
+        createButtonEvents(false);
+        createNavButtons(color);
         scene = new Scene(pane, 400, 400);
         popUpWindow.setScene(scene);
         popUpWindow.show();
     }
 
-    private Stage createStage(){
+
+    // When editing a timeslot, this constructor is used
+    public TimePopUp(boolean isStudent, TimeSlot ts, int i){
+        day = ts.getDay();
+        startTime = ts.getStartTIme();
+        endTime = ts.getEndTime();
+        slotIndex = i;
+        this.isStudent = isStudent;
+        origTS = ts;
+
+        popUpWindow = createStage("Time Editor");
+        if(isStudent)
+            color = "-fx-background-color: darkolivegreen";
+        else
+            color = "-fx-background-color: deepskyblue";
+        createPopUpHeader(color, "Time Editor", Color.FLORALWHITE);
+        createTimeSelector();
+        createButtonEvents(true);
+        createNavButtons(color);
+        scene = new Scene(pane, 400, 400);
+        popUpWindow.setScene(scene);
+        popUpWindow.show();
+    }
+
+    private Stage createStage(String title){
         Stage stage = new Stage();
         stage.setAlwaysOnTop(true);
         stage.setResizable(false);
-        stage.setTitle("Add Times");
+        stage.setTitle(title);
         return stage;
     }
 
@@ -56,12 +90,13 @@ public class StudentTimePopUp extends Page{
         Text dayLabel = new Text("Day of the Week:");
         dayChooser = new ComboBox();
         dayChooser.getItems().addAll("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
+        dayChooser.getSelectionModel().select(day);
         dayBox.getChildren().addAll(dayLabel, dayChooser);
         dayBox.setAlignment(Pos.CENTER);
 
         HBox timeBox = new HBox();
-        VBox startBox = createTimeBox("Start");
-        VBox endBox = createTimeBox("End");
+        VBox startBox = createTimeBox("Start", startTime);
+        VBox endBox = createTimeBox("End", endTime);
         timeBox.getChildren().addAll(startBox, endBox);
         timeBox.setSpacing(10);
         timeBox.setAlignment(Pos.CENTER);
@@ -72,11 +107,11 @@ public class StudentTimePopUp extends Page{
         pane.setCenter(vbox);
     }
 
-    private VBox createTimeBox(String str){
+    private VBox createTimeBox(String str, double initialVal){
         VBox vbox = new VBox();
         Text label = new Text(str + " Time:");
         Text time = new Text();
-        Slider slider = createSlider();
+        Slider slider = createSlider(initialVal);
         time.setText(numToTimeConvert((int) slider.getValue()));
         slider.valueProperty().addListener(new ChangeListener<Number>() {
             @Override
@@ -93,11 +128,11 @@ public class StudentTimePopUp extends Page{
         return vbox;
     }
 
-    private Slider createSlider(){
+    private Slider createSlider(double initialVal){
         Slider slider = new Slider();
         slider.setMin(0);
         slider.setMax(2400);
-        slider.setValue(1200);
+        slider.setValue(initialVal);
         slider.setBlockIncrement(25);
         slider.setShowTickMarks(true);
         slider.setMajorTickUnit(100);
@@ -106,26 +141,35 @@ public class StudentTimePopUp extends Page{
         return slider;
     }
 
-    private void createButtonEvents(){
+    private void createButtonEvents(boolean isEditor){
         cancelEvent = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                System.out.println("Action cancelled");
                 popUpWindow.close();
             }
         };
         doneEvent = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                // Send Data back to Student Page
                 day = (String) dayChooser.getValue();
                 if(endTime > startTime && day != null){
                     TimeSlot timeSlot = new TimeSlot(day, startTime, endTime);
-                    if(isTutor){
-                        TutorLogin.tutorScheduling.addTimeSlot(timeSlot);
-                    }else{
-                        HomePage.studentPage.timeSlots.add(timeSlot);
-                        HomePage.studentPage.addTimeInput(HomePage.studentPage.timeSlots.size() - 1);
+                    if(isEditor){   // For editing a TimeSlot
+                        if(isStudent){
+                            HomePage.studentPage.editTimeSlot(slotIndex, timeSlot);
+                            HomePage.studentPage.updateTimeInputs();
+                        }else{
+                            TutorLogin.tutorScheduling.editTimeSlot(slotIndex, timeSlot);
+                            TutorLogin.tutorScheduling.updateCenter();
+                            TutorLogin.tutorScheduling.addTimeSlotToQuery(origTS, timeSlot);
+                        }
+                    }else{          // For adding availability
+                        if(isStudent){
+                            HomePage.studentPage.timeSlots.add(timeSlot);
+                            HomePage.studentPage.addTimeInput(HomePage.studentPage.timeSlots.size() - 1);
+                        }else{
+                            TutorLogin.tutorScheduling.addTimeSlot(timeSlot);
+                        }
                     }
                     popUpWindow.close();
                 }else{
@@ -135,17 +179,15 @@ public class StudentTimePopUp extends Page{
         };
     }
 
-    private void createNavButtons(){
+    private void createNavButtons(String themeColor){
         navButtons = new HBox();
         navButtons.setPadding(new Insets(20));
         navButtons.setSpacing(140);
         Button cancelBtn = createButton("Cancel", "-fx-background-color: indianred", cancelEvent,
                 150, 50, 20);
-        Button doneBtn = createButton("Submit", "-fx-background-color: darkolivegreen", doneEvent,
-                150, 50, 20);
+        Button doneBtn = createButton("Submit", themeColor, doneEvent, 150, 50, 20);
         navButtons.getChildren().addAll(cancelBtn, doneBtn);
         navButtons.setAlignment(Pos.CENTER);
         pane.setBottom(navButtons);
     }
-
 }

@@ -34,8 +34,7 @@ public class TutorScheduling extends Page{
     String editTimeSlotsQuery = "";
     boolean isDeleteMode = false;
 
-    public static TimeSelectPopUp timeSelectPopUp;
-    public static StudentTimePopUp addTimePopUp;
+    public static TimePopUp timePopUp;
     public static TutorDone tutorDone;
 
     public TutorScheduling(Stage stage, String name){
@@ -111,7 +110,7 @@ public class TutorScheduling extends Page{
                                         "day = \"" + ts.getDay() + "\" AND start = " + ts.getStartTIme() + " AND " +
                                         "end = " + ts.getEndTime() + "; ";
                             }else{
-                                timeSelectPopUp = new TimeSelectPopUp(timeSlots.get(j), j, true);
+                                timePopUp = new TimePopUp(false, timeSlots.get(j), j);
                             }
                         }
                     }
@@ -121,7 +120,7 @@ public class TutorScheduling extends Page{
         addTS = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                addTimePopUp = new StudentTimePopUp(true);
+                timePopUp = new TimePopUp(false);
             }
         };
         delTS = new EventHandler<ActionEvent>() {

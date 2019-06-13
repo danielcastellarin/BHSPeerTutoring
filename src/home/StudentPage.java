@@ -32,9 +32,8 @@ public class StudentPage extends Page{
     ArrayList<TimeSlot> timeSlots = new ArrayList<TimeSlot>();
     ArrayList<String> subjectNames = new ArrayList<>();
 
-    public static StudentTimePopUp addTimePopUp;
-    public static TimeSelectPopUp timeSelectPopUp;
     public static StudentResult studentResult;
+    public static TimePopUp timePopUp;
 
     public StudentPage(Stage stage){
         createHeader("-fx-background-color: darkolivegreen;", "Students", Color.FLORALWHITE);
@@ -48,7 +47,7 @@ public class StudentPage extends Page{
         addTimeFunc = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                addTimePopUp = new StudentTimePopUp(false);
+                timePopUp = new TimePopUp(true);
             }
         };
         editSlotFunc = new EventHandler<ActionEvent>() {
@@ -57,7 +56,7 @@ public class StudentPage extends Page{
                 Button clickedBtn = (Button) actionEvent.getSource();
                 for(int i = 0; i < timeSlots.size(); i++){
                     if(clickedBtn.getId().equals("edit id" + i)){
-                        timeSelectPopUp = new TimeSelectPopUp(timeSlots.get(i), i, false);
+                        timePopUp = new TimePopUp(true, timeSlots.get(i), i);
                     }
                 }
             }
