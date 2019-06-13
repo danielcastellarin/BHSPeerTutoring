@@ -50,7 +50,6 @@ public class Page {
         EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-//                Main.switchPages(stage, nextScene);
                 stage.setScene(nextScene);
             }
         };

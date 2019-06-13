@@ -4,7 +4,9 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -15,6 +17,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class TutorScheduling extends Page{
 
@@ -146,7 +149,19 @@ public class TutorScheduling extends Page{
                 tutorDone = new TutorDone(stage, tutorName, changedTimeSlots);
             }
         };
-        backFunc = createSceneChangeEvent(stage, HomePage.tutorLogin.getScene());
+//        backFunc = createSceneChangeEvent(stage, HomePage.tutorLogin.getScene());
+        backFunc = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                Alert conf = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to leave?",
+                        ButtonType.YES, ButtonType.CANCEL);
+                conf.setHeaderText("");
+                Optional<ButtonType> result = conf.showAndWait();
+                if(result.isPresent() && result.get() == ButtonType.YES){
+                    stage.setScene(HomePage.tutorLogin.getScene());
+                }
+            }
+        };
     }
 
     public void editTimeSlot(int index, TimeSlot timeSlot){
