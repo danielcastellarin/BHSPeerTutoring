@@ -37,43 +37,7 @@ public class StudentPage extends Page{
 
     public StudentPage(Stage stage){
         createHeader("-fx-background-color: darkolivegreen;", "Students", Color.FLORALWHITE);
-        backFunc = createSceneChangeEvent(stage, Main.homePage.getScene());
-        advFunc = new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                studentResult = new StudentResult(stage, (String) subjectChooser.getValue(), timeSlots);
-            }
-        };
-        addTimeFunc = new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                timePopUp = new TimePopUp(true);
-            }
-        };
-        editSlotFunc = new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                Button clickedBtn = (Button) actionEvent.getSource();
-                for(int i = 0; i < timeSlots.size(); i++){
-                    if(clickedBtn.getId().equals("edit id" + i)){
-                        timePopUp = new TimePopUp(true, timeSlots.get(i), i);
-                    }
-                }
-            }
-        };
-        delSlotFunc = new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                Button clickedBtn = (Button) actionEvent.getSource();
-                for(int i = 0; i < timeSlots.size(); i++){
-                    if(clickedBtn.getId().equals("del id" + i)){
-                        timeSlots.remove(i);
-                        updateTimeInputs();
-                        break;
-                    }
-                }
-            }
-        };
+        createButtonEvents(stage);
         createInputGrid();                // Name, Subject, Time
         createNavButtonBox("-fx-background-color: darkolivegreen", backFunc, advFunc);
         createScene();
@@ -149,15 +113,6 @@ public class StudentPage extends Page{
         timeInputs.getChildren().add(flow);
     }
 
-    public void editTimeSlot(int index, TimeSlot timeSlot){
-        for(int i = 0; i < timeSlots.size(); i++){
-            if(index == i){
-                TimeSlot newTime = new TimeSlot(timeSlot.getDay(), timeSlot.getStartTIme(), timeSlot.getEndTime());
-                timeSlots.set(i, newTime);
-            }
-        }
-    }
-
     public void updateTimeInputs(){
         grid.getChildren().remove(timeInputs);
         timeInputs = new FlowPane();
@@ -167,5 +122,54 @@ public class StudentPage extends Page{
         for(int i = 0; i < timeSlots.size(); i++){
             addTimeInput(i);
         }
+    }
+
+    public void editTimeSlot(int index, TimeSlot timeSlot){
+        for(int i = 0; i < timeSlots.size(); i++){
+            if(index == i){
+                TimeSlot newTime = new TimeSlot(timeSlot.getDay(), timeSlot.getStartTIme(), timeSlot.getEndTime());
+                timeSlots.set(i, newTime);
+            }
+        }
+    }
+
+    private void createButtonEvents(Stage stage){
+        backFunc = createSceneChangeEvent(stage, Main.homePage.getScene());
+        advFunc = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                studentResult = new StudentResult(stage, (String) subjectChooser.getValue(), timeSlots);
+            }
+        };
+        addTimeFunc = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                timePopUp = new TimePopUp(true);
+            }
+        };
+        editSlotFunc = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                Button clickedBtn = (Button) actionEvent.getSource();
+                for(int i = 0; i < timeSlots.size(); i++){
+                    if(clickedBtn.getId().equals("edit id" + i)){
+                        timePopUp = new TimePopUp(true, timeSlots.get(i), i);
+                    }
+                }
+            }
+        };
+        delSlotFunc = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                Button clickedBtn = (Button) actionEvent.getSource();
+                for(int i = 0; i < timeSlots.size(); i++){
+                    if(clickedBtn.getId().equals("del id" + i)){
+                        timeSlots.remove(i);
+                        updateTimeInputs();
+                        break;
+                    }
+                }
+            }
+        };
     }
 }

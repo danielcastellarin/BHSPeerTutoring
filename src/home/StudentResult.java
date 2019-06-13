@@ -100,14 +100,18 @@ public class StudentResult extends Page {
             matchedList = subjectOnlyQuery.readTutorProfiles();
         }else if(subject == null){
             //TIMESLOT QUERY ONLY
-            JavaToMySQL timeSlotOnlyQuery = new JavaToMySQL(
-                    "SELECT * FROM tutors WHERE lasid IN ( SELECT lasid FROM timeslots WHERE (" +
-                            "(end >= " + timeSlots.get(0).getStartTIme() + " " +
-                            "AND end <= " + timeSlots.get(0).getEndTime() + ")" +
-                            " OR " +
-                            "(start <= " + timeSlots.get(0).getEndTime() + " " +
-                            "AND end >= " + timeSlots.get(0).getEndTime() + ")" +
-                            ") AND day = \"" + timeSlots.get(0).getDay() + "\");");
+            String query = "SELECT * FROM tutors WHERE lasid IN ( SELECT lasid FROM timeslots WHERE ";
+            for (int i = 0; i < timeSlots.size(); i++)
+                query = appendTimeSlotToQuery(query, i);
+            JavaToMySQL timeSlotOnlyQuery = new JavaToMySQL(query);
+//            JavaToMySQL timeSlotOnlyQuery = new JavaToMySQL(
+//                    "SELECT * FROM tutors WHERE lasid IN ( SELECT lasid FROM timeslots WHERE (" +
+//                            "(end >= " + timeSlots.get(0).getStartTIme() + " " +
+//                            "AND end <= " + timeSlots.get(0).getEndTime() + ")" +
+//                            " OR " +
+//                            "(start <= " + timeSlots.get(0).getEndTime() + " " +
+//                            "AND end >= " + timeSlots.get(0).getEndTime() + ")" +
+//                            ") AND day = \"" + timeSlots.get(0).getDay() + "\");");
 
             timeSlotOnlyQuery.doQuery();
             matchedList = timeSlotOnlyQuery.readTutorProfiles();
