@@ -4,9 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -17,6 +15,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class StudentPage extends Page{
 
@@ -162,11 +161,17 @@ public class StudentPage extends Page{
             @Override
             public void handle(ActionEvent actionEvent) {
                 Button clickedBtn = (Button) actionEvent.getSource();
-                for(int i = 0; i < timeSlots.size(); i++){
-                    if(clickedBtn.getId().equals("del id" + i)){
-                        timeSlots.remove(i);
-                        updateTimeInputs();
-                        break;
+                Alert conf = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete this TimeSlot?",
+                        ButtonType.YES, ButtonType.CANCEL);
+                conf.setHeaderText("");
+                Optional<ButtonType> result = conf.showAndWait();
+                if(result.isPresent() && result.get() == ButtonType.YES){
+                    for(int i = 0; i < timeSlots.size(); i++){
+                        if(clickedBtn.getId().equals("del id" + i)){
+                            timeSlots.remove(i);
+                            updateTimeInputs();
+                            break;
+                        }
                     }
                 }
             }

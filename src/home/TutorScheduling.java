@@ -102,16 +102,23 @@ public class TutorScheduling extends Page{
                     for(int j = 0; j < timeSlots.size(); j++){
                         if(clickedBtn.getId().equals("day id" + i + ", slot id" + j)){
                             if(isDeleteMode){
-                                VBox col = (VBox) clickedBtn.getParent();
-                                col.getChildren().remove(clickedBtn);
-                                TimeSlot ts = timeSlots.get(j);
-                                timeSlots.remove(ts);
-                                if(changedTimeSlots.contains(ts)){
-                                    changedTimeSlots.remove(ts);
+                                Alert conf = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to " +
+                                        "delete this TimeSlot?",
+                                        ButtonType.YES, ButtonType.CANCEL);
+                                conf.setHeaderText("");
+                                Optional<ButtonType> result = conf.showAndWait();
+                                if(result.isPresent() && result.get() == ButtonType.YES){
+                                    VBox col = (VBox) clickedBtn.getParent();
+                                    col.getChildren().remove(clickedBtn);
+                                    TimeSlot ts = timeSlots.get(j);
+                                    timeSlots.remove(ts);
+                                    if(changedTimeSlots.contains(ts)){
+                                        changedTimeSlots.remove(ts);
+                                    }
+                                    editTimeSlotsQuery += "DELETE FROM timeslots WHERE lasid = " + lasid + " AND " +
+                                            "day = \"" + ts.getDay() + "\" AND start = " + ts.getStartTIme() + " AND " +
+                                            "end = " + ts.getEndTime() + "; ";
                                 }
-                                editTimeSlotsQuery += "DELETE FROM timeslots WHERE lasid = " + lasid + " AND " +
-                                        "day = \"" + ts.getDay() + "\" AND start = " + ts.getStartTIme() + " AND " +
-                                        "end = " + ts.getEndTime() + "; ";
                             }else{
                                 timePopUp = new TimePopUp(false, timeSlots.get(j), j);
                             }
@@ -141,12 +148,17 @@ public class TutorScheduling extends Page{
         advFunc = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                System.out.println("Send to Tutor Done Page.");
-                if(!editTimeSlotsQuery.isEmpty()){
-                    JavaToMySQL updateTutorTimeSlots = new JavaToMySQL(editTimeSlotsQuery);
-                    updateTutorTimeSlots.doUpdate();
+                Alert conf = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to continue?",
+                        ButtonType.YES, ButtonType.CANCEL);
+                conf.setHeaderText("");
+                Optional<ButtonType> result = conf.showAndWait();
+                if(result.isPresent() && result.get() == ButtonType.YES){
+                    if(!editTimeSlotsQuery.isEmpty()){
+                        JavaToMySQL updateTutorTimeSlots = new JavaToMySQL(editTimeSlotsQuery);
+                        updateTutorTimeSlots.doUpdate();
+                    }
+                    tutorDone = new TutorDone(stage, tutorName, changedTimeSlots);
                 }
-                tutorDone = new TutorDone(stage, tutorName, changedTimeSlots);
             }
         };
 //        backFunc = createSceneChangeEvent(stage, HomePage.tutorLogin.getScene());
