@@ -7,6 +7,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Slider;
@@ -14,6 +15,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class TimePopUp extends Page {
@@ -77,7 +79,8 @@ public class TimePopUp extends Page {
 
     private Stage createStage(String title){
         Stage stage = new Stage();
-        stage.setAlwaysOnTop(true);
+//        stage.setAlwaysOnTop(true);
+        stage.initModality(Modality.APPLICATION_MODAL);
         stage.setResizable(false);
         stage.setTitle(title);
         return stage;
@@ -173,7 +176,9 @@ public class TimePopUp extends Page {
                     }
                     popUpWindow.close();
                 }else{
-                    System.out.println("Please enter a valid time range and/or day.");
+                    Alert alert = new Alert(Alert.AlertType.WARNING, "Please enter a valid time range and/or day.");
+                    alert.setHeaderText("");
+                    alert.show();
                 }
             }
         };
