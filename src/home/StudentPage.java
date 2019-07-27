@@ -73,6 +73,7 @@ public class StudentPage extends Page{
 //        ImageView imageView = new ImageView(plusSign);
         Button addTimeBtn = new Button("Add");
         addTimeBtn.setOnAction(addTimeFunc);
+        System.out.println(addTimeBtn.getStyle());
         grid.add(addTimeBtn, 2, 4);
         timeInputs = new FlowPane();
         timeInputs.setHgap(10);
@@ -90,6 +91,8 @@ public class StudentPage extends Page{
         Text dayLabel = new Text("Day: " + timeSlots.get(index).getDay());
         Text startLabel = new Text("Start: " + numToTimeConvert(timeSlots.get(index).getStartTIme()));
         Text endLabel = new Text("End: " + numToTimeConvert(timeSlots.get(index).getEndTime()));
+//        Text rangeLabel = new Text(numToTimeConvert(timeSlots.get(index).getStartTIme()) +
+//                " - " + numToTimeConvert(timeSlots.get(index).getEndTime()));
         HBox buttonHolder = new HBox();
         Button editSlot = new Button("Edit");
         editSlot.setId("edit id" + index);
@@ -109,6 +112,7 @@ public class StudentPage extends Page{
 //        endLabel.setFill(Color.DARKOLIVEGREEN);
 
         flow.getChildren().addAll(indexLabel, dayLabel, startLabel, endLabel, buttonHolder);
+//        flow.getChildren().addAll(indexLabel, dayLabel, rangeLabel, buttonHolder);
         timeInputs.getChildren().add(flow);
     }
 

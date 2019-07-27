@@ -2,8 +2,11 @@ package home;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 
+/**
+ * Where every interaction between this project and the MySQL database is done.
+ * It connects with the database, sends a query, and returns the results to the project.
+ */
 public class JavaToMySQL {
 
     private static final String url = "jdbc:mysql://localhost:3306/testdb?allowMultiQueries=true";
@@ -17,11 +20,19 @@ public class JavaToMySQL {
     private static String query;
     private static ArrayList<String> matches;
 
+    /**
+     * Stores the query at class level to use for the MysSQL query
+     * @param q passes in the query as a String. It would be pieced together in other classes.
+     */
     public JavaToMySQL(String q){
         query = q;
         matches = new ArrayList<>();
     }
 
+    /**
+     * Connects to the database, creates the statement so the database could read it, and receives a response from the
+     * database. If the query
+     */
     public void doQuery(){
         try {
             con = DriverManager.getConnection(url, user, pass);
@@ -115,11 +126,4 @@ public class JavaToMySQL {
         }
         return matches;
     }
-
-    public void printMatches(){
-        for(int i = 0; i < matches.size(); i++){
-            System.out.println(matches.get(i));
-        }
-    }
-
 }

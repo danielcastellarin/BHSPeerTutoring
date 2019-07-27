@@ -141,7 +141,7 @@ public class TutorScheduling extends Page{
                 if(isDeleteMode){
                     clickedBtn.setStyle("-fx-background-color: firebrick");
                 }else{
-                    clickedBtn.setStyle("-fx-background-color: ivory");
+                    clickedBtn.setStyle("");
                 }
             }
         };
