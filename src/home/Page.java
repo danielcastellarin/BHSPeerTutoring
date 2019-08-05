@@ -28,7 +28,7 @@ public class Page {
         header.setStyle(headerColor);
         title = new Text(headerText);
         title.setFill(textColor);
-        title.setFont(Font.font("Constantia", FontWeight.SEMI_BOLD, 36.0));
+        title.setFont(Font.font("Constantia", FontWeight.SEMI_BOLD, 60.0));
         header.getChildren().add(title);
         header.setAlignment(Pos.CENTER);
         pane.setTop(header);
@@ -70,19 +70,19 @@ public class Page {
     public void createNavButtonBox(String advBtnColor, EventHandler<ActionEvent> backFunc,
                                    EventHandler<ActionEvent> advFunc){
         navBtns = new HBox();
-        navBtns.setPadding(new Insets(30));
-        navBtns.setSpacing(240);
+        navBtns.setPadding(new Insets(40));
+        navBtns.setSpacing(440);
 
         Button backBtn = createButton("Back", "-fx-background-color: indianred", backFunc,
-                150, 50, 20);
-        Button advBtn = createButton("Submit", advBtnColor, advFunc, 150, 50, 20);
+                225, 75, 30);
+        Button advBtn = createButton("Submit", advBtnColor, advFunc, 250, 75, 30);
         navBtns.getChildren().addAll(backBtn, advBtn);
         navBtns.setAlignment(Pos.CENTER);
         pane.setBottom(navBtns);
     }
 
     public void createScene(){
-        scene = new Scene(pane, 600, 500);
+        scene = new Scene(pane, 1000, 800);
     }
 
     public Scene getScene(){

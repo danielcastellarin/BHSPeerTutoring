@@ -9,6 +9,10 @@ import java.util.ArrayList;
  */
 public class JavaToMySQL {
 
+//    private static final String url = "jdbc:mysql://localhost:3306/peertutoringdb?allowMultiQueries=true";
+//    private static final String user = "reader";
+//    private static final String pass = "RedDevs19";
+
     private static final String url = "jdbc:mysql://localhost:3306/testdb?allowMultiQueries=true";
     private static final String user = "devman";
     private static final String pass = "PeerTutoringRocks45";

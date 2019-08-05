@@ -39,7 +39,7 @@ public class HomePage extends Page {
         createHeader("-fx-background-color: firebrick", "Peer Tutoring Portal", Color.FLORALWHITE);
         createButtonEvents(stage);
         createCenter();
-        scene = new Scene(pane, 800, 650);
+        createScene();
         stage.setScene(scene);
         stage.show();
     }
@@ -82,11 +82,11 @@ public class HomePage extends Page {
         VBox centerBox = new VBox();
         centerBox.setStyle("-fx-background-color: silver");
         centerBox.setAlignment(Pos.CENTER);
-        centerBox.setSpacing(40);
+        centerBox.setSpacing(60);
         Button studentBtn = createButton("Student", "-fx-background-color: darkolivegreen", goStudent,
-                200, 75, 24);
+                275, 100, 36);
         Button tutorBtn = createButton("Tutor", "-fx-background-color: deepskyblue", goTutor,
-                200, 75, 24);
+                275, 100, 36);
         centerBox.getChildren().addAll(studentBtn, tutorBtn);
         pane.setCenter(centerBox);
     }

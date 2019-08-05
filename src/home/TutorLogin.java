@@ -29,7 +29,7 @@ public class TutorLogin extends Page{
     public static TutorScheduling tutorScheduling;
 
     public TutorLogin(Stage stage) {
-        createHeader("-fx-background-color: deepskyblue", "Tutor", Color.FLORALWHITE);
+        createHeader("-fx-background-color: deepskyblue", "Tutors", Color.FLORALWHITE);
         createCenter();
         backFunc = createSceneChangeEvent(stage, Main.homePage.getScene());
         advFunc = new EventHandler<ActionEvent>() {
