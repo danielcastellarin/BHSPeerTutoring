@@ -6,6 +6,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
@@ -19,7 +20,7 @@ public class Page {
     protected Scene scene;
     BorderPane pane = new BorderPane();
     HBox header;
-    HBox navBtns;
+    AnchorPane navBtns;
     Text title;
 
     public void createHeader(String headerColor, String headerText, Color textColor){
@@ -69,15 +70,15 @@ public class Page {
 
     public void createNavButtonBox(String advBtnColor, EventHandler<ActionEvent> backFunc,
                                    EventHandler<ActionEvent> advFunc){
-        navBtns = new HBox();
-        navBtns.setPadding(new Insets(40));
-        navBtns.setSpacing(440);
-
+        navBtns = new AnchorPane();
         Button backBtn = createButton("Back", "-fx-background-color: indianred", backFunc,
                 225, 75, 30);
         Button advBtn = createButton("Submit", advBtnColor, advFunc, 250, 75, 30);
+        AnchorPane.setBottomAnchor(backBtn, 40.0);
+        AnchorPane.setLeftAnchor(backBtn, 40.0);
+        AnchorPane.setBottomAnchor(advBtn, 40.0);
+        AnchorPane.setRightAnchor(advBtn, 40.0);
         navBtns.getChildren().addAll(backBtn, advBtn);
-        navBtns.setAlignment(Pos.CENTER);
         pane.setBottom(navBtns);
     }
 
