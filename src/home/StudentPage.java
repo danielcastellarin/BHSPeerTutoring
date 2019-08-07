@@ -2,12 +2,14 @@ package home;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -19,7 +21,7 @@ import java.util.Optional;
 
 public class StudentPage extends Page{
 
-    GridPane grid;
+    VBox center;
     ComboBox subjectChooser;
     FlowPane timeInputs;
     EventHandler<ActionEvent> backFunc;
@@ -44,53 +46,61 @@ public class StudentPage extends Page{
     }
 
     private void createInputGrid(){
-        grid = new GridPane();
-        grid.setVgap(15);
-        grid.setHgap(100);
-        Text studentNameLabel = new Text("Name:");
-        studentNameLabel.setFont(Font.font("Constantia", FontWeight.NORMAL, 20));
-        studentNameLabel.setFill(Color.DARKOLIVEGREEN);
-        grid.add(studentNameLabel, 1,1);
-        TextField studentNameInput = new TextField();
-        grid.add(studentNameInput, 1,2);
+        center = new VBox();
+        center.setAlignment(Pos.TOP_CENTER);
+        center.setSpacing(50);
+        center.setPadding(new Insets(50));
+
+        HBox subjectBox = new HBox();
+
         Text subjectChooserLabel = new Text("Subject:");
-        subjectChooserLabel.setFont(Font.font("Constantia", FontWeight.NORMAL, 20));
+        subjectChooserLabel.setFont(Font.font("Constantia", FontWeight.NORMAL, 36));
         subjectChooserLabel.setFill(Color.DARKOLIVEGREEN);
-        grid.add(subjectChooserLabel, 2, 1);
 
         JavaToMySQL retrieveSubjects = new JavaToMySQL("SELECT DISTINCT subject FROM subjects;");
         retrieveSubjects.doQuery();
         subjectNames = retrieveSubjects.readSubjects();
         subjectChooser = new ComboBox();
         subjectChooser.getItems().addAll(subjectNames);
-        grid.add(subjectChooser, 2, 2);
+
+        subjectBox.setAlignment(Pos.CENTER);
+        subjectBox.setSpacing(100);
+        subjectBox.getChildren().addAll(subjectChooserLabel, subjectChooser);
+
+
+        HBox timeBox = new HBox();
 
         Text timeLabel = new Text("Time:");
-        timeLabel.setFont(Font.font("Constantia", FontWeight.NORMAL, 20));
+        timeLabel.setFont(Font.font("Constantia", FontWeight.NORMAL, 36));
         timeLabel.setFill(Color.DARKOLIVEGREEN);
-        grid.add(timeLabel, 1, 4);
-//        Image plusSign = new Image(getClass().getResourceAsStream("flower.png"));
-//        ImageView imageView = new ImageView(plusSign);
+
         Button addTimeBtn = new Button("Add");
         addTimeBtn.setOnAction(addTimeFunc);
-        System.out.println(addTimeBtn.getStyle());
-        grid.add(addTimeBtn, 2, 4);
+
+        timeBox.setAlignment(Pos.CENTER);
+        timeBox.setSpacing(100);
+        timeBox.getChildren().addAll(timeLabel, addTimeBtn);
+
         timeInputs = new FlowPane();
         timeInputs.setHgap(10);
         timeInputs.setVgap(10);
-        grid.add(timeInputs, 1, 5, 3, 1);
-        grid.setAlignment(Pos.TOP_LEFT);
-        pane.setCenter(grid);
+
+        center.getChildren().addAll(subjectBox, timeBox, timeInputs);
+        pane.setCenter(center);
     }
 
     public void addTimeInput(int index){
-        FlowPane flow = new FlowPane();
-        flow.setOrientation(Orientation.VERTICAL);
-        flow.setPrefWrapLength(100);
+        FlowPane singleTimeInput = new FlowPane();
+        singleTimeInput.setOrientation(Orientation.VERTICAL);
+        singleTimeInput.setPrefWrapLength(150);
         Text indexLabel = new Text("Time Slot " + (index + 1));
+        indexLabel.setFont(Font.font("System", FontWeight.NORMAL, 20));
         Text dayLabel = new Text("Day: " + timeSlots.get(index).getDay());
+        dayLabel.setFont(Font.font("System", FontWeight.NORMAL, 20));
         Text startLabel = new Text("Start: " + numToTimeConvert(timeSlots.get(index).getStartTIme()));
+        startLabel.setFont(Font.font("System", FontWeight.NORMAL, 20));
         Text endLabel = new Text("End: " + numToTimeConvert(timeSlots.get(index).getEndTime()));
+        endLabel.setFont(Font.font("System", FontWeight.NORMAL, 20));
 //        Text rangeLabel = new Text(numToTimeConvert(timeSlots.get(index).getStartTIme()) +
 //                " - " + numToTimeConvert(timeSlots.get(index).getEndTime()));
         HBox buttonHolder = new HBox();
@@ -111,17 +121,17 @@ public class StudentPage extends Page{
 //        endLabel.setFont(Font.font("Constantia", FontWeight.NORMAL, 16));
 //        endLabel.setFill(Color.DARKOLIVEGREEN);
 
-        flow.getChildren().addAll(indexLabel, dayLabel, startLabel, endLabel, buttonHolder);
+        singleTimeInput.getChildren().addAll(indexLabel, dayLabel, startLabel, endLabel, buttonHolder);
 //        flow.getChildren().addAll(indexLabel, dayLabel, rangeLabel, buttonHolder);
-        timeInputs.getChildren().add(flow);
+        timeInputs.getChildren().add(singleTimeInput);
     }
 
     public void updateTimeInputs(){
-        grid.getChildren().remove(timeInputs);
+        center.getChildren().remove(timeInputs);
         timeInputs = new FlowPane();
         timeInputs.setHgap(10);
         timeInputs.setVgap(10);
-        grid.add(timeInputs, 1, 5, 3, 1);
+        center.getChildren().add(timeInputs);
         for(int i = 0; i < timeSlots.size(); i++){
             addTimeInput(i);
         }
