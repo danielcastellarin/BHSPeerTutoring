@@ -59,7 +59,7 @@ public class Page {
 
     public Button createButton(String name, String btnColor, EventHandler<ActionEvent> action,
                                double width, double length, double fontSize){
-        Button button = new javafx.scene.control.Button(name);
+        Button button = new Button(name);
         button.setPrefSize(width, length);
         button.setFont(Font.font("Constantia", FontWeight.NORMAL, fontSize));
         button.setTextFill(Color.FLORALWHITE);

@@ -2,6 +2,7 @@ package home;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
@@ -93,36 +94,29 @@ public class StudentPage extends Page{
         FlowPane singleTimeInput = new FlowPane();
         singleTimeInput.setOrientation(Orientation.VERTICAL);
         singleTimeInput.setPrefWrapLength(150);
+        singleTimeInput.setColumnHalignment(HPos.CENTER);
         Text indexLabel = new Text("Time Slot " + (index + 1));
         indexLabel.setFont(Font.font("System", FontWeight.NORMAL, 20));
         Text dayLabel = new Text("Day: " + timeSlots.get(index).getDay());
         dayLabel.setFont(Font.font("System", FontWeight.NORMAL, 20));
-        Text startLabel = new Text("Start: " + numToTimeConvert(timeSlots.get(index).getStartTIme()));
-        startLabel.setFont(Font.font("System", FontWeight.NORMAL, 20));
-        Text endLabel = new Text("End: " + numToTimeConvert(timeSlots.get(index).getEndTime()));
-        endLabel.setFont(Font.font("System", FontWeight.NORMAL, 20));
-//        Text rangeLabel = new Text(numToTimeConvert(timeSlots.get(index).getStartTIme()) +
-//                " - " + numToTimeConvert(timeSlots.get(index).getEndTime()));
+//        Text startLabel = new Text("Start: " + numToTimeConvert(timeSlots.get(index).getStartTIme()));
+//        startLabel.setFont(Font.font("System", FontWeight.NORMAL, 20));
+//        Text endLabel = new Text("End: " + numToTimeConvert(timeSlots.get(index).getEndTime()));
+//        endLabel.setFont(Font.font("System", FontWeight.NORMAL, 20));
+        Text rangeLabel = new Text(numToTimeConvert(timeSlots.get(index).getStartTIme()) +
+                " - " + numToTimeConvert(timeSlots.get(index).getEndTime()));
+        rangeLabel.setFont(Font.font("System", FontWeight.NORMAL, 20));
         HBox buttonHolder = new HBox();
-        Button editSlot = new Button("Edit");
+        Button editSlot = createButton("Edit", "-fx-background-color: darkolivegreen", editSlotFunc,
+                60, 26, 18);
         editSlot.setId("edit id" + index);
-        editSlot.setOnAction(editSlotFunc);
-        Button deleteSlot = new Button("-");
+        Button deleteSlot = createButton("Delete", "-fx-background-color: firebrick", delSlotFunc,
+                76, 26, 18);
         deleteSlot.setId("del id" + index);
-        deleteSlot.setOnAction(delSlotFunc);
         buttonHolder.setAlignment(Pos.CENTER);
         buttonHolder.setSpacing(20);
         buttonHolder.getChildren().addAll(editSlot, deleteSlot);
-
-//        timeLabel.setFont(Font.font("Constantia", FontWeight.NORMAL, 16));
-//        timeLabel.setFill(Color.DARKOLIVEGREEN);
-//        startLabel.setFont(Font.font("Constantia", FontWeight.NORMAL, 16));
-//        startLabel.setFill(Color.DARKOLIVEGREEN);
-//        endLabel.setFont(Font.font("Constantia", FontWeight.NORMAL, 16));
-//        endLabel.setFill(Color.DARKOLIVEGREEN);
-
-        singleTimeInput.getChildren().addAll(indexLabel, dayLabel, startLabel, endLabel, buttonHolder);
-//        flow.getChildren().addAll(indexLabel, dayLabel, rangeLabel, buttonHolder);
+        singleTimeInput.getChildren().addAll(indexLabel, dayLabel, rangeLabel, buttonHolder);
         timeInputs.getChildren().add(singleTimeInput);
     }
 
