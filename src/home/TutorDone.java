@@ -5,7 +5,6 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -64,7 +63,7 @@ public class TutorDone extends Page {
         timePane.setOrientation(Orientation.VERTICAL);
         Text index = new Text("Time Slot " + (i + 1));
         Text day = new Text("Day: " + timeSlots.get(i).getDay());
-        Text range = new Text(numToTimeConvert(timeSlots.get(i).getStartTIme()) +
+        Text range = new Text(numToTimeConvert(timeSlots.get(i).getStartTime()) +
                 " - " + numToTimeConvert(timeSlots.get(i).getEndTime()));
         timePane.getChildren().addAll(index, day, range);
         return timePane;

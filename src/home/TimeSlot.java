@@ -16,7 +16,7 @@ public class TimeSlot {
         return day;
     }
 
-    public int getStartTIme(){
+    public int getStartTime(){
         return startTIme;
     }
 

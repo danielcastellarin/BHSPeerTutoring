@@ -5,14 +5,14 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -22,14 +22,14 @@ public class StudentResult extends Page {
 
     EventHandler<ActionEvent> homeFunc;
     VBox centerBoxes;
-    HBox studentInputBox;
-    FlowPane timeInputs;
+    FlowPane timeBox;
     FlowPane matchedTutors;
     HBox buttonHolder;
 
     private String subject;
     private ArrayList<TimeSlot> timeSlots;
     private ArrayList<ArrayList<String>> matchedList;
+    private ArrayList<VBox> days;
 
     public static TutorProfilePopUp tutorProfilePopUp;
 
@@ -54,35 +54,61 @@ public class StudentResult extends Page {
     }
 
     private void createStudentInput(){
-        studentInputBox = new HBox();
-        studentInputBox.setSpacing(20);
 
         if (subject != null){
-            VBox subjectBox = new VBox();
+            HBox subjectBox = new HBox();
+            subjectBox.setSpacing(40);
+            subjectBox.setAlignment(Pos.CENTER);
+            subjectBox.setPadding(new Insets(40));
             Text subjectLabel = new Text("Subject:");
+            subjectLabel.setFont(Font.font("Constantia", FontWeight.NORMAL, 36));
+            subjectLabel.setFill(Color.DARKOLIVEGREEN);
             Text subjectInput = new Text(subject);
+            subjectInput.setFont(Font.font("System", FontWeight.NORMAL, 20));
             subjectBox.getChildren().addAll(subjectLabel, subjectInput);
-            studentInputBox.getChildren().add(subjectBox);
+            centerBoxes.getChildren().add(subjectBox);
         }
+
         if(!timeSlots.isEmpty()){
+            timeBox = new FlowPane();
+            timeBox.setHgap(50);
+            timeBox.setVgap(30);
+            timeBox.setAlignment(Pos.CENTER);
+            timeBox.setPrefWrapLength(950);
+            days = new ArrayList<>();
+
             for(int i = 0; i < timeSlots.size(); i++){
-                studentInputBox.getChildren().add(createTimeInput(i));
+                int existingDayID = -1;
+                if(i > 0){
+                    for(int j = 0; j < days.size(); j++){
+                        if(timeSlots.get(i).getDay().equals(days.get(j).getId())){
+                            existingDayID = j;
+                            break;
+                        }
+                    }
+                }
+
+                Text range = new Text(numToTimeConvert(timeSlots.get(i).getStartTime()) +
+                        " - " + numToTimeConvert(timeSlots.get(i).getEndTime()));
+                range.setFont(Font.font("System", FontWeight.NORMAL, 20));
+
+                if(existingDayID > -1) {
+                    days.get(existingDayID).getChildren().add(range);
+                }else{
+                    VBox column = new VBox();
+                    column.setAlignment(Pos.TOP_CENTER);
+                    column.setSpacing(10);
+                    column.setId(timeSlots.get(i).getDay());
+                    Text day = new Text(timeSlots.get(i).getDay());
+                    day.setFont(Font.font("Constantia", FontWeight.NORMAL, 36));
+                    day.setFill(Color.DARKOLIVEGREEN);
+                    column.getChildren().addAll(day, range);
+                    days.add(column);
+                    timeBox.getChildren().add(column);
+                }
             }
+            centerBoxes.getChildren().add(timeBox);
         }
-
-        studentInputBox.setAlignment(Pos.CENTER);
-        centerBoxes.getChildren().add(studentInputBox);
-    }
-
-    private FlowPane createTimeInput(int i){
-        FlowPane timePane = new FlowPane();
-        timePane.setOrientation(Orientation.VERTICAL);
-        Text index = new Text("Time Slot " + (i + 1));
-        Text day = new Text("Day: " + timeSlots.get(i).getDay());
-        Text range = new Text(numToTimeConvert(timeSlots.get(i).getStartTIme()) +
-                " - " + numToTimeConvert(timeSlots.get(i).getEndTime()));
-        timePane.getChildren().addAll(index, day, range);
-        return timePane;
     }
 
     private void createMatchedTutorsGrid(){
@@ -104,15 +130,6 @@ public class StudentResult extends Page {
             for (int i = 0; i < timeSlots.size(); i++)
                 query = appendTimeSlotToQuery(query, i);
             JavaToMySQL timeSlotOnlyQuery = new JavaToMySQL(query);
-//            JavaToMySQL timeSlotOnlyQuery = new JavaToMySQL(
-//                    "SELECT * FROM tutors WHERE lasid IN ( SELECT lasid FROM timeslots WHERE (" +
-//                            "(end >= " + timeSlots.get(0).getStartTIme() + " " +
-//                            "AND end <= " + timeSlots.get(0).getEndTime() + ")" +
-//                            " OR " +
-//                            "(start <= " + timeSlots.get(0).getEndTime() + " " +
-//                            "AND end >= " + timeSlots.get(0).getEndTime() + ")" +
-//                            ") AND day = \"" + timeSlots.get(0).getDay() + "\");");
-
             timeSlotOnlyQuery.doQuery();
             matchedList = timeSlotOnlyQuery.readTutorProfiles();
         }else{
@@ -206,7 +223,7 @@ public class StudentResult extends Page {
     private String appendTimeSlotToQuery(String query, int slotID){
         String newQuery = query +
                 "(" +
-                "((timeslots.end >= " + timeSlots.get(0).getStartTIme() + " AND " +
+                "((timeslots.end >= " + timeSlots.get(0).getStartTime() + " AND " +
                 "timeslots.end <= " + timeSlots.get(0).getEndTime() + ")" +
                 " OR " +
                 "(timeslots.start <= " + timeSlots.get(0).getEndTime() + " AND " +

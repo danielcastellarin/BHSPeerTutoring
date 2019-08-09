@@ -8,7 +8,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Hyperlink;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -116,7 +115,7 @@ public class TutorScheduling extends Page{
                                         changedTimeSlots.remove(ts);
                                     }
                                     editTimeSlotsQuery += "DELETE FROM timeslots WHERE lasid = " + lasid + " AND " +
-                                            "day = \"" + ts.getDay() + "\" AND start = " + ts.getStartTIme() + " AND " +
+                                            "day = \"" + ts.getDay() + "\" AND start = " + ts.getStartTime() + " AND " +
                                             "end = " + ts.getEndTime() + "; ";
                                 }
                             }else{
@@ -179,7 +178,7 @@ public class TutorScheduling extends Page{
     public void editTimeSlot(int index, TimeSlot timeSlot){
         for(int i = 0; i < timeSlots.size(); i++){
             if(index == i){
-                TimeSlot newTime = new TimeSlot(timeSlot.getDay(), timeSlot.getStartTIme(), timeSlot.getEndTime());
+                TimeSlot newTime = new TimeSlot(timeSlot.getDay(), timeSlot.getStartTime(), timeSlot.getEndTime());
                 timeSlots.set(i, newTime);
                 changedTimeSlots.add(newTime);
                 break;
@@ -194,7 +193,7 @@ public class TutorScheduling extends Page{
 //                "VALUES (" + lasid + ", \"" + ts.getDay() + "\", " + ts.getStartTIme() + ", " + ts.getEndTime() + ");");
 //        appendTimeSlot.doUpdate();
         editTimeSlotsQuery += "INSERT INTO timeslots(lasid, day, start, end) VALUES " +
-                "(" + lasid + ", \"" + ts.getDay() + "\", " + ts.getStartTIme() + ", " + ts.getEndTime() + "); ";
+                "(" + lasid + ", \"" + ts.getDay() + "\", " + ts.getStartTime() + ", " + ts.getEndTime() + "); ";
         updateCenter();
     }
 
@@ -240,7 +239,7 @@ public class TutorScheduling extends Page{
 
             for(int j = 0; j < timeSlots.size(); j++){
                 if(timeSlots.get(j).getDay().equals(day.getText())){
-                    Hyperlink timeSlotLink = new Hyperlink(numToTimeConvert(timeSlots.get(j).getStartTIme()) + "-" +
+                    Hyperlink timeSlotLink = new Hyperlink(numToTimeConvert(timeSlots.get(j).getStartTime()) + "-" +
                             numToTimeConvert(timeSlots.get(j).getEndTime()));
                     timeSlotLink.setId("day id" + i + ", slot id" + j);
                     timeSlotLink.setOnAction(schedulePopUp);
@@ -258,7 +257,7 @@ public class TutorScheduling extends Page{
 
     public void addTimeSlotToQuery(TimeSlot ogTS, TimeSlot ts){
         boolean isDayDifferent = !ogTS.getDay().equals(ts.getDay());
-        boolean isStartDifferent = ogTS.getStartTIme() != ts.getStartTIme();
+        boolean isStartDifferent = ogTS.getStartTime() != ts.getStartTime();
         boolean isEndDifferent = ogTS.getEndTime() != ts.getEndTime();
 
         editTimeSlotsQuery += "UPDATE timeslots SET ";
@@ -267,14 +266,14 @@ public class TutorScheduling extends Page{
         if(isStartDifferent) {
             if (isDayDifferent)
                 editTimeSlotsQuery += ", ";
-            editTimeSlotsQuery += "start = " + ts.getStartTIme();
+            editTimeSlotsQuery += "start = " + ts.getStartTime();
         }if(isEndDifferent){
             if(isDayDifferent || isStartDifferent)
                 editTimeSlotsQuery += ", ";
             editTimeSlotsQuery += "end = " + ts.getEndTime();
         }
 
-        editTimeSlotsQuery += " WHERE day = \"" + ogTS.getDay() + "\" AND start = " + ogTS.getStartTIme() +
+        editTimeSlotsQuery += " WHERE day = \"" + ogTS.getDay() + "\" AND start = " + ogTS.getStartTime() +
                 " AND end = " + ogTS.getEndTime() + " AND lasid = " + lasid + "; ";
         System.out.println(editTimeSlotsQuery);
     }

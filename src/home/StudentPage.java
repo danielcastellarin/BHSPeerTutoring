@@ -8,7 +8,6 @@ import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -49,7 +48,7 @@ public class StudentPage extends Page{
     private void createInputGrid(){
         center = new VBox();
         center.setAlignment(Pos.TOP_CENTER);
-        center.setSpacing(50);
+        center.setSpacing(40);
         center.setPadding(new Insets(50));
 
         HBox subjectBox = new HBox();
@@ -99,24 +98,20 @@ public class StudentPage extends Page{
         indexLabel.setFont(Font.font("System", FontWeight.NORMAL, 20));
         Text dayLabel = new Text("Day: " + timeSlots.get(index).getDay());
         dayLabel.setFont(Font.font("System", FontWeight.NORMAL, 20));
-//        Text startLabel = new Text("Start: " + numToTimeConvert(timeSlots.get(index).getStartTIme()));
-//        startLabel.setFont(Font.font("System", FontWeight.NORMAL, 20));
-//        Text endLabel = new Text("End: " + numToTimeConvert(timeSlots.get(index).getEndTime()));
-//        endLabel.setFont(Font.font("System", FontWeight.NORMAL, 20));
-        Text rangeLabel = new Text(numToTimeConvert(timeSlots.get(index).getStartTIme()) +
+        Text rangeLabel = new Text(numToTimeConvert(timeSlots.get(index).getStartTime()) +
                 " - " + numToTimeConvert(timeSlots.get(index).getEndTime()));
         rangeLabel.setFont(Font.font("System", FontWeight.NORMAL, 20));
-        HBox buttonHolder = new HBox();
+        HBox btnHolder = new HBox();
         Button editSlot = createButton("Edit", "-fx-background-color: darkolivegreen", editSlotFunc,
                 60, 26, 18);
         editSlot.setId("edit id" + index);
         Button deleteSlot = createButton("Delete", "-fx-background-color: firebrick", delSlotFunc,
                 76, 26, 18);
         deleteSlot.setId("del id" + index);
-        buttonHolder.setAlignment(Pos.CENTER);
-        buttonHolder.setSpacing(20);
-        buttonHolder.getChildren().addAll(editSlot, deleteSlot);
-        singleTimeInput.getChildren().addAll(indexLabel, dayLabel, rangeLabel, buttonHolder);
+        btnHolder.setAlignment(Pos.CENTER);
+        btnHolder.setSpacing(20);
+        btnHolder.getChildren().addAll(editSlot, deleteSlot);
+        singleTimeInput.getChildren().addAll(indexLabel, dayLabel, rangeLabel, btnHolder);
         timeInputs.getChildren().add(singleTimeInput);
     }
 
@@ -134,7 +129,7 @@ public class StudentPage extends Page{
     public void editTimeSlot(int index, TimeSlot timeSlot){
         for(int i = 0; i < timeSlots.size(); i++){
             if(index == i){
-                TimeSlot newTime = new TimeSlot(timeSlot.getDay(), timeSlot.getStartTIme(), timeSlot.getEndTime());
+                TimeSlot newTime = new TimeSlot(timeSlot.getDay(), timeSlot.getStartTime(), timeSlot.getEndTime());
                 timeSlots.set(i, newTime);
             }
         }

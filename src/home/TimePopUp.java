@@ -57,7 +57,7 @@ public class TimePopUp extends Page {
     // When editing a timeslot, this constructor is used
     public TimePopUp(boolean isStudent, TimeSlot ts, int i){
         day = ts.getDay();
-        startTime = ts.getStartTIme();
+        startTime = ts.getStartTime();
         endTime = ts.getEndTime();
         slotIndex = i;
         this.isStudent = isStudent;
