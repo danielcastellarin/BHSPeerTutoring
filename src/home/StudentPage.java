@@ -40,7 +40,7 @@ public class StudentPage extends Page{
         createHeader("-fx-background-color: darkolivegreen;", "Students", Color.FLORALWHITE);
         createButtonEvents(stage);
         createInputGrid();                // Name, Subject, Time
-        createNavButtonBox("-fx-background-color: darkolivegreen", backFunc, advFunc);
+        createNavButtonBox("-fx-background-color: darkolivegreen", backFunc, advFunc, "Submit");
         createScene();
         stage.setScene(scene);
     }

@@ -69,11 +69,11 @@ public class Page {
     }
 
     public void createNavButtonBox(String advBtnColor, EventHandler<ActionEvent> backFunc,
-                                   EventHandler<ActionEvent> advFunc){
+                                   EventHandler<ActionEvent> advFunc, String advBtnText){
         navBtns = new AnchorPane();
         Button backBtn = createButton("Back", "-fx-background-color: indianred", backFunc,
                 225, 75, 30);
-        Button advBtn = createButton("Submit", advBtnColor, advFunc, 250, 75, 30);
+        Button advBtn = createButton(advBtnText, advBtnColor, advFunc, 250, 75, 30);
         AnchorPane.setBottomAnchor(backBtn, 40.0);
         AnchorPane.setLeftAnchor(backBtn, 40.0);
         AnchorPane.setBottomAnchor(advBtn, 40.0);

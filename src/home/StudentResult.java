@@ -21,6 +21,7 @@ import java.util.ArrayList;
 public class StudentResult extends Page {
 
     EventHandler<ActionEvent> homeFunc;
+    EventHandler<ActionEvent> searchFunc;
     VBox centerBoxes;
     FlowPane timeBox;
     FlowPane matchedTutors;
@@ -39,8 +40,10 @@ public class StudentResult extends Page {
 
         createHeader("-fx-background-color: darkolivegreen", "Student Results", Color.FLORALWHITE);
         homeFunc = createSceneChangeEvent(stage, Main.homePage.getScene());
+        searchFunc = createSceneChangeEvent(stage, HomePage.studentPage.getScene());
         createCenter();
-        createHomeButton();
+        createNavButtonBox("-fx-background-color: saddlebrown", homeFunc, searchFunc, "Home");
+//        createHomeButton();
         createScene();
         stage.setScene(scene);
     }
@@ -81,8 +84,9 @@ public class StudentResult extends Page {
                 int existingDayID = -1;
                 if(i > 0){
                     for(int j = 0; j < days.size(); j++){
-                        if(timeSlots.get(i).getDay().equals(days.get(j).getId())){
-                            existingDayID = j;
+                        if(days.get(j).getId().contains(timeSlots.get(i).getDay())){
+                            String substr = days.get(j).getId().substring(2, days.get(j).getId().indexOf('-'));
+                            existingDayID = Integer.parseInt(substr);
                             break;
                         }
                     }
@@ -104,25 +108,25 @@ public class StudentResult extends Page {
                     day.setFill(Color.DARKOLIVEGREEN);
                     switch (day.getText()){
                         case "Sunday":
-                            column.setId("0");
+                            column.setId("0 " + i + "- Sunday");
                             break;
                         case "Monday":
-                            column.setId("1");
+                            column.setId("1 " + i + "- Monday");
                             break;
                         case "Tuesday":
-                            column.setId("2");
+                            column.setId("2 " + i + "- Tuesday");
                             break;
                         case "Wednesday":
-                            column.setId("3");
+                            column.setId("3 " + i + "- Wednesday");
                             break;
                         case "Thursday":
-                            column.setId("4");
+                            column.setId("4 " + i + "- Thursday");
                             break;
                         case "Friday":
-                            column.setId("5");
+                            column.setId("5 " + i + "- Friday");
                             break;
                         default:
-                            column.setId("6");
+                            column.setId("6 " + i + "- Saturday");
                             break;
                     }
 

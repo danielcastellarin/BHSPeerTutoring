@@ -45,7 +45,7 @@ public class TutorScheduling extends Page{
         createButtonEvents(stage);
         retrieveTutorInfo();
         createCalendarBox();
-        createNavButtonBox("-fx-background-color: deepskyblue", backFunc, advFunc);
+        createNavButtonBox("-fx-background-color: deepskyblue", backFunc, advFunc, "Submit");
         createScene();
         stage.setScene(scene);
     }

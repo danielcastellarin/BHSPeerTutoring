@@ -44,7 +44,7 @@ public class TutorLogin extends Page{
                     System.out.println("Please select a name before proceeding.");
             }
         };
-        createNavButtonBox("-fx-background-color: deepskyblue", backFunc, advFunc);
+        createNavButtonBox("-fx-background-color: deepskyblue", backFunc, advFunc, "Submit");
         createScene();
         stage.setScene(scene);
     }
