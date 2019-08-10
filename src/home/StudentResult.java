@@ -102,11 +102,52 @@ public class StudentResult extends Page {
                     Text day = new Text(timeSlots.get(i).getDay());
                     day.setFont(Font.font("Constantia", FontWeight.NORMAL, 36));
                     day.setFill(Color.DARKOLIVEGREEN);
+                    switch (day.getText()){
+                        case "Sunday":
+                            column.setId("0");
+                            break;
+                        case "Monday":
+                            column.setId("1");
+                            break;
+                        case "Tuesday":
+                            column.setId("2");
+                            break;
+                        case "Wednesday":
+                            column.setId("3");
+                            break;
+                        case "Thursday":
+                            column.setId("4");
+                            break;
+                        case "Friday":
+                            column.setId("5");
+                            break;
+                        default:
+                            column.setId("6");
+                            break;
+                    }
+
                     column.getChildren().addAll(day, range);
                     days.add(column);
                     timeBox.getChildren().add(column);
                 }
             }
+
+            VBox swap;
+            for(int i = 0; i < days.size(); i++){
+                for(int j = 1; j < days.size(); j++){
+                    swap = days.get(j);
+                    if(swap.getId().compareTo(days.get(j - 1).getId()) < 0){
+                        days.set(j, days.get(j - 1));
+                        days.set(j - 1, swap);
+                    }
+                }
+            }
+
+            timeBox.getChildren().clear();
+            for(int i = 0; i < days.size(); i++){
+                timeBox.getChildren().add(days.get(i));
+            }
+
             centerBoxes.getChildren().add(timeBox);
         }
     }
@@ -144,7 +185,6 @@ public class StudentResult extends Page {
             bothQueries.doQuery();
             matchedList = bothQueries.readTutorProfiles();
         }
-        System.out.println(matchedList);           //print returned profiles
 
         for(int i = 0; i < matchedList.size(); i++){
             int finalI = i;
