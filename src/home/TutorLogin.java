@@ -39,7 +39,6 @@ public class TutorLogin extends Page{
                 if (tutorName != null) {
                     System.out.println("Send to Tutor Scheduling Page. Name: " + tutorName);
                     tutorScheduling = new TutorScheduling(stage, tutorName);
-
                 }else
                     System.out.println("Please select a name before proceeding.");
             }
@@ -56,6 +55,7 @@ public class TutorLogin extends Page{
         tutorNames = retrieveTutorNames.readTutorNames();
         tutorDropDown = new ComboBox();
         tutorDropDown.getItems().addAll(tutorNames);
+        tutorDropDown.setStyle("-fx-font: 20px \"Serif\";");
         pane.setCenter(tutorDropDown);
     }
 }
