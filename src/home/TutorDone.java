@@ -39,7 +39,7 @@ public class TutorDone extends Page {
 
     private void createCenterText(){
         VBox center = new VBox();
-        center.setSpacing(30);
+        center.setSpacing(50);
         center.setAlignment(Pos.CENTER);
 
         centerText = new Text("Thank you for updating your schedule!");
@@ -50,6 +50,7 @@ public class TutorDone extends Page {
 
         HBox changedTimes = new HBox();
         changedTimes.setSpacing(20);
+        changedTimes.setAlignment(Pos.CENTER);
         for(int i = 0; i < timeSlots.size(); i++){
             changedTimes.getChildren().add(createTimeInput(i));
         }
@@ -61,11 +62,12 @@ public class TutorDone extends Page {
     private FlowPane createTimeInput(int i){
         FlowPane timePane = new FlowPane();
         timePane.setOrientation(Orientation.VERTICAL);
-        Text index = new Text("Time Slot " + (i + 1));
         Text day = new Text("Day: " + timeSlots.get(i).getDay());
+        day.setFont(Font.font(20));
         Text range = new Text(numToTimeConvert(timeSlots.get(i).getStartTime()) +
                 " - " + numToTimeConvert(timeSlots.get(i).getEndTime()));
-        timePane.getChildren().addAll(index, day, range);
+        range.setFont(Font.font(20));
+        timePane.getChildren().addAll(day, range);
         return timePane;
     }
 
