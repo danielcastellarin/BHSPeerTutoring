@@ -37,7 +37,6 @@ public class TutorLogin extends Page{
             public void handle(ActionEvent actionEvent) {
                 String tutorName = (String) tutorDropDown.getValue();
                 if (tutorName != null) {
-                    System.out.println("Send to Tutor Scheduling Page. Name: " + tutorName);
                     tutorScheduling = new TutorScheduling(stage, tutorName);
                 }else
                     System.out.println("Please select a name before proceeding.");

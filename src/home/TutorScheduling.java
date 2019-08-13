@@ -53,21 +53,24 @@ public class TutorScheduling extends Page{
     private void createCalendarBox(){
         calendarBox = new VBox();
         calendarBox.setSpacing(10);
-        calendarBox.setPadding(new Insets(20));
+
         calendarBox.setAlignment(Pos.CENTER);
         Text calendarLabel = new Text("Edit Availability:");
-        calendarLabel.setFont(Font.font("Constantia", FontWeight.NORMAL, 20));
+        calendarLabel.setFont(Font.font("Constantia", FontWeight.NORMAL, 36));
         calendarLabel.setFill(Color.DEEPSKYBLUE);
+
         calendarBox.getChildren().add(calendarLabel);
 //        calendarBox.setStyle("-fx-background-color: deepskyblue");
 
         updateCenter();
 
         Button addBtn = new Button("Add");
+        addBtn.setFont(Font.font("Constantia", FontWeight.NORMAL, 20));
         addBtn.setOnAction(addTS);
         calendarBox.getChildren().add(addBtn);
 
         Button delBtn = new Button("Delete");
+        delBtn.setFont(Font.font("Constantia", FontWeight.NORMAL, 20));
         delBtn.setOnAction(delTS);
         calendarBox.getChildren().add(delBtn);
 
@@ -235,6 +238,7 @@ public class TutorScheduling extends Page{
                     day = new Text("Saturday");
                     break;
             }
+            day.setFont(Font.font(24));
             column.getChildren().add(day);
 
             for(int j = 0; j < timeSlots.size(); j++){
@@ -242,9 +246,8 @@ public class TutorScheduling extends Page{
                     Hyperlink timeSlotLink = new Hyperlink(numToTimeConvert(timeSlots.get(j).getStartTime()) + "-" +
                             numToTimeConvert(timeSlots.get(j).getEndTime()));
                     timeSlotLink.setId("day id" + i + ", slot id" + j);
+                    timeSlotLink.setFont(Font.font(16));
                     timeSlotLink.setOnAction(schedulePopUp);
-//                    timeSlotLink.addEventHandler(MouseEvent.MOUSE_PRESSED, schedulePopUp);
-
                     column.getChildren().add(timeSlotLink);
                 }
             }
